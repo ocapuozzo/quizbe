@@ -8,4 +8,8 @@
 * Students evaluate and comment other quizzes (students and teachers!).
 * Teacher reuses questions of students (and hers) for global evaluation (via export and through third-party solutions).
 
+## Spring boot application (MVC Web)
 
+Education scope
+
+Open source Licence 
