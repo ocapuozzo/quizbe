@@ -1,0 +1,132 @@
+package org.quizbe.model;
+
+
+import javax.persistence.*;
+import java.sql.Date;
+import java.util.Objects;
+
+@Entity
+@Table(name = "QUESTION")
+public class Question {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID", nullable = false)
+    private long id;
+
+    @Basic
+    @Column(name = "NAME", nullable = false, length = 50)
+    private String name;
+
+    @Lob
+    @Column(name = "SENTENCE", nullable = false)
+    private String sentence;
+
+    @Basic
+    @Column(name = "DATECREA", nullable = false, length = 50)
+    private Date datecrea;
+
+    /// trace de la personne conceptrice et co-conceptrice
+    @Basic
+    @Column(name = "DESIGNER", nullable = false, length = 50)
+    private String designer;
+
+    @Basic
+    @Column(name = "CODESIGNER", nullable = false, length = 50)
+    private String codesigner;
+    ///
+
+    @ManyToOne
+    private Scope scope;
+
+    @ManyToOne
+    private Classroom classroom;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSentence() {
+        return sentence;
+    }
+
+    public void setSentence(String sentence) {
+        this.sentence = sentence;
+    }
+
+    public Date getDatecrea() {
+        return datecrea;
+    }
+
+    public void setDatecrea(Date datecrea) {
+        this.datecrea = datecrea;
+    }
+
+    public String getDesigner() {
+        return designer;
+    }
+
+    public void setDesigner(String designer) {
+        this.designer = designer;
+    }
+
+    public String getCodesigner() {
+        return codesigner;
+    }
+
+    public void setCodesigner(String codesigner) {
+        this.codesigner = codesigner;
+    }
+
+    public Scope getScope() {
+        return scope;
+    }
+
+    public void setScope(Scope scope) {
+        this.scope = scope;
+    }
+
+    public Classroom getClassroom() {
+        return classroom;
+    }
+
+    public void setClassroom(Classroom classroom) {
+        this.classroom = classroom;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Question scope = (Question) o;
+        return getId() == scope.getId() && getName().equals(scope.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName());
+    }
+
+    @Override
+    public String toString() {
+        return "Question{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", sentence='" + sentence + '\'' +
+                ", datecrea=" + datecrea +
+                ", designer='" + designer + '\'' +
+                ", codesigner='" + codesigner + '\'' +
+                '}';
+    }
+}

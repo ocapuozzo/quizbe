@@ -1,0 +1,29 @@
+
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+
+<div th:replace="fragments/header :: menu(activeTab='home')"/>
+
+<main role="main">
+   <div class="container">
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+        <div class="container">
+            <h1 class="display-3">TODO !</h1>
+
+        </div>
+    </div>
+
+    </div> <!-- /container -->
+
+</main>
+<!-- /.container -->
+
+<div th:replace="fragments/footer.html :: footer"/>
+
+</body>
+</html>

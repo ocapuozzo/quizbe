@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <th:block th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+<div th:replace="fragments/header :: menu(activeTab='question')"/>
+<main class="container">
+  <div class="bg-light p-5 rounded">
+    <div class="row">
+      <div class="col-md-6">
+        <label for="changeClassroom">Classroom</label>
+        <select id="changeClassroom">
+          <option value="" selected disabled>-- Choisissez une classe</option>
+          <option selected value="/quiz/en/question/class/21/">SIO22-LDV-SLAM</option>
+
+          <option value="/quiz/en/question/class/23/">ENCSIO2</option>
+          Classroom SIO22-LDV-SLAM
+        </select>
+      </div>
+
+      <div class="col-md-6">
+        <div class="float-end">
+        <label for="filterByScope">Scope</label>
+        <select id="filterByScope">
+          <option selected value="/quiz/en/question/classscope/0/">All Scopes</option>
+          <option value="/quiz/en/question/classscope/42/">Test Unitaire</option>
+          <option value="/quiz/en/question/classscope/43/">Analyse</option>
+          <option value="/quiz/en/question/classscope/45/">Qualité-Logiciel</option>
+          <option value="/quiz/en/question/classscope/50/">GIT</option>
+          Classroom SIO22-LDV-SLAM
+        </select>
+      </div>
+      </div>
+    </div>
+    <div class="table-responsive ">
+      <table class="table table-striped table-condensed">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Designer(s)</th>
+          <th>Creation date</th>
+          <th>Operations</th>
+          <th>Rating</th>
+          <th>Users rating</th>
+          <th>Scope</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td title="" class="public">analyse-1</td>
+          <td>okpu</td>
+          <td>25/03/2020 14:06</td>
+          <td>
+            <a href="/quiz/en/question/37">show</a>
+
+          </td>
+          <td><input id="_37" class="rating" value="2.75"
+                     data-size="xxs"
+                     data-show-clear="false"
+                     data-show-caption="false"
+                     readonly="true"/>
+
+          </td>
+          <td> (2)</td>
+          <td> Analyse</td>
+
+        </tr>
+        <tr>
+          <td title="" class="public">analyse-2</td>
+          <td>okpu</td>
+          <td>25/03/2020 14:44</td>
+          <td>
+            <a href="/quiz/en/question/38">show</a>
+
+          </td>
+          <td><input id="_38" class="rating" value="2"
+                     data-size="xxs"
+                     data-show-clear="false"
+                     data-show-caption="false"
+                     readonly="true"/>
+
+          </td>
+          <td> (1)</td>
+          <td> Analyse</td>
+
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <a href="/quiz/en/question/new" class="btn btn-primary btn-sm" role="button">
+      Add a new question
+    </a>
+
+    <span class="float-end"><a href="/quiz/en/question/moodleexport" class="btn btn-secondary btn-sm " role="button" download="export-quizbe-SIO22-LDV-SLAM-97questions-2022/01/12.xml">Export Moodle</a></span>
+    <span class="float-end">&nbsp;&nbsp;</span>
+    <span class="float-end"><a href="/quiz/en/question/rawexport" class="btn btn-secondary btn-sm" role="button" download="export-quizbe-SIO22-LDV-SLAM-97questions-2022/01/12.html">Export RAW</a></span>
+
+  </div>
+
+
+
+</main>
+
+<div th:replace="fragments/footer.html :: footer"/>
+
+</body>
+</html>

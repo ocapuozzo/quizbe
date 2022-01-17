@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <th:block th:replace="fragments/header :: header-css"/>
+  <!-- Custom styles for this template -->
+  <link rel="stylesheet" th:href="@{css/signin-register.css}" type="text/css"/>
+</head>
+<body>
+<div th:replace="fragments/header :: menu(activeTab='home')"/>
+
+<main class="text-center form-signin">
+  <form autocomplete="off" th:action="@{/register}"
+        th:object="${userRegistrationDto}" method="post"
+        class="form-signin">
+
+    <div class="mb-4 ml-4">
+      <span>&nbsp;&nbsp;&nbsp;</span>
+      <img th:src="@{svg/quizbe.svg}" alt="logo" width="72" height="57"/>
+    </div>
+    <h1 class="h3 mb-3 fw-normal">Add user</h1>
+    <h3>Registration Form</h3>
+    <div class="form-floating">
+      <input type="text" th:field="*{userName}" placeholder="User Name"
+             class="form-control" id="useName"/>
+      <label for="useName" th:text="#{userName}">UserName</label>
+      <p
+              th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}"
+              class="validation-message"></p>
+    </div>
+    <div class="form-floating">
+      <input type="text" th:field="*{email}" placeholder="Email"
+             class="form-control" id="email"/>
+      <label for="email" th:text="#{email}">Email address</label>
+      <p
+              th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+              class="validation-message"></p>
+    </div>
+
+    <div class="form-floating">
+      <input type="password" th:field="*{password}"
+             placeholder="Password" class="form-control" id="password"/>
+      <label for="password" th:text="#{password}">Password</label>
+      <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
+             class="validation-message"></p>
+    </div>
+
+    <div class="form-floating">
+      <button type="submit" class="btn btn-primary btn-block">Register User</button>
+    </div>
+
+<!--    <h2><span class="text-success" th:utext="${successMessage}"></span></h2>-->
+
+  </form>
+</main>
+<div th:replace="fragments/footer.html :: footer"/>
+</body>
+</html>

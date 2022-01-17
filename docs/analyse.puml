@@ -1,0 +1,29 @@
+@startuml
+' https://plantuml.com/fr/class-diagram
+Object Film{
+id
+titre
+dateRealisation
+resume
+note
+affiche
+}
+Object Personne{
+id
+nom
+prenom
+anneeNaissance
+photo
+}
+
+Object Role {
+id
+rang
+name
+}
+
+Film " * filmsRealises" - "realisateur 1" Personne :"\t\t\t\t"
+Film "1" *- "*" Role :"\t\t\t"
+Role "*" -* "1\nacteur" Personne:"\t\t\t\t"
+
+@enduml

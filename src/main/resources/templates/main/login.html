@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <th:block th:replace="fragments/header :: header-css"/>
+  <!-- Custom styles for this template -->
+  <link rel="stylesheet" th:href="@{css/signin-register.css}" type="text/css"/>
+</head>
+<body>
+<div th:replace="fragments/header :: menu(activeTab='home')"/>
+
+<main class="text-center form-signin">
+  <form>
+    <div>
+      <span>&nbsp;&nbsp;&nbsp;</span>
+      <img class="mb-4" th:src="@{svg/quizbe.svg}" alt="logo" width="72" height="57"/>
+    </div>
+    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+
+    <div class="form-floating">
+      <input type="email" class="form-control" id="floatingEmail" placeholder="name@example.com"/>
+      <label for="floatingInput">Email address</label>
+    </div>
+    <div class="form-floating">
+      <input type="password" class="form-control" id="floatingPassword" placeholder="Password"/>
+      <label for="floatingPassword">Password</label>
+    </div>
+    <div class="checkbox mb-3">
+      <label>
+        <input type="checkbox" value="remember-me"> Remember me
+      </label>
+    </div>
+    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+    <div class="p-2"><a href="/register">or registration</a></div>
+  </form>
+</main>
+<div th:replace="fragments/footer.html :: footer"/>
+</body>
+</html>
