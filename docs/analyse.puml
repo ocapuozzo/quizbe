@@ -1,29 +1,49 @@
 @startuml
 ' https://plantuml.com/fr/class-diagram
-Object Film{
+Object Scope {
 id
-titre
-dateRealisation
-resume
-note
-affiche
+name
 }
-Object Personne{
+
+Object Classroom {
 id
-nom
-prenom
-anneeNaissance
-photo
+name
+}
+
+Object Response {
+id
+proposition
+feedback
+value
+}
+
+Object Rating {
+id
+value
+}
+
+Object Question{
+id
+name
+sentence
+dateCrea
+designerName
+codesignerNames
+}
+
+Object User{
+id
+userName
+email
+password
+valide
 }
 
 Object Role {
 id
-rang
 name
 }
 
-Film " * filmsRealises" - "realisateur 1" Personne :"\t\t\t\t"
-Film "1" *- "*" Role :"\t\t\t"
-Role "*" -* "1\nacteur" Personne:"\t\t\t\t"
+User "*" - "*" Role:"\t\t\t\t"
 
 @enduml
