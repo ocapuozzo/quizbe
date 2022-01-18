@@ -16,6 +16,10 @@
     </div>
     <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
+    <div th:if="${param.error}" class="alert alert-danger" th:text="#{bad.login}">
+      Invalid data
+    </div>
+
     <div class="form-floating">
       <input class="form-control" name="username" id="username" placeholder="name@example.com or username"/>
       <label for="username" th:text="#{emailOrUsername}">Email address or Username</label>

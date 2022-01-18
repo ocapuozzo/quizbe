@@ -34,7 +34,6 @@
               th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
               class="validation-message"></p>
     </div>
-
     <div class="form-floating">
       <input type="password" th:field="*{password}"
              placeholder="Password" class="form-control" id="password"/>
@@ -42,14 +41,10 @@
       <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
              class="validation-message"></p>
     </div>
-
     <div class="form-floating">
       <span class="p-1"><a href="/login" th:text="#{cancel}">Retour</a></span>
       <button type="submit" class="btn btn-primary btn-block" th:text="#{submit}">Register User</button>
     </div>
-
-<!--    <h2><span class="text-success" th:utext="${successMessage}"></span></h2>-->
-
   </form>
 </main>
 <div th:replace="fragments/footer.html :: footer"/>

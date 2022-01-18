@@ -30,7 +30,7 @@ public class CustomUserServiceDetails implements UserDetailsService {
   @Override
   @Transactional
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    logger.info("Enter in loadUserByUsername with username : " + username);
+
     User user = userService.findByEmail(username);
     if (user == null) {
       user = userService.findByUsername(username);
@@ -57,7 +57,7 @@ public class CustomUserServiceDetails implements UserDetailsService {
 
   private UserDetails buildUserForAuthentication(User user, List<GrantedAuthority> authorities) {
     return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
-            true /*user.getActive()*/, true, true, true, authorities);
+            user.getActive(), true, true, true, authorities);
   }
 
 }
