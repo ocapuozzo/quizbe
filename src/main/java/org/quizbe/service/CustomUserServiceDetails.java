@@ -2,15 +2,16 @@ package org.quizbe.service;
 
 import org.quizbe.model.Role;
 import org.quizbe.model.User;
-import org.springframework.stereotype.Service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -19,7 +20,9 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class UserServiceDetails implements UserDetailsService {
+public class CustomUserServiceDetails implements UserDetailsService {
+
+  Logger logger = LoggerFactory.getLogger(CustomUserServiceDetails.class);
 
   @Autowired
   private UserService userService;
@@ -27,15 +30,20 @@ public class UserServiceDetails implements UserDetailsService {
   @Override
   @Transactional
   public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+    logger.info("Enter in loadUserByUsername");
     User user = userService.findByEmail(userName);
-
     if (user == null) {
-      throw new UsernameNotFoundException("Could not find user");
+      user = userService.findByUserName(userName);
+      if (user == null) {
+        throw new UsernameNotFoundException("Could not find user");
+      }
     }
+    logger.info("User login : " + user);
+
     // meilleur autre solution ? (Implement UserDetails)
     //  https://www.codejava.net/frameworks/spring-boot/spring-boot-security-authentication-with-jpa-hibernate-and-mysql
     List<GrantedAuthority> authorities = getUserAuthority(user.getRoles());
-    return buildUserForAuthentication(user, authorities);
+    return this.buildUserForAuthentication(user, authorities);
   }
 
   private List<GrantedAuthority> getUserAuthority(Set<Role> userRoles) {

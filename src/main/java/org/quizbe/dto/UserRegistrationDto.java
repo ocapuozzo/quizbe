@@ -11,6 +11,7 @@ public class UserRegistrationDto {
   @Size(min = 3, max = 30, message = "{user.username.min.max}")
   private String userName;
 
+  @NotBlank(message = "{user.email.blank}")
   @Email(message = "{user.email.invalid}")
   private String email;
 

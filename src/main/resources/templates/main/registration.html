@@ -17,8 +17,7 @@
       <span>&nbsp;&nbsp;&nbsp;</span>
       <img th:src="@{svg/quizbe.svg}" alt="logo" width="72" height="57"/>
     </div>
-    <h1 class="h3 mb-3 fw-normal">Add user</h1>
-    <h3>Registration Form</h3>
+    <h1 class="h3 mb-3 fw-normal" th:text="#{addUser}">Add user</h1>
     <div class="form-floating">
       <input type="text" th:field="*{userName}" placeholder="User Name"
              class="form-control" id="useName"/>
@@ -45,7 +44,8 @@
     </div>
 
     <div class="form-floating">
-      <button type="submit" class="btn btn-primary btn-block">Register User</button>
+      <span class="p-1"><a href="/login" th:text="#{cancel}">Retour</a></span>
+      <button type="submit" class="btn btn-primary btn-block" th:text="#{submit}">Register User</button>
     </div>
 
 <!--    <h2><span class="text-success" th:utext="${successMessage}"></span></h2>-->
