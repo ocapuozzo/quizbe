@@ -6,5 +6,5 @@ import org.quizbe.model.User;
 public interface UserService  {
     User saveUserFromUserDto(UserRegistrationDto registrationDto);
     User findByEmail(String email);
-    User findByUserName(String userName);
+    User findByUsername(String username);
 }

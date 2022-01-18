@@ -1,7 +1,6 @@
 package org.quizbe.model;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.Set;
 
 @Entity
@@ -12,8 +11,8 @@ public class User {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(name = "USER_NAME")
-  private String userName;
+  @Column(name = "USERNAME")
+  private String username;
 
   @Column(name = "EMAIL")
   private String email;
@@ -35,15 +34,16 @@ public class User {
   private Set< Role > roles;
 
   public User() {
-
+    this.active = true;
   }
 
   public User(String userName, String email, String password, Set < Role > roles) {
     super();
-    this.userName = userName;
+    this.username = userName;
     this.email = email;
     this.password = password;
     this.roles = roles;
+    this.active = true;
   }
   public Long getId() {
     return id;
@@ -51,11 +51,11 @@ public class User {
   public void setId(Long id) {
     this.id = id;
   }
-  public String getUserName() {
-    return userName;
+  public String getUsername() {
+    return username;
   }
-  public void setUserName(String userName) {
-    this.userName = userName;
+  public void setUsername(String userName) {
+    this.username = userName;
   }
   public String getEmail() {
     return email;
@@ -85,4 +85,14 @@ public class User {
     this.roles = roles;
   }
 
+  @Override
+  public String toString() {
+    return "User{" +
+            "id=" + id +
+            ", username='" + username + '\'' +
+            ", email='" + email + '\'' +
+            ", password='" + password + '\'' +
+            ", active=" + active +
+            '}';
+  }
 }
