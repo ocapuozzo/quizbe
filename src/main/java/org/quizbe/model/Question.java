@@ -1,11 +1,18 @@
 package org.quizbe.model;
 
 
+import org.hibernate.annotations.DynamicInsert;
+
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.Objects;
 
+
 @Entity
+@DynamicInsert
+   // see https://thorben-janssen.com/dynamic-inserts-and-updates-with-spring-data-jpa/
+   // https://stackoverflow.com/questions/21721818/why-does-not-hibernate-set-dynamicinsert-by-default
+   // Question may be updated frequently (Response also, to test before :)
 @Table(name = "QUESTION")
 public class Question {
     @Id
