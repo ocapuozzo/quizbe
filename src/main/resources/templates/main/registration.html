@@ -10,20 +10,20 @@
 
 <main class="text-center form-signin">
   <form autocomplete="off" th:action="@{/register}"
-        th:object="${userRegistrationDto}" method="post"
+        th:object="${userDto}" method="post"
         class="form-signin">
 
     <div class="mb-4 ml-4">
       <span>&nbsp;&nbsp;&nbsp;</span>
       <img th:src="@{svg/quizbe.svg}" alt="logo" width="72" height="57"/>
     </div>
-    <h1 class="h3 mb-3 fw-normal" th:text="#{addUser}">Add user</h1>
+    <h1 class="h3 mb-3 fw-normal" th:text="#{add.user}">Add user</h1>
     <div class="form-floating">
-      <input type="text" th:field="*{userName}" placeholder="User Name"
-             class="form-control" id="useName"/>
-      <label for="useName" th:text="#{userName}">UserName</label>
+      <input type="text" th:field="*{username}" placeholder="User Name"
+             class="form-control" id="usename"/>
+      <label for="useName" th:text="#{username}">Username</label>
       <p
-              th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}"
+              th:if="${#fields.hasErrors('username')}" th:errors="*{username}"
               class="validation-message"></p>
     </div>
     <div class="form-floating">

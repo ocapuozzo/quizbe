@@ -21,7 +21,17 @@ public class User {
   private String password;
 
   @Column(name = "ACTIVE")
-  private Boolean active;
+  private Boolean enabled;
+
+  @Basic
+  private Boolean accountNonExpired;
+
+  @Basic
+  private Boolean credentialsNonExpired;
+
+  @Basic
+  private Boolean accountNonLocked;
+
 
   @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   @JoinTable(
@@ -34,7 +44,10 @@ public class User {
   private Set< Role > roles;
 
   public User() {
-    this.active = true;
+    this.enabled = true;
+    this.accountNonExpired = true;
+    this.accountNonLocked = true;
+    this.credentialsNonExpired = true;
   }
 
   public User(String userName, String email, String password, Set < Role > roles) {
@@ -43,7 +56,7 @@ public class User {
     this.email = email;
     this.password = password;
     this.roles = roles;
-    this.active = true;
+    this.enabled = true;
   }
   public Long getId() {
     return id;
@@ -70,12 +83,12 @@ public class User {
     this.password = password;
   }
 
-  public Boolean getActive() {
-    return active;
+  public Boolean isEnabled() {
+    return enabled;
   }
 
-  public void setActive(Boolean active) {
-    this.active = active;
+  public void setEnabled(Boolean active) {
+    this.enabled = active;
   }
 
   public Set < Role > getRoles() {
@@ -85,6 +98,31 @@ public class User {
     this.roles = roles;
   }
 
+  public Boolean isAccountNonExpired() {
+    return accountNonExpired;
+  }
+
+  public void setAccountNonExpired(Boolean accountNonExpired) {
+    this.accountNonExpired = accountNonExpired;
+  }
+
+  public Boolean isCredentialsNonExpired() {
+    return credentialsNonExpired;
+  }
+
+  public void setCredentialsNonExpired(Boolean credentialsNonExpired) {
+    this.credentialsNonExpired = credentialsNonExpired;
+  }
+
+  public Boolean isAccountNonLocked() {
+    return accountNonLocked;
+  }
+
+  public void setAccountNonLocked(Boolean accountNonLocked) {
+    this.accountNonLocked = accountNonLocked;
+  }
+
+
   @Override
   public String toString() {
     return "User{" +
@@ -92,7 +130,7 @@ public class User {
             ", username='" + username + '\'' +
             ", email='" + email + '\'' +
             ", password='" + password + '\'' +
-            ", active=" + active +
+            ", enabled=" + enabled +
             '}';
   }
 }

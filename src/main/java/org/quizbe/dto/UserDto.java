@@ -4,12 +4,13 @@ package org.quizbe.dto;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.Set;
 
-public class UserRegistrationDto {
+public class UserDto {
 
   @NotBlank(message = "{user.username.blank}")
   @Size(min = 3, max = 30, message = "{user.username.min.max}")
-  private String userName;
+  private String username;
 
   @NotBlank(message = "{user.email.blank}")
   @Email(message = "{user.email.invalid}")
@@ -19,22 +20,26 @@ public class UserRegistrationDto {
   @Size(min = 6, message = "{user.password.min}")
   private String password;
 
-  public UserRegistrationDto() {
+  private Long id;
+
+  private Set<String> roles;
+
+  public UserDto() {
 
   }
 
-  public UserRegistrationDto(String userName, String email, String password) {
+  public UserDto(String userName, String email, String password) {
     super();
-    this.userName = userName;
+    this.username = userName;
     this.email = email;
     this.password = password;
   }
 
-  public String getUserName() {
-    return userName;
+  public String getUsername() {
+    return username;
   }
-  public void setUserName(String userName) {
-    this.userName = userName;
+  public void setUsername(String username) {
+    this.username = username;
   }
 
   public String getEmail() {
@@ -51,11 +56,28 @@ public class UserRegistrationDto {
     this.password = password;
   }
 
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public Long getId() {
+    return this.id;
+  }
+
   @Override
   public String toString() {
     return "UserRegistrationDto {" +
-            "userName='" + userName + '\'' +
+            "userName='" + username + '\'' +
             ", email='" + email + '\'' +
+            ", Roles=" + roles.toString() +
             '}';
+  }
+
+  public void setRole(Set<String> roles) {
+    this.roles = roles;
+  }
+  public Set<String> getRoles() {
+    return this.roles;
   }
 }

@@ -1,6 +1,6 @@
 package org.quizbe.controller;
 
-import org.quizbe.dto.UserRegistrationDto;
+import org.quizbe.dto.UserDto;
 import org.quizbe.model.User;
 import org.quizbe.service.ClassroomService;
 import org.quizbe.service.UserService;
@@ -52,14 +52,14 @@ public class IndexController {
 
 
   @GetMapping(value = {"/register",})
-  public String register(UserRegistrationDto userRegistrationDto) {
+  public String register(@ModelAttribute UserDto userDto) {
     //model.addAttribute("user", new UserRegistrationDto());
     return "/main/registration";
   }
 
   @PostMapping(value = {"/register",})
-  public String registerPost(@Valid @ModelAttribute UserRegistrationDto userDto, BindingResult bindingResult) {
-    User userExists = userService.findByUsername(userDto.getUserName());
+  public String registerPost(@Valid @ModelAttribute UserDto userDto, BindingResult bindingResult) {
+    User userExists = userService.findByUsername(userDto.getUsername());
     if (userExists != null) {
       // bidouille pour aller chercher le bon message avec la locale
       ResourceBundle bundle = ResourceBundle.getBundle("i18n/validationMessages", LocaleContextHolder.getLocale());
