@@ -32,13 +32,6 @@ public class IndexController {
     this.userService = userService;
   }
 
-  @GetMapping(value = {"/question",})
-  public String questions(Model model) {
-    // TODO get classrooms of user
-    model.addAttribute("classrooms", classroomService.getAllClassrooms());
-    return "/main/index";
-  }
-
   @GetMapping(value = {"/",})
   public String index() {
     return "/main/index";
@@ -74,6 +67,14 @@ public class IndexController {
     userService.saveUserFromUserDto(userDto);
     return "redirect:/";
   }
+
+  /**
+    @See WebSecurityConfiguration
+   */
+  @GetMapping(value = {"/access-denied",})
+  public String acceDenied() {
+    return "/error/access-denied";
+ }
 
 
 

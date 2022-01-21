@@ -45,8 +45,9 @@
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
+        <li sec:authorize="isAuthenticated()" class="p-1"><a th:href="@{/admin/users}">Admin</a></li>
         <li sec:authorize="isAuthenticated()">
-          <span class="glyphicon glyphicon-log-out"></span>
+          <span class="glyphicon glyphicon-log-out p-1"></span>
           <a th:href="@{/logout}">Logout</a>
         </li>
 <!--        <li>-->

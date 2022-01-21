@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.quizbe.dao.RoleRepository;
 import org.quizbe.dao.UserRepository;
 import org.quizbe.dto.UserDto;
+import org.quizbe.exception.UserNotFoundException;
 import org.quizbe.model.Role;
 import org.quizbe.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +63,7 @@ public class UserServiceImpl implements UserService {
     if (user.isPresent()) {
       return fromUserToUserDto(user.get());
     } else {
-      throw  new IllegalArgumentException("Invalid user Id:" + id);
+      throw new UserNotFoundException("Invalid user Id:" + id);
     }
   }
 
