@@ -107,3 +107,8 @@ code {
     border-style: solid;
     background-color: lightcoral;
 }
+
+/* applique la couleur utilisée par .nav-link.  Voir header logout */
+.color-nav-link a {
+    color: rgba(255,255,255,.55);
+}

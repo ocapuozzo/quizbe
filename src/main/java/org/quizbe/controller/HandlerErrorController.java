@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 // https://www.baeldung.com/spring-boot-custom-error-page
 
 @Controller
-public class QuizbeErrorController implements ErrorController {
+public class HandlerErrorController implements ErrorController {
 
   @RequestMapping("/error")
   public String handleError(HttpServletRequest request, Model model) {
@@ -35,6 +35,6 @@ public class QuizbeErrorController implements ErrorController {
 
   @Override
   public String getErrorPath() {
-    return "/error";
+    return "/error-not-used";
   }
 }

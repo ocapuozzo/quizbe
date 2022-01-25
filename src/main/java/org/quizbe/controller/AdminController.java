@@ -87,13 +87,24 @@ public class AdminController {
     String nameCurrentUser = request.getUserPrincipal().getName();
     User currentUser = userService.findByUsername(nameCurrentUser);
 
-    if (roleName.equals("ADMIN") && currentUser.getId() != 1) {
-      // non autorisé à gérer les rôles ADMIN
-      return "redirect:/admin/users";
-    }
-
     User userToUpdate = userService.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+
+    logger.info("userToUpdate : " + userToUpdate);
+    logger.info("currentUser : " + currentUser);
+    logger.info("roleName : " + roleName);
+
+    // "super admin" stay admin
+    if (roleName.equals("ADMIN")) {
+      if (currentUser.getId() == 1 && userToUpdate.getId() == 1) {
+        // Le super utilisateur reste admin !
+        return "redirect:/admin/users";
+      }
+      if (currentUser.getId() > 1) {
+        // non autorisé à gérer les rôles ADMIN
+        return "redirect:/admin/users";
+      }
+    }
 
     Role role = roleService.findByName(roleName);
     if (role == null) {
@@ -101,11 +112,6 @@ public class AdminController {
     }
 
     boolean userToUpdateIsAdmin = userToUpdate.getRoles().stream().anyMatch(r -> r.getName().equals("ADMIN"));
-
-    if (userToUpdateIsAdmin && (!userToUpdate.getUsername().equals(nameCurrentUser) && currentUser.getId() != 1)) {
-      // non autorisé à gérer les rôles des autres ADMIN, sauf le SUPER_ADMIN (id=1)
-      return "redirect:/admin/users";
-    }
 
     userService.flipflopUserRole(userToUpdate, role);
 
