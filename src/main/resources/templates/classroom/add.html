@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <th:block th:replace="fragments/header :: header-css"/>
+  <!-- Custom styles for this template -->
+  <link rel="stylesheet" th:href="@{css/signin-register.css}" type="text/css"/>
+</head>
+<body>
+<div th:replace="fragments/header :: menu(activeTab='classroom')"/>
+
+<main class="mx-auto" style="width: 350px;">
+    <h1 style="text-align: center" th:text="#{add.classroom}"></h1>
+    <div class="container-sm" >
+      <form action="#" th:action="@{add}" th:object="${classroomDto}" method="post" >
+        <div class="mb-4">
+        <label for="name" class="form-label">Name</label>
+        <input type="text" th:field="*{name}" id="name" placeholder="name" class="form-control">
+        <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="validation-message"></span>
+        </div>
+        <div class="mb-4">
+          <label for="scope_0" th:text="#{scope}" class="form-label">Scope</label>
+          <input type="text" th:field="*{scopes[0]}"
+                 placeholder="scope" class="form-control" id="scope_0"/>
+          <p th:if="${#fields.hasErrors('scopes[0]')}" th:errors="*{scopes[0]}"
+             class="validation-message"></p>
+        </div>
+        <div class="mb-4">
+          <span class="p-1"><a href="#" th:text="#{cancel}">Retour</a></span>
+          <button type="submit" class="btn btn-primary btn-block" th:text="#{submit}">Ajouter</button>
+        </div>
+<!--        -->
+<!--        <label for="name">Scope</label>-->
+<!--        <input type="text" th:field="*{scopes[0]}" id="scope_0" placeholder="scope">-->
+<!--        <span th:if="${#fields.hasErrors('scopes[0]')}" th:errors="*{scopes[0]}"></span>-->
+
+      </form>
+    </div>
+</main>
+
+<div th:replace="fragments/footer.html :: footer"/>
+</body>
+</html>

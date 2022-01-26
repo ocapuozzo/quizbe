@@ -1,5 +1,7 @@
 @startuml
 ' https://plantuml.com/fr/class-diagram
+title Analyse du domaine métier de Quizbe\n
+
 Object Scope {
 id
 name
@@ -45,13 +47,14 @@ id
 name
 }
 
+
 User "*" -- "*" Role:"\t\t\t\t"
-User "*" - "*" Classroom:"\t\t"
+User "1 teacher" - "*" Classroom:"\t\t\t"
 Question "1" - "2..*" Response:"\t\t"
 Question "*" -- "1" Scope
 Question "*" -- "1" Classroom
 Question "*" -- "1" User
-Rating "*" - "1" Question:"\t"
+Rating "*" - "1" Question:"\t\t"
 Rating "*" -- "1" User
 Classroom "1" -- "*" Scope
 

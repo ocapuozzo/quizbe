@@ -4,7 +4,7 @@
   <th:block th:replace="fragments/header :: header-css"/>
 </head>
 <body>
-<div th:replace="fragments/header :: menu(activeTab='home')"/>
+<div th:replace="fragments/header :: menu(activeTab='admin')"/>
 
 <main class="text-center">
       <div th:switch="${users}">
@@ -26,7 +26,7 @@
             <td th:text="${user.username}"></td>
             <td th:text="${user.email}"></td>
             <td><a th:href="@{edit/{id}(id=${user.id})}">Edit</a></td>
-            <td><a th:href="@{/delete/{id}(id=${user.id})}">Delete</a></td>
+            <td><a th:href="@{delete/{id}(id=${user.id})}">Delete</a></td>
             <td><form th:action="@{/admin/role}" th:each="role : ${allRoles}" method="post" style="display:inline-block" class="p-1">
               <input type="hidden" name="id" th:value="${user.id}">
               <input type="hidden" name="rolename" th:value="${role.name}">

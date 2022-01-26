@@ -56,4 +56,13 @@ public class Scope {
     public int hashCode() {
         return Objects.hash(getId(), getName());
     }
+
+    @Override
+    public String toString() {
+        return "Scope{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", classroom=" + classroom.getName() +
+                '}';
+    }
 }

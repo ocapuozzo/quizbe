@@ -2,7 +2,9 @@ package org.quizbe.model;
 
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
 
 @Entity
@@ -17,8 +19,15 @@ public class Classroom {
     @Column(name = "NAME", nullable = false, length = 50)
     private String name;
 
-    @OneToMany(mappedBy = "classroom")
+    @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL)
     private Collection<Scope> scopes;
+
+    @ManyToOne
+    private User teacher;
+
+    public Classroom() {
+        this.scopes = new ArrayList<Scope>();
+    }
 
     public long getId() {
         return id;
@@ -47,6 +56,16 @@ public class Classroom {
     public void addScope(Scope scope) {
         if (!this.scopes.contains(scope)) {
             this.scopes.add(scope);
+            scope.setClassroom(this);
         }
     }
+
+    public User getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(User teacher) {
+        this.teacher = teacher;
+    }
+
 }
