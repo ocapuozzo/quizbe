@@ -11,7 +11,7 @@
 <main class="mx-auto" style="width: 350px;">
     <h1 style="text-align: center" th:text="#{add.classroom}"></h1>
     <div class="container-sm" >
-      <form action="#" th:action="@{add}" th:object="${classroomDto}" method="post" >
+      <form action="#" th:action="@{/classroom/add}" th:object="${classroomDto}" method="post" >
         <div class="mb-4">
         <label for="name" class="form-label">Name</label>
         <input type="text" th:field="*{name}" id="name" placeholder="name" class="form-control">
