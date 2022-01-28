@@ -54,7 +54,7 @@ public class AdminController {
   public String showUpdateForm(@PathVariable("id") long id, Model model) {
     try {
       UserDto userDto = userService.findUserDtoById(id);
-      model.addAttribute("user", userDto);
+      model.addAttribute("userDto", userDto);
     } catch (UserNotFoundException ex) {
       throw new ResponseStatusException(
               HttpStatus.NOT_FOUND, "User Not Found", ex);
@@ -64,11 +64,12 @@ public class AdminController {
 
   @PostMapping("/update/{id}")
   public String updateUser(@Valid @ModelAttribute UserDto userDto, BindingResult bindingResult) {
+    // logger.info("bindingResult :" + bindingResult);
     if (bindingResult.hasErrors()) {
       return "admin/update-user";
     }
     userService.saveUserFromUserDto(userDto);
-    return "redirect:/index";
+    return "redirect:/admin/users";
   }
 
   @GetMapping("/delete/{id}")
@@ -76,7 +77,7 @@ public class AdminController {
     User user = userService.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
     userService.delete(user);
-    return "redirect:/admin/index";
+    return "redirect:/admin/users";
   }
 
   @PostMapping("/role")

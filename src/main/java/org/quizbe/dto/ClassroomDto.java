@@ -5,6 +5,7 @@ package org.quizbe.dto;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -30,6 +31,7 @@ public class ClassroomDto {
   public ClassroomDto(String name) {
     super();
     this.name = name;
+    this.scopes = new ArrayList<>();
   }
 
   public void setId(Long id) {
@@ -49,11 +51,19 @@ public class ClassroomDto {
   }
 
   public List<String> getScopes() {
-    return scopes;
+    if (this.scopes == null) {
+      this.scopes = new ArrayList<>();
+    }
+    return this.scopes;
   }
 
   public void setScopes(List<String> scopes) {
-    this.scopes = scopes;
+    if (scopes != null) {
+      this.scopes = scopes;
+    } else  {
+      this.scopes.clear();
+    }
+
   }
 
   public String getTeacherUsername() {

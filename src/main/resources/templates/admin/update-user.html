@@ -8,9 +8,10 @@
 
 <main class="text-center">
   <form action="#"
-        th:action="@{/update/{id}(id=${user.id})}"
-        th:object="${user}"
+        th:action="@{/admin/update/{id}(id=${userDto.id})}"
+        th:object="${userDto}"
         method="post">
+    <input type="hidden" th:field="*{password}" id="password">
     <label for="name">Name</label>
     <input type="text" th:field="*{username}" id="name" placeholder="Username">
     <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>

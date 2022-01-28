@@ -46,6 +46,11 @@ public class ClassroomController {
 
   @GetMapping(value = {"/add",})
   public String register(@ModelAttribute ClassroomDto classroomDto) {
+    if(classroomDto.getScopes().isEmpty()) {
+      classroomDto.getScopes().add("Scope1");
+      classroomDto.getScopes().add("Scope2");
+      classroomDto.getScopes().add("Scope3");
+    }
     return "classroom/add";
   }
 

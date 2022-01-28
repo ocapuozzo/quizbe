@@ -34,12 +34,26 @@ public class UserServiceImpl implements UserService {
   @Override
   public User saveUserFromUserDto(UserDto userDto) {
     Role role = roleRepository.findByName("USER");
-    User user = new User(userDto.getUsername(),
-            userDto.getEmail(),
-            passwordEncoder.encode(userDto.getPassword()),
-            new HashSet<Role>(Arrays.asList(role)));
+    Optional<User> user;
 
-    return userRepository.save(user);
+    if (userDto.getId() != null) {
+      user = userRepository.findById(userDto.getId());
+      if (user.isPresent()) {
+         User updateUser = user.get();
+         updateUser.setEmail(userDto.getEmail());
+        updateUser.setUsername(userDto.getUsername());
+        return userRepository.save(updateUser);
+      } else {
+        throw new UserNotFoundException("Invalid user Id:" + userDto.getId());
+      }
+    } else {
+      User newUser = new User(userDto.getUsername(),
+              userDto.getEmail(),
+              passwordEncoder.encode(userDto.getPassword()),
+              new HashSet<Role>(Arrays.asList(role)));
+              return userRepository.save(newUser);
+    }
+
   }
 
   @Override
