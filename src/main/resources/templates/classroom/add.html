@@ -24,8 +24,8 @@
         <hr>
         <p style="text-align: center" th:text="#{add.scope}"></p>
 <!--        <div th:replace="fragments/add-scope (indice=0)"/>-->
-        <div th:unless="${#lists.isEmpty(classroomDto.scopes)}">
-          <ul id="items_prototype"
+        <div id="div-scopes" th:unless="${#lists.isEmpty(classroomDto.scopes)}">
+          <ul class="items_prototype" id="items_prototype" style="list-style-type: none;"
               data-prototype=" &lt;div&gt;
     &lt;div class=&quot;mb-4&quot;&gt;
           &lt;label for=&quot;scope__name__&quot; class=&quot;form-label&quot;&gt;Thème&lt;/label&gt;
@@ -39,6 +39,7 @@
           </li>
           </ul>
         </div>
+        <hr>
         <div class="mb-4">
           <span class="p-1"><a href="#" th:text="#{cancel}">Retour</a></span>
           <button type="submit" class="btn btn-primary btn-block" th:text="#{submit}">Ajouter</button>
@@ -51,19 +52,22 @@
 <div th:replace="fragments/footer.html :: footer"/>
 
 <script>
-  // Récupère le div qui contient la collection de tags
-  var collectionHolder = document.getElementById('items_prototype');
+  // Récupère le div qui contient la collection de scopes
+  var listScopes = document.getElementById('items_prototype');
   var addScopeLinkElt = document.createElement('a');
   addScopeLinkElt.setAttribute('href', '#');
   addScopeLinkElt.setAttribute('class', 'add_scope_link');
   addScopeLinkElt.innerHTML = "Add a scope";
 
-  var newLink = document.createElement('li').appendChild(addScopeLinkElt);
+  var newP = document.createElement('p');
+  var divscopes = document.getElementById('div-scopes');
+  newP.appendChild(addScopeLinkElt);
+  divscopes.appendChild(newP);
 
   window.addEventListener("DOMContentLoaded", (event) => {
     // ajoute un lien de suppression à tous les éléments li de
-    // formulaires de tag existants
-    let scopeFormLis = collectionHolder.getElementsByTagName('li');
+    // formulaires des scopes existants
+    let scopeFormLis = listScopes.getElementsByTagName('li');
     for (let i = 0; i < scopeFormLis.length; i++) {
       addScopeFormDeleteLink(scopeFormLis[i]);
     }
@@ -72,15 +76,17 @@
   function addScopeFormDeleteLink(scopeFormLi) {
     // <a href="#">Delete this scope</a>;
     // with onclick handler
-    let removeFormA = document.createElement('a');
-    removeFormA.setAttribute('href', '#');
-    removeFormA.innerHTML = "Delete this scope";
-    scopeFormLi.appendChild(removeFormA);
+    // let removeFormA = document.createElement('a');
+    // removeFormA.setAttribute('href', '#');
+    // removeFormA.innerHTML = "Delete this scope";
+    // scopeFormLi.appendChild(removeFormA);
 
-    removeFormA.onclick = function (e) {
+    let scopeDelete = scopeFormLi.getElementsByClassName("scope-delete");
+    // one item by li
+    scopeDelete[0].onclick = function (e) {
       // empêche le lien de créer un « # » dans l'URL
       e.preventDefault();
-      // supprime l'élément li du scope
+      // supprime l'élément li (scope)
       scopeFormLi.remove();
     };
   }
