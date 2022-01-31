@@ -11,7 +11,8 @@
 <main class="mx-auto" style="width: 350px;">
    <div class="card">
      <div class="card-header">
-    <p style="text-align: center" th:text="#{add.classroom}"></p>
+    <p th:if="${classroomDto.id}==null" style="text-align: center" th:text="#{add.classroom}"></p>
+       <p th:if="${classroomDto.id} != null" style="text-align: center" th:text="#{update.classroom}"></p>
      </div>
 
     <div class="card-body" >
@@ -33,7 +34,7 @@
           </li>
           </ul>
         </div>
-        <div hidden id="idaddscope">
+        <div hidden id="id-prototype-scope-form">
           <div th:replace="fragments/add-scope (indice=0)"/>
         </div>
         <p><a href="" th:text="#{add.one.scope}" id="add-a-scope"></a></p>
@@ -53,8 +54,16 @@
   // Récupère le div qui contient la collection de scopes
   var listScopes = document.getElementById('items_prototype');
   var nbItems = 0;
-
+  var fragment;
   window.addEventListener("DOMContentLoaded", (event) => {
+    // output prototype hidden element of form (else it is submitted !)
+    fragment = document.createDocumentFragment();
+    let elt = document.getElementById("id-prototype-scope-form");
+    let firstInput = elt.getElementsByTagName('input')[0];
+    firstInput.remove();
+    // move elt
+    fragment.appendChild(elt);
+
     // ajoute un lien de suppression à tous les éléments li de
     // formulaires des scopes existants
     let scopeFormLis = listScopes.getElementsByTagName('li');
@@ -83,11 +92,11 @@
   }
 
   function addScopeForm() {
-    let prototype = document.getElementById("idaddscope").innerHTML;
+    let prototype = fragment.getElementById("id-prototype-scope-form").innerHTML;
     // Remplace l'indice 'O' dans le HTML du prototype par un nombre basé sur nbItems
     let newForm = prototype.replace(/0/g, 1 + nbItems++);
     // default value
-    newForm = prototype.replace(/Scope1/g, "Scope"+ nbItems);
+    newForm = newForm.replace(/Scope1/g, "Scope" + nbItems);
 
     // creation d'un li contenant le formulaire
     let liElt = document.createElement('li');

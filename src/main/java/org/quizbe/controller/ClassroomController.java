@@ -75,6 +75,8 @@ public class ClassroomController {
     // clean scopesDto by remove scopeDto with name is null
     classroomDto.setScopesDtos(classroomDto.getScopesDtos().stream().filter(scopeDto -> scopeDto.getName()!= null).collect(Collectors.toList()));
 
+    logger.info("classroomDto addupdate :" + classroomDto);
+
     if (result.hasErrors()) {
       return "classroom/add-update";
     }
