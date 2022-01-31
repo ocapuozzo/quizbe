@@ -104,7 +104,7 @@ code {
 }
 
 .validation-message {
-    border-style: solid;
+    border-style: none;
     background-color: lightcoral;
 }
 

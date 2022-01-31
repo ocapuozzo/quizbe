@@ -1,8 +1,8 @@
 package org.quizbe.controller;
 
 import org.quizbe.dto.ClassroomDto;
-import org.quizbe.dto.UserDto;
-import org.quizbe.exception.UserNotFoundException;
+import org.quizbe.dto.ScopeDto;
+import org.quizbe.exception.ClassroomNotFoundException;
 import org.quizbe.model.User;
 import org.quizbe.service.ClassroomService;
 import org.quizbe.service.UserService;
@@ -18,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.stream.Collectors;
 
 
 @RequestMapping("/classroom")
@@ -46,26 +47,49 @@ public class ClassroomController {
 
   @GetMapping(value = {"/add",})
   public String register(@ModelAttribute ClassroomDto classroomDto) {
-    if(classroomDto.getScopes().isEmpty()) {
-      classroomDto.getScopes().add("Scope1");
-      classroomDto.getScopes().add("Scope2");
-      classroomDto.getScopes().add("Scope3");
+    if(classroomDto.getScopesDtos().isEmpty()) {
+      classroomDto.getScopesDtos().add(new ScopeDto("Scope1"));
+      classroomDto.getScopesDtos().add(new ScopeDto("Scope2"));
+      classroomDto.getScopesDtos().add(new ScopeDto("Scope3"));
+    } else {
+      // already set
     }
-    return "classroom/add";
+    return "classroom/add-update";
   }
 
-  @PostMapping("/add")
-  public String addClassroom(@Valid ClassroomDto classroomDto, BindingResult result, Model model, HttpServletRequest request) {
-    if (result.hasErrors()) {
-      return "classroom/add";
+  @GetMapping("/edit/{id}")
+  public String showUpdateForm(@PathVariable("id") long id, Model model) {
+    try {
+      ClassroomDto classroomDto = classroomService.findClassroomDtoById(id);
+      model.addAttribute("classroomDto", classroomDto);
+    } catch (ClassroomNotFoundException ex) {
+      throw new ResponseStatusException(
+              HttpStatus.NOT_FOUND, "Classrooù Not Found", ex);
     }
-    String nameCurrentUser = request.getUserPrincipal().getName();
-    classroomDto.setTeacherUsername(nameCurrentUser);
+    return "classroom/add-update";
+  }
 
-    if (! classroomService.saveClassroomFromClassroomDto(classroomDto)){
-      // TODO add error in bindingResult
-      return "classroom/add";
+  @PostMapping(value= {"/addupdate"})
+  public String addOrUpdateClassroom(@Valid ClassroomDto classroomDto, BindingResult result, Model model, HttpServletRequest request) {
+
+    // clean scopesDto by remove scopeDto with name is null
+    classroomDto.setScopesDtos(classroomDto.getScopesDtos().stream().filter(scopeDto -> scopeDto.getName()!= null).collect(Collectors.toList()));
+
+    if (result.hasErrors()) {
+      return "classroom/add-update";
     }
+
+    if (classroomDto.getId() == null) {
+      String nameCurrentUser = request.getUserPrincipal().getName();
+      classroomDto.setTeacherUsername(nameCurrentUser);
+    }
+
+    classroomService.saveClassroomFromClassroomDto(classroomDto, result);
+
+    if (result.hasErrors()) {
+      return "classroom/add-update";
+    }
+
     return "redirect:/classroom/index";
   }
 /*

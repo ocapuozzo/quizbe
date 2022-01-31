@@ -56,8 +56,7 @@ public class AdminController {
       UserDto userDto = userService.findUserDtoById(id);
       model.addAttribute("userDto", userDto);
     } catch (UserNotFoundException ex) {
-      throw new ResponseStatusException(
-              HttpStatus.NOT_FOUND, "User Not Found", ex);
+      throw new UserNotFoundException(ex);
     }
     return "admin/update-user";
   }

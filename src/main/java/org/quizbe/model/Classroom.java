@@ -2,10 +2,7 @@ package org.quizbe.model;
 
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "CLASSROOM")
@@ -19,8 +16,8 @@ public class Classroom {
     @Column(name = "NAME", nullable = false, length = 50)
     private String name;
 
-    @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL)
-    private Collection<Scope> scopes;
+    @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Scope> scopes;
 
     @ManyToOne
     private User teacher;
@@ -49,7 +46,7 @@ public class Classroom {
         return scopes;
     }
 
-    public void setScopes(Collection<Scope> scopes) {
+    public void setScopes(List<Scope> scopes) {
         this.scopes = scopes;
     }
 
@@ -59,6 +56,20 @@ public class Classroom {
             scope.setClassroom(this);
         }
     }
+    public void removeScope(Scope scope) {
+        scope.setClassroom(null);
+        this.scopes.remove(scope);
+    }
+
+    public void removeScopes() {
+        Iterator<Scope> it = this.scopes.iterator();
+        while (it.hasNext()) {
+            Scope scope = it.next();
+            scope.setClassroom(null);
+            it.remove();
+        }
+    }
+
 
     public User getTeacher() {
         return teacher;

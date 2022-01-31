@@ -19,7 +19,7 @@ public class ClassroomDto {
 
   @NotNull
   @Size(min = 1)
-  private List<@NotBlank String> scopes;
+  private List<ScopeDto> scopesDtos;
 
   // auto renseigné = current user
   private String teacherUsername;
@@ -31,7 +31,7 @@ public class ClassroomDto {
   public ClassroomDto(String name) {
     super();
     this.name = name;
-    this.scopes = new ArrayList<>();
+    this.scopesDtos = new ArrayList<>();
   }
 
   public void setId(Long id) {
@@ -50,20 +50,19 @@ public class ClassroomDto {
     this.name = name;
   }
 
-  public List<String> getScopes() {
-    if (this.scopes == null) {
-      this.scopes = new ArrayList<>();
+  public List<ScopeDto> getScopesDtos() {
+    if (this.scopesDtos == null) {
+      this.scopesDtos = new ArrayList<>();
     }
-    return this.scopes;
+    return this.scopesDtos;
   }
 
-  public void setScopes(List<String> scopes) {
-    if (scopes != null) {
-      this.scopes = scopes;
+  public void setScopesDtos(List<ScopeDto> scopesDtos) {
+    if (scopesDtos != null) {
+      this.scopesDtos = scopesDtos;
     } else  {
-      this.scopes.clear();
+      this.scopesDtos.clear();
     }
-
   }
 
   public String getTeacherUsername() {
@@ -72,5 +71,15 @@ public class ClassroomDto {
 
   public void setTeacherUsername(String teacherUsername) {
     this.teacherUsername = teacherUsername;
+  }
+
+  @Override
+  public String toString() {
+    return "ClassroomDto{" +
+            "name='" + name + '\'' +
+            ", id=" + id +
+            ", scopes=" + scopesDtos +
+            ", teacherUsername='" + teacherUsername + '\'' +
+            '}';
   }
 }

@@ -10,7 +10,7 @@ public interface ClassroomRepository extends CrudRepository<Classroom, Long> {
 
     List<Classroom> findByName(String nName);
 
-    Classroom findById(long id);
+    //Classroom findById(long id);
 
     List<Classroom> findByTeacher(User user);
 }

@@ -15,7 +15,9 @@
      </div>
 
     <div class="card-body" >
-      <form action="#" th:action="@{/classroom/add}" th:object="${classroomDto}" method="post" >
+      <form action="#" th:action="@{/classroom/addupdate}" th:object="${classroomDto}" method="post" >
+        <input type="hidden" th:field="${classroomDto.id}">
+        <input type="hidden" th:field="${classroomDto.teacherUsername}">
         <div class="mb-4">
         <label for="name" class="form-label">Name</label>
         <input type="text" th:field="*{name}" id="name" placeholder="name" class="form-control">
@@ -24,24 +26,20 @@
         <hr>
         <p style="text-align: center" th:text="#{add.scope}"></p>
 <!--        <div th:replace="fragments/add-scope (indice=0)"/>-->
-        <div id="div-scopes" th:unless="${#lists.isEmpty(classroomDto.scopes)}">
-          <ul class="items_prototype" id="items_prototype" style="list-style-type: none;"
-              data-prototype=" &lt;div&gt;
-    &lt;div class=&quot;mb-4&quot;&gt;
-          &lt;label for=&quot;scope__name__&quot; class=&quot;form-label&quot;&gt;Thème&lt;/label&gt;
-          &lt;input type=&quot;text&quot; placeholder=&quot;scope&quot; class=&quot;form-control&quot; id=&quot;scope__name__&quot;
-           name=&quot;scopes[__name__]&quot; value=&quot;Scope__name__&quot;/&gt;
-          &lt;/div&gt;
-          &lt;/div&gt;"
-          >
-          <li th:each="scope,iterStat : ${classroomDto.scopes}">
+        <div id="div-scopes" th:unless="${#lists.isEmpty(classroomDto.scopesDtos)}">
+          <ul class="items_prototype" id="items_prototype" style="list-style-type: none;">
+          <li th:each="scope,iterStat : ${classroomDto.scopesDtos}">
             <div th:replace="fragments/add-scope (indice=${iterStat.index})"/>
           </li>
           </ul>
         </div>
+        <div hidden id="idaddscope">
+          <div th:replace="fragments/add-scope (indice=0)"/>
+        </div>
+        <p><a href="" th:text="#{add.one.scope}" id="add-a-scope"></a></p>
         <hr>
         <div class="mb-4">
-          <span class="p-1"><a href="#" th:text="#{cancel}">Retour</a></span>
+          <span class="p-1"><a th:href="@{/classroom}" th:text="#{return.to.list}">Retour</a></span>
           <button type="submit" class="btn btn-primary btn-block" th:text="#{submit}">Ajouter</button>
         </div>
       </form>
@@ -51,38 +49,31 @@
 
 <div th:replace="fragments/footer.html :: footer"/>
 
-<script>
+<script th:inline="javascript">
   // Récupère le div qui contient la collection de scopes
   var listScopes = document.getElementById('items_prototype');
-  var addScopeLinkElt = document.createElement('a');
-  addScopeLinkElt.setAttribute('href', '#');
-  addScopeLinkElt.setAttribute('class', 'add_scope_link');
-  addScopeLinkElt.innerHTML = "Add a scope";
-
-  var newP = document.createElement('p');
-  var divscopes = document.getElementById('div-scopes');
-  newP.appendChild(addScopeLinkElt);
-  divscopes.appendChild(newP);
+  var nbItems = 0;
 
   window.addEventListener("DOMContentLoaded", (event) => {
     // ajoute un lien de suppression à tous les éléments li de
     // formulaires des scopes existants
     let scopeFormLis = listScopes.getElementsByTagName('li');
     for (let i = 0; i < scopeFormLis.length; i++) {
-      addScopeFormDeleteLink(scopeFormLis[i]);
+      addEventDeleteOnDeleteLink(scopeFormLis[i]);
     }
+    nbItems = scopeFormLis.length;
+    let addLink = document.getElementById('add-a-scope');
+    addLink.onclick = function (e) {
+      // empêche le lien de créer un « # » dans l'URL
+      e.preventDefault();
+      // ajoute un nouveau formulaire de scope
+      addScopeForm();
+    };
    });
 
-  function addScopeFormDeleteLink(scopeFormLi) {
-    // <a href="#">Delete this scope</a>;
-    // with onclick handler
-    // let removeFormA = document.createElement('a');
-    // removeFormA.setAttribute('href', '#');
-    // removeFormA.innerHTML = "Delete this scope";
-    // scopeFormLi.appendChild(removeFormA);
-
+  function addEventDeleteOnDeleteLink(scopeFormLi) {
     let scopeDelete = scopeFormLi.getElementsByClassName("scope-delete");
-    // one item by li
+    // one item <a> class "scope-delete" by li
     scopeDelete[0].onclick = function (e) {
       // empêche le lien de créer un « # » dans l'URL
       e.preventDefault();
@@ -91,6 +82,19 @@
     };
   }
 
+  function addScopeForm() {
+    let prototype = document.getElementById("idaddscope").innerHTML;
+    // Remplace l'indice 'O' dans le HTML du prototype par un nombre basé sur nbItems
+    let newForm = prototype.replace(/0/g, 1 + nbItems++);
+    // default value
+    newForm = prototype.replace(/Scope1/g, "Scope"+ nbItems);
+
+    // creation d'un li contenant le formulaire
+    let liElt = document.createElement('li');
+    liElt.innerHTML = newForm;
+    listScopes.appendChild(liElt);
+    addEventDeleteOnDeleteLink(liElt);
+  }
 </script>
 
 </body>

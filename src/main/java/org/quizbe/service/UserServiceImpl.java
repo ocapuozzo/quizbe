@@ -39,8 +39,8 @@ public class UserServiceImpl implements UserService {
     if (userDto.getId() != null) {
       user = userRepository.findById(userDto.getId());
       if (user.isPresent()) {
-         User updateUser = user.get();
-         updateUser.setEmail(userDto.getEmail());
+        User updateUser = user.get();
+        updateUser.setEmail(userDto.getEmail());
         updateUser.setUsername(userDto.getUsername());
         return userRepository.save(updateUser);
       } else {
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
               userDto.getEmail(),
               passwordEncoder.encode(userDto.getPassword()),
               new HashSet<Role>(Arrays.asList(role)));
-              return userRepository.save(newUser);
+      return userRepository.save(newUser);
     }
 
   }
@@ -98,16 +98,17 @@ public class UserServiceImpl implements UserService {
 
   /**
    * Add or remove role of user (flipflop)
-   * @param role  role too add or remove
+   *
+   * @param role role too add or remove
    */
   @Override
   public void flipflopUserRole(User user, Role role) {
-     if (user.getRoles().contains(role)) {
-       user.getRoles().remove(role);
-     } else {
-       user.getRoles().add(role);
-     }
-     userRepository.save(user);
+    if (user.getRoles().contains(role)) {
+      user.getRoles().remove(role);
+    } else {
+      user.getRoles().add(role);
+    }
+    userRepository.save(user);
   }
 
   private UserDto fromUserToUserDto(User user) {
@@ -116,7 +117,7 @@ public class UserServiceImpl implements UserService {
     userDto.setUsername(user.getUsername());
     userDto.setEmail(user.getEmail());
     userDto.setPassword(user.getPassword());
-    userDto.setRole(user.getRoles().stream().map(r->r.getName()).collect(Collectors.toSet()));
+    userDto.setRole(user.getRoles().stream().map(r -> r.getName()).collect(Collectors.toSet()));
     return userDto;
   }
 
