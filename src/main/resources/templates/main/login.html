@@ -34,8 +34,8 @@
 <!--      </label>-->
 <!--    </div>-->
     <button class="w-100 btn btn-lg btn-primary" type="submit" th:text="#{signin}">Sign in</button>
-    <div class="p-2"><a href="/"><span style="color: red" th:text="#{forbiddenpassword}">forbidden password ?</span></a></div>
-    <div class="p-2"><a href="/register"><span th:text="#{registration}">registration</span></a></div>
+    <div class="p-2"><a href="/"><span style="color: red" th:text="#{pw.forbidden}">forbidden password ?</span></a></div>
+    <div class="p-2"><a href="/register"><span th:text="#{user.registration}">registration</span></a></div>
   </form>
 </main>
 <div th:replace="fragments/footer.html :: footer"/>
