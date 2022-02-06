@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ResourceBundle;
 
@@ -36,6 +37,14 @@ public class IndexController {
   public String index() {
     return "/main/index";
   }
+
+//
+//  @GetMapping(value = {"/changelocale",})
+//  public String changeLocale(HttpServletRequest request) {
+//    String url = request.getParameter("url");
+//    //return "/main/index";
+//    return "redirect:"+url;
+//  }
 
 
   @GetMapping(value = {"/login",})
@@ -75,7 +84,5 @@ public class IndexController {
   public String acceDenied() {
     return "/error/access-denied";
  }
-
-
 
 }

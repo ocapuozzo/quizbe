@@ -12,7 +12,7 @@
     <div th:switch="${classrooms}">
       <h2 th:case="null">No classroom yet!</h2>
       <div th:case="*">
-        <h2>My classrooms</h2>
+        <h2 th:text="#{classrooms.my}">My classrooms</h2>
         <table class="table table-striped">
           <thead>
           <tr>

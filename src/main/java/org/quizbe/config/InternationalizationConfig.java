@@ -1,13 +1,17 @@
 package org.quizbe.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
@@ -16,25 +20,29 @@ import java.util.Locale;
 @Configuration
 public class InternationalizationConfig implements WebMvcConfigurer {
 
-  /**
-   * This is where we'll add the interceptor object
-   * that handles internationalization
-   */
-  @Override
-  public void addInterceptors(InterceptorRegistry registry) {
-    registry.addInterceptor(localeChangeInterceptor());
+  Logger logger = LoggerFactory.getLogger(InternationalizationConfig.class);
+
+  @Bean
+  public LocaleResolver localeResolver() {
+    CookieLocaleResolver cookieLocaleResolver = new CookieLocaleResolver();
+    cookieLocaleResolver.setCookieMaxAge(6 * 30 * 24 * 60 * 60); // 6 mois...
+    cookieLocaleResolver.setDefaultLocale(Locale.US);
+    // called before launching tomcat :
+    // logger.info("resolve locale2 : " + cookieLocaleResolver.toString());
+    return cookieLocaleResolver;
   }
 
-  /**
-   * Set encoding and prefix file name of messages resources
-   *
-   * @return
-   */
-  @Bean
+  @Override
+  public void addInterceptors(InterceptorRegistry registry) {
+    LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+    localeChangeInterceptor.setParamName("lang");
+    registry.addInterceptor(localeChangeInterceptor).addPathPatterns("/*");
+  }
+
+  @Bean(name = "messageSource")
   public MessageSource messageSource() {
-    ReloadableResourceBundleMessageSource messageSource =
-            new ReloadableResourceBundleMessageSource();
-    messageSource.setBasename("classpath:/i18n/messages");
+    ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+    messageSource.setBasenames("i18n/messages");
     messageSource.setDefaultEncoding("UTF-8");
     return messageSource;
   }
@@ -55,35 +63,16 @@ public class InternationalizationConfig implements WebMvcConfigurer {
   }
 
   /**
-   * Instantiate the appropriate locale resolution strategy
-   *
-   * @return locale resolver
-   */
-  @Bean
-  public LocaleResolver localeResolver() {
-    // stores locale info in the session
-    SessionLocaleResolver resolver = new SessionLocaleResolver();
-
-    //default to US locale
-    resolver.setDefaultLocale(Locale.US);
-
-    return resolver;
-  }
-
-
-  /**
    * This interceptor allows visitors to change the locale
    *
    * @return a LocaleChangeInterceptor object
    */
-  @Bean
-  public LocaleChangeInterceptor localeChangeInterceptor() {
-    LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
-
-    //the request param that we'll use to determine the locale
-    interceptor.setParamName("lang");
-
-    return interceptor;
-  }
+//  @Bean
+//  public LocaleChangeInterceptor localeChangeInterceptor() {
+//    LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
+//    //the request param that we'll use to determine the locale
+//    interceptor.setParamName("lang");
+//    return interceptor;
+//  }
 
 }

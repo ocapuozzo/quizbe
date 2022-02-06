@@ -11,8 +11,8 @@
 <main class="mx-auto" style="width: 350px;">
    <div class="card">
      <div class="card-header">
-    <p th:if="${classroomDto.id}==null" style="text-align: center" th:text="#{add.classroom}"></p>
-       <p th:if="${classroomDto.id} != null" style="text-align: center" th:text="#{update.classroom}"></p>
+    <p th:if="${classroomDto.id}==null" style="text-align: center" th:text="#{classroom.add}"></p>
+       <p th:if="${classroomDto.id} != null" style="text-align: center" th:text="#{classroom.update}"></p>
      </div>
 
     <div class="card-body" >
@@ -25,7 +25,7 @@
         <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="validation-message"></span>
         </div>
         <hr>
-        <p style="text-align: center" th:text="#{add.scope}"></p>
+        <p style="text-align: center" th:text="#{add.scope.add}"></p>
 <!--        <div th:replace="fragments/add-scope (indice=0)"/>-->
         <div id="div-scopes" th:unless="${#lists.isEmpty(classroomDto.scopesDtos)}">
           <ul class="items_prototype" id="items_prototype" style="list-style-type: none;">
@@ -37,7 +37,7 @@
         <div hidden id="id-prototype-scope-form">
           <div th:replace="fragments/add-scope (indice=0)"/>
         </div>
-        <p><a href="" th:text="#{add.one.scope}" id="add-a-scope"></a></p>
+        <p><a href="" th:text="#{scope.add.one}" id="add-a-scope"></a></p>
         <hr>
         <div class="mb-4">
           <span class="p-1"><a th:href="@{/classroom}" th:text="#{return.to.list}">Retour</a></span>
