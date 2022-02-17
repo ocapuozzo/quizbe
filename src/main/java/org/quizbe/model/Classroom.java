@@ -16,6 +16,10 @@ public class Classroom {
     @Column(name = "NAME", nullable = false, length = 50)
     private String name;
 
+    @Basic
+    @Column(nullable = false)
+    private boolean visible = true;
+
     @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Scope> scopes;
 
@@ -70,7 +74,6 @@ public class Classroom {
         }
     }
 
-
     public User getTeacher() {
         return teacher;
     }
@@ -79,4 +82,11 @@ public class Classroom {
         this.teacher = teacher;
     }
 
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
 }

@@ -1,7 +1,9 @@
 package org.quizbe.model;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "USER", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
@@ -40,8 +42,19 @@ public class User {
                   name = "USER_ID", referencedColumnName = "id"),
           inverseJoinColumns = @JoinColumn(
                   name = "ROLE_ID", referencedColumnName = "id"))
-
   private Set< Role > roles;
+
+  @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @JoinTable(
+          name = "USER_CLASSROOMS",
+          joinColumns = @JoinColumn(
+                  name = "USER_ID", referencedColumnName = "id"),
+          inverseJoinColumns = @JoinColumn(
+                  name = "CLASSROOM_ID", referencedColumnName = "id"))
+  private Set< Classroom > enrolledClassrooms;
+
+  @OneToMany(mappedBy = "teacher")
+  private List<Classroom> classrooms;
 
   public User() {
     this.enabled = true;
@@ -98,6 +111,13 @@ public class User {
     this.roles = roles;
   }
 
+  public Set<Classroom> getEnrolledClassrooms() {
+    return enrolledClassrooms;
+  }
+  public void setEnrolledClassrooms(Set<Classroom> enrolledClassrooms) {
+    this.enrolledClassrooms = enrolledClassrooms;
+  }
+
   public Boolean isAccountNonExpired() {
     return accountNonExpired;
   }
@@ -122,6 +142,33 @@ public class User {
     this.accountNonLocked = accountNonLocked;
   }
 
+  public Boolean getEnabled() {
+    return enabled;
+  }
+
+  public Boolean getAccountNonExpired() {
+    return accountNonExpired;
+  }
+
+  public Boolean getCredentialsNonExpired() {
+    return credentialsNonExpired;
+  }
+
+  public Boolean getAccountNonLocked() {
+    return accountNonLocked;
+  }
+
+  public List<Classroom> getClassrooms() {
+    return classrooms;
+  }
+
+  public List<Classroom> getVisibleClassrooms() {
+    return classrooms.stream().filter(classroom -> classroom.isVisible()).collect(Collectors.toList());
+  }
+
+  public void setClassrooms(List<Classroom> classrooms) {
+    this.classrooms = classrooms;
+  }
 
   @Override
   public String toString() {

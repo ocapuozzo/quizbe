@@ -93,6 +93,7 @@ public class ClassroomService {
       logger.info("scope add : " + scope);
     }
 
+    classroom.setVisible(classroomDto.isVisible());
     classroomRepository.save(classroom);
 
     return true;
@@ -103,7 +104,7 @@ public class ClassroomService {
     if (classroom.isPresent()) {
       return fromClassroomToClassroomDto(classroom.get());
     } else {
-      throw new ClassroomNotFoundException("Invalid user Id:" + id);
+      throw new ClassroomNotFoundException("Invalid classroom Id:" + id);
     }
   }
 
@@ -111,10 +112,22 @@ public class ClassroomService {
     ClassroomDto classroomDto = new ClassroomDto();
     classroomDto.setId(classroom.getId());
     classroomDto.setName(classroom.getName());
+    classroomDto.setVisible(classroom.isVisible());
     classroomDto.setTeacherUsername(classroom.getTeacher().getUsername());
     classroomDto.setScopesDtos(classroom.getScopes().stream().map(scope -> new ScopeDto(scope.getId(), scope.getName())).collect(Collectors.toList()));
     return classroomDto;
   }
 
+  public Optional<Classroom> findClassroomById(long id) {
+    return classroomRepository.findById(id);
+  }
+
+  public void saveClassroom(Classroom classroom) {
+    classroomRepository.save(classroom);
+  }
+
+  public Optional<Classroom> findById(long idClassroom) {
+    return classroomRepository.findById(idClassroom);
+  }
 }
 

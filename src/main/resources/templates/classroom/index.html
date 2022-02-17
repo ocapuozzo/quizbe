@@ -18,6 +18,7 @@
           <tr>
             <th>Name</th>
             <th>Operations</th>
+            <th>Visible</th>
           </tr>
           </thead>
           <tbody>
@@ -26,6 +27,15 @@
             <td><a th:href="@{/classroom/edit/{id}(id=${classroom.id})}">Edit</a>
               &nbsp;/&nbsp;
               <a th:href="@{/delete/{id}(id=${classroom.id})}">Delete</a>
+            </td>
+            <td>
+              <form th:action="@{/classroom/visible}" method="post" style="display:inline-block" class="p-1">
+                <input type="hidden" name="id" th:value="${classroom.id}">
+                <div class="form-check">
+                  <input onChange="this.form.submit()" class="form-check-input" type="checkbox" value="checked" th:id="'flexCheckChecked' + ${classroom.id}" id="flexCheckChecked" name="visible" th:checked="${classroom.visible}">
+                  <label class="form-check-label" th:for="'flexCheckChecked' + ${classroom.id}">&nbsp;</label>
+                </div>
+              </form>
             </td>
           </tr>
           </tbody>

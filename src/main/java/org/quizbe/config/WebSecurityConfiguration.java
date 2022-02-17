@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -46,7 +47,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/webjars/**").permitAll()
             .antMatchers("/error").permitAll()
             //.antMatchers("/admin/**").permitAll()
-            .antMatchers("/question/**").hasAuthority("TEACHER")
+            .antMatchers("/question/**").hasAuthority("USER")
             .antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
             .authenticated()
             .and()
@@ -69,7 +70,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   public void configure(WebSecurity web) throws Exception {
     web
             .ignoring()
-            .antMatchers("/resources/**", "/svg/**", "/static/**", "/css/**", "/js/**", "/images/**, /console/**" +
+            .antMatchers("/resources/**", "/svg/**", "/images/**", "/static/**", "/css/**", "/js/**", "/images/**, /console/**" +
                     "");
   }
 
@@ -83,5 +84,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     return new CustomUserServiceDetails();
   }
 
-
+  @Bean
+  GrantedAuthorityDefaults grantedAuthorityDefaults() {
+    return new GrantedAuthorityDefaults(""); // Remove the ROLE_ prefix
+  }
 }

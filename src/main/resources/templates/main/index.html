@@ -74,13 +74,23 @@
       </div>
       <div class="d-flex justify-content-center">
         <div>
-         <a th:href="@{'/?lang=us'}">LocaleUS</a>
+         <a th:href="@{'/?lang=us'}">
+           <button style="width: 28px; height: 28px; background: white;  border: none !important;">
+             <img th:src="@{/images/drapeau-us.png}" style="width: 28px; height: 28px;" />
+           </button>
+         </a>
           &nbsp;
-          <a th:href="@{'/?lang=fr'}">LocaleFR</a>
+          <a th:href="@{'/?lang=fr'}">
+            <button style="width: 28px; height: 28px; background: white; border: none !important;">
+              <img th:src="@{/images/drapeau-fr.png}" style="width: 28px; height: 28px;"/>
+            </button>
+          </a>
+
+          &nbsp;&nbsp;
         </div>
       </div>
 
-      <div class="d-flex justify-content-center">
+      <div sec:authorize="isAuthenticated()==false" class="d-flex justify-content-center">
         <a href="/login">
           <span class="glyphicon glyphicon-log-in"></span>
           Login
@@ -89,6 +99,12 @@
           <span class="glyphicon glyphicon-ok"></span>
           Register
         </a>
+      </div>
+      <div sec:authorize="isAuthenticated()" class="d-flex justify-content-center">
+        <a href="/logout">
+          <span class="class="fas fa-sign-out-alt nav-link""></span>
+          Logout
+        </a>&nbsp;
       </div>
     </div>
     <div class="d-flex justify-content-center ">

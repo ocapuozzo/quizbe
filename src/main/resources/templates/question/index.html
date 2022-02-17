@@ -9,13 +9,24 @@
   <div class="bg-light p-5 rounded">
     <div class="row">
       <div class="col-md-6">
+<!--        <p th:text="'Nb de classes : ' + ${user.classrooms.size}"</p>-->
         <label for="changeClassroom">Classroom</label>
-        <select id="changeClassroom">
-          <option value="" selected disabled>-- Choisissez une classe</option>
-          <option selected value="/quiz/en/question/class/21/">SIO22-LDV-SLAM</option>
+        <select id="changeClassroom" onchange="window.location = this.options[this.selectedIndex].value;">
+          <option th:selected="${selectedClassroom == null}"
+                  value=""
+                  disabled
+           >-- Choisir une classe
+          </option>
+          <option th:each="classroom : ${classrooms}"
+                  th:value="'/question?id-selected-classroom=' + ${classroom.id}"
+                  value=""
+                  th:text="${classroom.visible ? '' : '(*)'} + ' ' + ${classroom.name}"
+                  th:selected="${selectedClassroom != null and classroom.id == selectedClassroom.id}">
+          </option>
 
-          <option value="/quiz/en/question/class/23/">ENCSIO2</option>
-          Classroom SIO22-LDV-SLAM
+<!--          <option selected value="/quiz/en/question/class/21/">SIO22-LDV-SLAM</option>-->
+<!--          <option value="/quiz/en/question/class/23/">ENCSIO2</option>-->
+<!--          -->
         </select>
       </div>
 

@@ -7,7 +7,7 @@ id
 name
 }
 
-Object Classroom {
+Object Topic {
 id
 name
 }
@@ -36,10 +36,11 @@ codesignerNames
 
 Object User{
 id
-userName
+username
 email
 password
 valide
+...
 }
 
 Object Role {
@@ -49,13 +50,14 @@ name
 
 
 User "*" -- "*" Role:"\t\t\t\t"
-User "1 teacher" - "*" Classroom:"\t\t\t"
+User "1 creator" - "*" Topic:"\t\t\t"
+User " *" - "*" Topic:" \t enrolled\t\t"
 Question "1" - "2..*" Response:"\t\t"
 Question "*" -- "1" Scope
-Question "*" -- "1" Classroom
+Question "*" -- "1" Topic
 Question "*" -- "1" User
-Rating "*" - "1" Question:"\t\t"
+Rating "*" - "1" Question:"\t\t\t"
 Rating "*" -- "1" User
-Classroom "1" -- "*" Scope
+Topic "1" -- "*" Scope
 
 @enduml

@@ -3,6 +3,7 @@ package org.quizbe.controller;
 import org.quizbe.dto.ClassroomDto;
 import org.quizbe.dto.ScopeDto;
 import org.quizbe.exception.ClassroomNotFoundException;
+import org.quizbe.model.Classroom;
 import org.quizbe.model.User;
 import org.quizbe.service.ClassroomService;
 import org.quizbe.service.UserService;
@@ -94,6 +95,24 @@ public class ClassroomController {
 
     return "redirect:/classroom/index";
   }
+
+  @PostMapping(value= {"/visible"})
+  public String setVisible(HttpServletRequest request)
+  {
+    Long id = Long.parseLong(request.getParameter("id"));
+
+    Classroom classroom = classroomService.findClassroomById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid classroom Id:" + id));
+
+    String visible = request.getParameter("visible");
+    logger.info("visible = " + visible);
+    // checkbox not ckecked => visible == null
+    classroom.setVisible(visible != null);
+    classroomService.saveClassroom(classroom);
+
+    return "redirect:/classroom/index";
+  }
+
 /*
   @GetMapping("/edit/{id}")
   public String showUpdateForm(@PathVariable("id") long id, Model model) {

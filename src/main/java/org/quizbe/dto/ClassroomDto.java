@@ -21,6 +21,8 @@ public class ClassroomDto {
   @Size(min = 1)
   private List<ScopeDto> scopesDtos;
 
+  private boolean visible=true;
+
   // auto renseigné = current user
   private String teacherUsername;
 
@@ -48,6 +50,13 @@ public class ClassroomDto {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public boolean isVisible() {
+    return visible;
+  }
+  public void setVisible(boolean visible) {
+    this.visible = visible;
   }
 
   public List<ScopeDto> getScopesDtos() {
@@ -78,6 +87,7 @@ public class ClassroomDto {
     return "ClassroomDto{" +
             "name='" + name + '\'' +
             ", id=" + id +
+            ", visible=" + visible +
             ", scopes=" + scopesDtos +
             ", teacherUsername='" + teacherUsername + '\'' +
             '}';

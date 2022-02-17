@@ -111,7 +111,7 @@ public class AdminController {
       throw new IllegalArgumentException("Invalid role name:" + roleName);
     }
 
-    boolean userToUpdateIsAdmin = userToUpdate.getRoles().stream().anyMatch(r -> r.getName().equals("ADMIN"));
+   // boolean userToUpdateIsAdmin = userToUpdate.getRoles().stream().anyMatch(r -> r.getName().equals("ADMIN"));
 
     userService.flipflopUserRole(userToUpdate, role);
 
