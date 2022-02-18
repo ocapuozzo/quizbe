@@ -44,9 +44,13 @@
         <li class="nav-item" th:class="${activeTab == 'question' ? 'active' : null}">
           <a class="nav-link" href="/question">Questions</a>
         </li>
+        <li sec:authorize="isAuthenticated()" class="nav-item"
+            th:class="${activeTab == 'subscribedTopics' ? 'active' : null}">
+          <a class="nav-link" href="/topic/subscribed" th:text="#{topics.subscribed}">Subscribed classrooms</a>
+        </li>
         <li sec:authorize="hasAuthority('TEACHER')" class="nav-item"
-            th:class="${activeTab == 'classroom' ? 'active' : null}">
-          <a class="nav-link" href="/classroom" th:text="#{classrooms.my}">Classrooms</a>
+            th:class="${activeTab == 'topic' ? 'active' : null}">
+          <a class="nav-link" href="/topic" th:text="#{topics.my}">Classrooms</a>
         </li>
         <li sec:authorize="hasAuthority('ADMIN')" class="nav-item" th:class="${activeTab == 'admin' ? 'active' : null}">
           <a class="nav-link" th:href="@{/admin/users}">Admin</a></li>

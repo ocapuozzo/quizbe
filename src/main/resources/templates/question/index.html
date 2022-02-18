@@ -9,19 +9,20 @@
   <div class="bg-light p-5 rounded">
     <div class="row">
       <div class="col-md-6">
-<!--        <p th:text="'Nb de classes : ' + ${user.classrooms.size}"</p>-->
-        <label for="changeClassroom">Classroom</label>
-        <select id="changeClassroom" onchange="window.location = this.options[this.selectedIndex].value;">
-          <option th:selected="${selectedClassroom == null}"
+<!--        <p th:text="'Nb de classes : ' + ${user.topics.size}"</p>-->
+        <label for="changeTopic" th:text="#{topic}">Topic</label>
+        <select id="changeTopic" onchange="window.location = this.options[this.selectedIndex].value;">
+          <option th:selected="${selectedTopic == null}"
                   value=""
                   disabled
-           >-- Choisir une classe
+                  th:text="#{topic.choice}"
+           >-- Choisir un topic
           </option>
-          <option th:each="classroom : ${classrooms}"
-                  th:value="'/question?id-selected-classroom=' + ${classroom.id}"
+          <option th:each="topic : ${topics}"
+                  th:value="'/question?id-selected-topic=' + ${topic.id}"
                   value=""
-                  th:text="${classroom.visible ? '' : '(*)'} + ' ' + ${classroom.name}"
-                  th:selected="${selectedClassroom != null and classroom.id == selectedClassroom.id}">
+                  th:text="${topic.visible ? '' : '(*)'} + ' ' + ${topic.name}"
+                  th:selected="${selectedTopic != null and topic.id == selectedTopic.id}">
           </option>
 
 <!--          <option selected value="/quiz/en/question/class/21/">SIO22-LDV-SLAM</option>-->
@@ -39,7 +40,6 @@
           <option value="/quiz/en/question/classscope/43/">Analyse</option>
           <option value="/quiz/en/question/classscope/45/">Qualité-Logiciel</option>
           <option value="/quiz/en/question/classscope/50/">GIT</option>
-          Classroom SIO22-LDV-SLAM
         </select>
       </div>
       </div>
@@ -63,7 +63,7 @@
           <td>okpu</td>
           <td>25/03/2020 14:06</td>
           <td>
-            <a href="/quiz/en/question/37">show</a>
+            <a href="/quiz/en/question/37">play</a>
 
           </td>
           <td><input id="_37" class="rating" value="2.75"
@@ -82,7 +82,7 @@
           <td>okpu</td>
           <td>25/03/2020 14:44</td>
           <td>
-            <a href="/quiz/en/question/38">show</a>
+            <a href="/quiz/en/question/38">play</a>
 
           </td>
           <td><input id="_38" class="rating" value="2"

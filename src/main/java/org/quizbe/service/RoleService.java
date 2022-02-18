@@ -1,9 +1,6 @@
 package org.quizbe.service;
 
-import com.google.common.collect.Lists;
-import org.quizbe.dao.ClassroomRepository;
 import org.quizbe.dao.RoleRepository;
-import org.quizbe.model.Classroom;
 import org.quizbe.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

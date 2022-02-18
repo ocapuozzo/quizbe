@@ -46,7 +46,7 @@ public class Question {
     private Scope scope;
 
     @ManyToOne
-    private Classroom classroom;
+    private Topic topic;
 
     public long getId() {
         return id;
@@ -104,12 +104,12 @@ public class Question {
         this.scope = scope;
     }
 
-    public Classroom getClassroom() {
-        return classroom;
+    public Topic getTopic() {
+        return topic;
     }
 
-    public void setClassroom(Classroom classroom) {
-        this.classroom = classroom;
+    public void setTopic(Topic topic) {
+        this.topic = topic;
     }
 
     @Override

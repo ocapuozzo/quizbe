@@ -1,10 +1,6 @@
 package org.quizbe.model;
 
 
-import org.quizbe.controller.ClassroomController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -22,7 +18,7 @@ public class Scope {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Classroom classroom;
+    private Topic topic;
 
     public Long getId() {
         return id;
@@ -40,12 +36,12 @@ public class Scope {
         this.name = name;
     }
 
-    public Classroom getClassroom() {
-        return classroom;
+    public Topic getTopic() {
+        return topic;
     }
 
-    public void setClassroom(Classroom classroom) {
-        this.classroom = classroom;
+    public void setTopic(Topic topic) {
+        this.topic = topic;
     }
 
     @Override
@@ -67,7 +63,6 @@ public class Scope {
         return "Scope{"
                 + "id=" + id
                 + ", name='" + name + '\''
-              //  + ", classroom=" + classroom.getName() // Lazy loading
                 + '}';
     }
 }

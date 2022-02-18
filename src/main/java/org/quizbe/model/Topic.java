@@ -5,8 +5,8 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity
-@Table(name = "CLASSROOM")
-public class Classroom {
+@Table(name = "TOPIC")
+public class Topic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
@@ -20,13 +20,13 @@ public class Classroom {
     @Column(nullable = false)
     private boolean visible = true;
 
-    @OneToMany(mappedBy = "classroom", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Scope> scopes;
 
     @ManyToOne
-    private User teacher;
+    private User creator;
 
-    public Classroom() {
+    public Topic() {
         this.scopes = new ArrayList<Scope>();
     }
 
@@ -57,11 +57,11 @@ public class Classroom {
     public void addScope(Scope scope) {
         if (!this.scopes.contains(scope)) {
             this.scopes.add(scope);
-            scope.setClassroom(this);
+            scope.setTopic(this);
         }
     }
     public void removeScope(Scope scope) {
-        scope.setClassroom(null);
+        scope.setTopic(null);
         this.scopes.remove(scope);
     }
 
@@ -69,17 +69,17 @@ public class Classroom {
         Iterator<Scope> it = this.scopes.iterator();
         while (it.hasNext()) {
             Scope scope = it.next();
-            scope.setClassroom(null);
+            scope.setTopic(null);
             it.remove();
         }
     }
 
-    public User getTeacher() {
-        return teacher;
+    public User getCreator() {
+        return creator;
     }
 
-    public void setTeacher(User teacher) {
-        this.teacher = teacher;
+    public void setCreator(User creator) {
+        this.creator = creator;
     }
 
     public boolean isVisible() {

@@ -6,19 +6,19 @@
   <link rel="stylesheet" th:href="@{css/signin-register.css}" type="stylesheet"/>
 </head>
 <body>
-<div th:replace="fragments/header :: menu(activeTab='classroom')"/>
+<div th:replace="fragments/header :: menu(activeTab='topic')"/>
 
 <main class="mx-auto" style="width: 350px;">
    <div class="card">
      <div class="card-header">
-    <p th:if="${classroomDto.id}==null" style="text-align: center" th:text="#{classroom.add}"></p>
-       <p th:if="${classroomDto.id} != null" style="text-align: center" th:text="#{classroom.update}"></p>
+    <p th:if="${topicDto.id}==null" style="text-align: center" th:text="#{topic.add}"></p>
+       <p th:if="${topicDto.id} != null" style="text-align: center" th:text="#{topic.update}"></p>
      </div>
 
     <div class="card-body" >
-      <form action="#" th:action="@{/classroom/addupdate}" th:object="${classroomDto}" method="post" >
-        <input type="hidden" th:field="${classroomDto.id}">
-        <input type="hidden" th:field="${classroomDto.teacherUsername}">
+      <form action="#" th:action="@{/topic/addupdate}" th:object="${topicDto}" method="post" >
+        <input type="hidden" th:field="${topicDto.id}">
+        <input type="hidden" th:field="${topicDto.teacherUsername}">
         <div class="mb-4">
         <label for="name" class="form-label">Name</label>
         <input type="text" th:field="*{name}" id="name" placeholder="name" class="form-control">
@@ -27,9 +27,9 @@
         <hr>
         <p style="text-align: center" th:text="#{scope.manage}"></p>
 <!--        <div th:replace="fragments/add-scope (indice=0)"/>-->
-        <div id="div-scopes" th:unless="${#lists.isEmpty(classroomDto.scopesDtos)}">
+        <div id="div-scopes" th:unless="${#lists.isEmpty(topicDto.scopesDtos)}">
           <ul class="items_prototype" id="items_prototype" style="list-style-type: none;">
-          <li th:each="scope,iterStat : ${classroomDto.scopesDtos}">
+          <li th:each="scope,iterStat : ${topicDto.scopesDtos}">
             <div th:replace="fragments/add-scope (indice=${iterStat.index})"/>
           </li>
           </ul>
@@ -40,7 +40,7 @@
         <p><a href="" th:text="#{scope.add.one}" id="add-a-scope"></a></p>
         <hr>
         <div class="mb-4">
-          <span class="p-1"><a th:href="@{/classroom}" th:text="#{return.to.list}">Retour</a></span>
+          <span class="p-1"><a th:href="@{/topic}" th:text="#{return.to.list}">Retour</a></span>
           <button type="submit" class="btn btn-primary btn-block" th:text="#{submit}">Ajouter</button>
         </div>
       </form>

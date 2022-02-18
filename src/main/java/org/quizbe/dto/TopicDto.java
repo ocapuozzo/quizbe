@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ClassroomDto {
+public class TopicDto {
 
   @NotBlank(message = "{classroom.name.blank}")
   @Size(min = 3, max = 30, message = "{classroom.name.min.max}")
@@ -26,11 +26,11 @@ public class ClassroomDto {
   // auto renseigné = current user
   private String teacherUsername;
 
-  public ClassroomDto() {
+  public TopicDto() {
 
   }
 
-  public ClassroomDto(String name) {
+  public TopicDto(String name) {
     super();
     this.name = name;
     this.scopesDtos = new ArrayList<>();
@@ -84,7 +84,7 @@ public class ClassroomDto {
 
   @Override
   public String toString() {
-    return "ClassroomDto{" +
+    return "TopicDto{" +
             "name='" + name + '\'' +
             ", id=" + id +
             ", visible=" + visible +

@@ -2,7 +2,7 @@
 
 ## Main concepts of tool
 
-* Students themselves design (and co-design) quizzes (at home or in classroom)
+* Students themselves design (and co-design) quizzes (at home or in topic)
 * Teacher gets interesting feedbacks of understanding.
 * The teacher guides students in design quiz.
 * Students evaluate and comment other quizzes (students and teachers!).

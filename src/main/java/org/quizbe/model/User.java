@@ -46,15 +46,15 @@ public class User {
 
   @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   @JoinTable(
-          name = "USER_CLASSROOMS",
+          name = "USER_TOPICS",
           joinColumns = @JoinColumn(
                   name = "USER_ID", referencedColumnName = "id"),
           inverseJoinColumns = @JoinColumn(
-                  name = "CLASSROOM_ID", referencedColumnName = "id"))
-  private Set< Classroom > enrolledClassrooms;
+                  name = "TOPIC_ID", referencedColumnName = "id"))
+  private Set<Topic> subscribedTopics;
 
-  @OneToMany(mappedBy = "teacher")
-  private List<Classroom> classrooms;
+  @OneToMany(mappedBy = "creator")
+  private List<Topic> topics;
 
   public User() {
     this.enabled = true;
@@ -111,11 +111,12 @@ public class User {
     this.roles = roles;
   }
 
-  public Set<Classroom> getEnrolledClassrooms() {
-    return enrolledClassrooms;
+  public Set<Topic> getSubscribedTopics() {
+    return subscribedTopics;
   }
-  public void setEnrolledClassrooms(Set<Classroom> enrolledClassrooms) {
-    this.enrolledClassrooms = enrolledClassrooms;
+
+  public void setSubscribedTopics(Set<Topic> subscribedTopics) {
+    this.subscribedTopics = subscribedTopics;
   }
 
   public Boolean isAccountNonExpired() {
@@ -158,16 +159,16 @@ public class User {
     return accountNonLocked;
   }
 
-  public List<Classroom> getClassrooms() {
-    return classrooms;
+  public List<Topic> getTopics() {
+    return topics;
   }
 
-  public List<Classroom> getVisibleClassrooms() {
-    return classrooms.stream().filter(classroom -> classroom.isVisible()).collect(Collectors.toList());
+  public List<Topic> getVisibleTopics() {
+    return topics.stream().filter(topic -> topic.isVisible()).collect(Collectors.toList());
   }
 
-  public void setClassrooms(List<Classroom> classrooms) {
-    this.classrooms = classrooms;
+  public void setTopics(List<Topic> topics) {
+    this.topics = topics;
   }
 
   @Override
