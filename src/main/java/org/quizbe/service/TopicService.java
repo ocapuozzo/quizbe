@@ -14,13 +14,11 @@ import org.quizbe.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,23 +46,23 @@ public class TopicService {
   public boolean saveTopicFromTopicDto(TopicDto topicDto, BindingResult result) {
     // rechercher si il n'existe pas une classe de même nom associée au courrent user
 
-    User creator = userRepository.findByUsername(topicDto.getTeacherUsername());
+    User creator = userRepository.findByUsername(topicDto.getCreatorUsername());
 
     if (creator == null) {
-      throw new UserNotFoundException("Creator not found :" + topicDto.getTeacherUsername());
+      throw new UserNotFoundException("Creator not found :" + topicDto.getCreatorUsername());
     }
 
     List<Topic> topics = topicRepository.findByCreator(creator);
 
     // create topic ?
     if (topics != null && topicDto.getId() == null) {
-      if (topics.stream().anyMatch(classroom -> classroom.getName().equals(topicDto.getName()))) {
+      if (topics.stream().anyMatch(classroom -> classroom.getName().equalsIgnoreCase(topicDto.getName()))) {
         // a topic exists whith same name
-        //result.rejectValue("name", "topic.name.already.exists", "already exists");
-        ResourceBundle bundle = ResourceBundle.getBundle("i18n/validationMessages", LocaleContextHolder.getLocale());
-        String errorMessageDefault = bundle.getString("classroom.name.already.exists");
-        String keyNotExists = "classroom.name.already.exists";
-        result.rejectValue("name", keyNotExists, errorMessageDefault);
+        result.rejectValue("name", "topic.name.already.exists", "already exists");
+//        ResourceBundle bundle = ResourceBundle.getBundle("i18n/validationMessages", LocaleContextHolder.getLocale());
+//        String errorMessageDefault = bundle.getString("topic.name.already.exists"); // "Truc"
+//        String keyNotExists = "topic.name.already.exists";
+//        result.rejectValue("name", keyNotExists, errorMessageDefault);
         return false;
       }
     }
@@ -88,7 +86,7 @@ public class TopicService {
         scope.setId(scopeDto.getId());
       }
       topic.addScope(scope);
-      logger.info("scope add : " + scope);
+       // logger.info("scope add : " + scope);
     }
 
     topic.setVisible(topicDto.isVisible());
@@ -111,7 +109,7 @@ public class TopicService {
     topicDto.setId(topic.getId());
     topicDto.setName(topic.getName());
     topicDto.setVisible(topic.isVisible());
-    topicDto.setTeacherUsername(topic.getCreator().getUsername());
+    topicDto.setCreatorUsername(topic.getCreator().getUsername());
     topicDto.setScopesDtos(topic.getScopes().stream().map(scope -> new ScopeDto(scope.getId(), scope.getName())).collect(Collectors.toList()));
     return topicDto;
   }

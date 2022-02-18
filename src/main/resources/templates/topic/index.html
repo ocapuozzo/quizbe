@@ -16,9 +16,9 @@
         <table class="table table-striped">
           <thead>
           <tr>
-            <th>Name</th>
-            <th>Operations</th>
-            <th>Visible</th>
+            <th th:text="#{name}">Name</th>
+            <th th:text="#{operations}">Operations</th>
+            <th th:text="#{visible}">Visible</th>
           </tr>
           </thead>
           <tbody>
@@ -41,7 +41,7 @@
           </tbody>
         </table>
       </div>
-      <p><a href="add" th:href="@{/topic/add}">Add a new topic</a></p>
+      <p><a href="add" th:href="@{/topic/add}" th:text="#{topic.add}">Add a new topic</a></p>
     </div>
 
   </main>

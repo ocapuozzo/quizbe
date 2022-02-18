@@ -18,7 +18,8 @@
     <div class="card-body" >
       <form action="#" th:action="@{/topic/addupdate}" th:object="${topicDto}" method="post" >
         <input type="hidden" th:field="${topicDto.id}">
-        <input type="hidden" th:field="${topicDto.teacherUsername}">
+        <input type="hidden" th:field="${topicDto.visible}">
+        <input type="hidden" th:field="${topicDto.creatorUsername}">
         <div class="mb-4">
         <label for="name" class="form-label">Name</label>
         <input type="text" th:field="*{name}" id="name" placeholder="name" class="form-control">

@@ -42,7 +42,7 @@
     <div class="collapse navbar-collapse" id="navbarCollapse">
       <ul class="navbar-nav me-auto mb-2 mb-md-0 p-2">
         <li class="nav-item" th:class="${activeTab == 'question' ? 'active' : null}">
-          <a class="nav-link" href="/question">Questions</a>
+          <a class="nav-link" href="/question">Quiz</a>
         </li>
         <li sec:authorize="isAuthenticated()" class="nav-item"
             th:class="${activeTab == 'subscribedTopics' ? 'active' : null}">

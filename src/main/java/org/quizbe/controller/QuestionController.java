@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RequestMapping("/question")
@@ -48,8 +49,8 @@ public class QuestionController {
 
     List<Topic> topics =
             request.isUserInRole("TEACHER")
-                    ? currentUser.getTopics()
-                    : currentUser.getVisibleTopics();
+                    ? currentUser.getSubscribedTopics().stream().collect(Collectors.toList())
+                    : currentUser.getSubscribedTopicsVisibles();
 
     // user can only see these topics (hack)
     // only TEACHER can view not visible topics
@@ -58,7 +59,7 @@ public class QuestionController {
       // throw new TopicNotFoundException("Invalid classroom selected Id:" + idSelectedTopic);
     }
 
-    model.addAttribute("user", currentUser);
+    model.addAttribute("currentUser", currentUser);
     model.addAttribute("topics", topics);
     model.addAttribute("selectedTopic", selectedTopic);
     return "/question/index";

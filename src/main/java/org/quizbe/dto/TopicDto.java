@@ -23,8 +23,8 @@ public class TopicDto {
 
   private boolean visible=true;
 
-  // auto renseigné = current user
-  private String teacherUsername;
+  // auto set = current user (username)
+  private String creatorUsername;
 
   public TopicDto() {
 
@@ -74,12 +74,12 @@ public class TopicDto {
     }
   }
 
-  public String getTeacherUsername() {
-    return teacherUsername;
+  public String getCreatorUsername() {
+    return creatorUsername;
   }
 
-  public void setTeacherUsername(String teacherUsername) {
-    this.teacherUsername = teacherUsername;
+  public void setCreatorUsername(String creatorUsername) {
+    this.creatorUsername = creatorUsername;
   }
 
   @Override
@@ -89,7 +89,7 @@ public class TopicDto {
             ", id=" + id +
             ", visible=" + visible +
             ", scopes=" + scopesDtos +
-            ", teacherUsername='" + teacherUsername + '\'' +
+            ", creatorUsername='" + creatorUsername + '\'' +
             '}';
   }
 }

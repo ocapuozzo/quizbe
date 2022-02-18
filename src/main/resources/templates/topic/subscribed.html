@@ -13,10 +13,13 @@
       <h2 th:case="null">No topic yet!</h2>
       <div th:case="*">
         <h2 th:text="#{topics.subscribed}">subscribed topics</h2>
-              <form th:each="topic : ${topics}" th:action="@{/topic/subscribe}" method="post" style="display:inline-block" class="p-1">
+              <form th:each="topic : ${topics}" th:action="@{/topic/subscribed}" method="post" style="display:inline-block" class="p-1">
                 <input type="hidden" name="id" th:value="${topic.id}">
                 <div class="form-check">
-                  <input onChange="this.form.submit()" class="form-check-input" type="checkbox" value="checked" th:id="'flexCheckChecked' + ${topic.id}" id="flexCheckChecked" name="visible" th:checked="${topic.visible}">
+                  <input onChange="this.form.submit()" class="form-check-input"
+                         type="checkbox" value="checked"
+                         th:id="'flexCheckChecked' + ${topic.id}" id="flexCheckChecked"
+                         name="subscribe" th:checked="${currentUser.isSubscribed(topic)}">
                   <label class="form-check-label" th:for="'flexCheckChecked' + ${topic.id}" th:text="${topic.name}">&nbsp;</label>
                 </div>
               </form>

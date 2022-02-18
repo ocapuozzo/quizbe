@@ -53,7 +53,7 @@ public class User {
                   name = "TOPIC_ID", referencedColumnName = "id"))
   private Set<Topic> subscribedTopics;
 
-  @OneToMany(mappedBy = "creator")
+  @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL)
   private List<Topic> topics;
 
   public User() {
@@ -115,9 +115,18 @@ public class User {
     return subscribedTopics;
   }
 
+  public List<Topic> getSubscribedTopicsVisibles() {
+    return subscribedTopics.stream().filter(topic -> topic.isVisible()).collect(Collectors.toList());
+  }
+
   public void setSubscribedTopics(Set<Topic> subscribedTopics) {
     this.subscribedTopics = subscribedTopics;
   }
+
+  public boolean isSubscribed(Topic topic) {
+    return this.subscribedTopics.contains(topic);
+  }
+
 
   public Boolean isAccountNonExpired() {
     return accountNonExpired;

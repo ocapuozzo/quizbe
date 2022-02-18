@@ -77,15 +77,13 @@ public class TopicController {
     // clean scopesDto by remove scopeDto with name is null
     topicDto.setScopesDtos(topicDto.getScopesDtos().stream().filter(scopeDto -> scopeDto.getName()!= null).collect(Collectors.toList()));
 
-    logger.info("topicDto addupdate :" + topicDto);
-
     if (result.hasErrors()) {
       return "topic/add-update";
     }
 
     if (topicDto.getId() == null) {
       String nameCurrentUser = request.getUserPrincipal().getName();
-      topicDto.setTeacherUsername(nameCurrentUser);
+      topicDto.setCreatorUsername(nameCurrentUser);
     }
 
     topicService.saveTopicFromTopicDto(topicDto, result);
@@ -106,7 +104,7 @@ public class TopicController {
             .orElseThrow(() -> new IllegalArgumentException("Invalid topic Id:" + id));
 
     String visible = request.getParameter("visible");
-    logger.info("visible = " + visible);
+
     // checkbox not ckecked => visible == null
     topic.setVisible(visible != null);
     topicService.saveTopic(topic);
@@ -129,50 +127,22 @@ public class TopicController {
     Long id = Long.parseLong(request.getParameter("id"));
 
     Topic topic = topicService.findTopicById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Invalid topic Id:" + id));
+            .orElseThrow(() -> new TopicNotFoundException("Invalid topic Id:" + id));
 
     String nameCurrentUser = request.getUserPrincipal().getName();
     User currentUser = userService.findByUsername(nameCurrentUser);
 
-    if (currentUser.getTopics().contains(topic)) {
-      currentUser.getTopics().remove(topic);
+    // bascule
+    if (currentUser.getSubscribedTopics().contains(topic)) {
+      currentUser.getSubscribedTopics().remove(topic);
     } else {
-      currentUser.getTopics().add(topic);
+      currentUser.getSubscribedTopics().add(topic);
     }
+
     userService.save(currentUser);
 
-    return "redirect:/topic/index";
+    return "redirect:/topic/subscribed";
   }
 
-/*
-  @GetMapping("/edit/{id}")
-  public String showUpdateForm(@PathVariable("id") long id, Model model) {
-    try {
-      UserDto userDto = userService.findUserDtoById(id);
-      model.addAttribute("user", userDto);
-    } catch (UserNotFoundException ex) {
-      throw new ResponseStatusException(
-              HttpStatus.NOT_FOUND, "User Not Found", ex);
-    }
-    return "admin/update-user";
-  }
-
-  @PostMapping("/update/{id}")
-  public String updateUser(@Valid @ModelAttribute UserDto userDto, BindingResult bindingResult) {
-    if (bindingResult.hasErrors()) {
-      return "admin/update-user";
-    }
-    userService.saveUserFromUserDto(userDto);
-    return "redirect:/index";
-  }
-
-  @GetMapping("/delete/{id}")
-  public String deleteUser(@PathVariable("id") long id, Model model) {
-    User user = userService.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
-    userService.delete(user);
-    return "redirect:/admin/index";
-  }
-*/
 
 }
