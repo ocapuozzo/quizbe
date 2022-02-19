@@ -1,8 +1,11 @@
 package org.quizbe.model;
 
 
+import org.quizbe.service.ScopeService;
+
 import javax.persistence.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "TOPIC")
@@ -22,6 +25,9 @@ public class Topic {
 
     @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Scope> scopes;
+
+    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Question> questions;
 
     @ManyToOne
     private User creator;
@@ -88,6 +94,17 @@ public class Topic {
 
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+
+    public List<Question> getQuestions(Scope scope) {
+        if (scope == null) {
+            return questions;
+        }
+        return  this.questions.stream().filter(question -> question.getScope().equals(scope)).collect(Collectors.toList());
+    }
+
+    public void setQuestions(List<Question> questions) {
+        this.questions = questions;
     }
 
     @Override

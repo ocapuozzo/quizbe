@@ -1,8 +1,12 @@
 package org.quizbe.controller;
 
+import org.quizbe.exception.ScopeNotFoundException;
 import org.quizbe.exception.TopicNotFoundException;
+import org.quizbe.model.Question;
+import org.quizbe.model.Scope;
 import org.quizbe.model.Topic;
 import org.quizbe.model.User;
+import org.quizbe.service.ScopeService;
 import org.quizbe.service.TopicService;
 import org.quizbe.service.UserService;
 import org.slf4j.Logger;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,18 +31,25 @@ public class QuestionController {
 
   private TopicService topicService;
   private UserService userService;
+  private ScopeService scopeService;
 
   @Autowired
-  public QuestionController(TopicService topicService, UserService userService) {
+  public QuestionController(TopicService topicService, UserService userService, ScopeService scopeService) {
     this.topicService = topicService;
     this.userService = userService;
+    this.scopeService = scopeService;
   }
 
-  @GetMapping(value = {"/index","/", ""})
+  @GetMapping(value = {"/index", "/", ""})
   public String questions(Model model, HttpServletRequest request) {
     String idSelectedTopic = request.getParameter("id-selected-topic");
+    String idSelectedScope = request.getParameter("id-selected-scope");
 
     Topic selectedTopic = null;
+    Scope selectedScope = null;
+    List<Question> questions = new ArrayList<>();
+
+    // get idSelectedTopic AND (optional) idSelectedScope
 
     if (idSelectedTopic != null) {
       long idTopic = Long.parseLong(idSelectedTopic);
@@ -54,14 +66,28 @@ public class QuestionController {
 
     // user can only see these topics (hack)
     // only TEACHER can view not visible topics
-    if (selectedTopic != null && !topics.contains(selectedTopic)){
-      selectedTopic = null;
-      // throw new TopicNotFoundException("Invalid classroom selected Id:" + idSelectedTopic);
+    if (selectedTopic != null) {
+      if (!topics.contains(selectedTopic)) {
+        selectedTopic = null;
+        selectedScope = null;
+        // throw new TopicNotFoundException("Invalid classroom selected Id:" + idSelectedTopic);
+      } else {
+        if (idSelectedScope != null) {
+          long idScope = Long.parseLong(idSelectedScope);
+          selectedScope = scopeService.findById(idScope)
+                  .orElseThrow(() -> new ScopeNotFoundException("Invalid id : " + idSelectedScope));
+        }
+        questions = selectedTopic.getQuestions(selectedScope);
+      }
+
     }
 
     model.addAttribute("currentUser", currentUser);
     model.addAttribute("topics", topics);
     model.addAttribute("selectedTopic", selectedTopic);
+    model.addAttribute("selectedScope", selectedScope);
+    model.addAttribute("questions", questions);
+
     return "/question/index";
   }
 

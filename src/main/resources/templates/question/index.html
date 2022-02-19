@@ -16,7 +16,7 @@
                   value=""
                   disabled
                   th:text="#{topic.choice}"
-           >-- Choisir un topic
+           >-- Choose a topic
           </option>
           <option th:each="topic : ${currentUser.subscribedTopics}"
                   th:value="'/question?id-selected-topic=' + ${topic.id}"
@@ -24,26 +24,41 @@
                   th:text="${topic.visible ? '' : '(*)'} + ' ' + ${topic.name}"
                   th:selected="${selectedTopic != null and topic.id == selectedTopic.id}">
           </option>
-
-<!--          <option selected value="/quiz/en/question/class/21/">SIO22-LDV-SLAM</option>-->
-<!--          <option value="/quiz/en/question/class/23/">ENCSIO2</option>-->
-<!--          -->
         </select>
       </div>
 
       <div class="col-md-6">
         <div class="float-end">
-        <label for="filterByScope">Scope</label>
-        <select id="filterByScope">
-          <option selected value="/quiz/en/question/classscope/0/">All Scopes</option>
-          <option value="/quiz/en/question/classscope/42/">Test Unitaire</option>
-          <option value="/quiz/en/question/classscope/43/">Analyse</option>
-          <option value="/quiz/en/question/classscope/45/">Qualité-Logiciel</option>
-          <option value="/quiz/en/question/classscope/50/">GIT</option>
-        </select>
+          <label for="changeScope" th:text="#{scopes}">Scopes</label>
+          <select id="changeScope" onchange="window.location = this.options[this.selectedIndex].value;">
+            <option th:selected="${selectedScope == null}"
+                    value=""
+                    disabled
+                    th:text="#{scope.choice}"
+            >-- Choose a scope
+            </option>
+            <div th:if="${selectedTopic != null}">
+            <option  th:each="scope : ${selectedTopic.scopes}"
+                    th:value="'/question?id-selected-topic=' + ${selectedTopic.id} +'&id-selected-scope=' + ${scope.id}"
+                    value=""
+                    th:text="${scope.name}"
+                    th:selected="${selectedScope != null and selectedScope.id == scope.id}">
+            </option>
+            </div>
+          </select>
+<!--        <label for="filterByScope">Scope</label>-->
+<!--        <select id="filterByScope">-->
+<!--          <option selected value="/quiz/en/question/classscope/0/">All Scopes</option>-->
+<!--          <option value="/quiz/en/question/classscope/42/">Test Unitaire</option>-->
+<!--          <option value="/quiz/en/question/classscope/43/">Analyse</option>-->
+<!--          <option value="/quiz/en/question/classscope/45/">Qualité-Logiciel</option>-->
+<!--          <option value="/quiz/en/question/classscope/50/">GIT</option>-->
+<!--        </select>-->
+
       </div>
       </div>
     </div>
+    <h5 th:text="${#lists.size(questions)}"></h5>
     <div class="table-responsive ">
       <table class="table table-striped table-condensed">
         <thead>

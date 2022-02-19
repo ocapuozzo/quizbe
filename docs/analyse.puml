@@ -50,8 +50,8 @@ name
 
 
 User "*" -- "*" Role:"\t\t\t\t"
+User " *" - "*" Topic:"\t\t\tsubsribed"
 User "1 creator" - "*" Topic:"\t\t\t"
-User " *" - "*" Topic:" \t enrolled\t\t"
 Question "1" - "2..*" Response:"\t\t"
 Question "*" -- "1" Scope
 Question "*" -- "1" Topic

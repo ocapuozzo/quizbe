@@ -60,7 +60,7 @@ public class TopicService {
         // a topic exists whith same name
         result.rejectValue("name", "topic.name.already.exists", "already exists");
 //        ResourceBundle bundle = ResourceBundle.getBundle("i18n/validationMessages", LocaleContextHolder.getLocale());
-//        String errorMessageDefault = bundle.getString("topic.name.already.exists"); // "Truc"
+//        String errorMessageDefault = bundle.getString("topic.name.already.exists"); // always default... tested also with "Truc"
 //        String keyNotExists = "topic.name.already.exists";
 //        result.rejectValue("name", keyNotExists, errorMessageDefault);
         return false;

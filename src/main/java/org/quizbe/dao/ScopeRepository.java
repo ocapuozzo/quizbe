@@ -9,6 +9,6 @@ import java.util.List;
 public interface ScopeRepository extends CrudRepository<Scope, Long> {
 
     List<Scope> findByTopic(Topic topic);
-    Scope findById(long id);
+    // Scope findById(long id);
 
 }
