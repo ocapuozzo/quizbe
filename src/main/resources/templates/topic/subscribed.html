@@ -17,7 +17,7 @@
                 <input type="hidden" name="id" th:value="${topic.id}">
                 <div class="form-check">
                   <input onChange="this.form.submit()" class="form-check-input"
-                         type="checkbox" value="checked"
+                         type="checkbox"
                          th:id="'flexCheckChecked' + ${topic.id}" id="flexCheckChecked"
                          name="subscribe" th:checked="${currentUser.isSubscribed(topic)}">
                   <label class="form-check-label" th:for="'flexCheckChecked' + ${topic.id}" th:text="${topic.name}">&nbsp;</label>

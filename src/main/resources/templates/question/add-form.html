@@ -1,0 +1,113 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <th:block th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+<div th:replace="fragments/header :: menu(activeTab='question')"/>
+<main class="container">
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <h3 class="panel-title" style="text-align: center" th:text="#{question.add}">
+        Create a question
+      </h3>
+
+    </div>
+    <div class="panel-body">
+      <form name="appbundle_question" method="post" action="/quiz/en/question/" class="">
+        <div class="row">
+          <div class="col-auto">
+            <label class="form-label" th:text="#{scope.title}"
+                   for="question_name">Title:</label>
+            <input type="text" id="question_name" name="question[name]" required="required"
+                   maxlength="50" class="form-control" placeholder="short name"/>
+          </div>
+          <div class="col-auto">
+            <label class="form-label" for="question_codesigners" th:text="#{scope.codesigners}">Co-Designer(s):</label>
+            <input type="text" id="question_codesigners" name="question[codesigners]"
+                   maxlength="255" class="form-control" placeholder="co-author(s) and Co"/>
+          </div>
+          <div class="col-auto">
+            <label class="form-label required"
+                   for="question_scope" th:text="#{scope}">Scope</label>
+            <select id="question_scope" name="question[scope]" class="form-control">
+              <option th:each="scope : ${topic.scopes}" th:text="${scope.name}"
+                      value="42" th:value="${scope.id}"
+                      th:selected="${selectedScope != null  ? scope.id == selectedScope.id : false}">
+              </option>
+            </select>
+          </div>
+          <div class="col-auto">
+            <label class="form-label required" for="question_topic" th:text="#{topic}">Topic:</label>
+            <select id="question_topic" name="question[topic]"
+                    class="form-control">
+              <option value="21" selected="selected">SIO22-LDV-SLAM - BLABLA BLA</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <label class="form-label required" for="question_sentence" th:text="#{question}">Question:</label>
+          <textarea id="question_sentence" name="question[sentence]" required="required"
+                    class="form-control"></textarea>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-2">
+            <label class="control-label col-sm-2 control-label required" th:text="#{answers}">Answers:</label>
+          </div>
+          <div class="col-sm-10"></div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-10">
+            <ul class="items_prototype">
+
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <div class="col-sm-2"></div>
+              <div class="col-sm-10">
+                <button type="submit" id="question_submit" name="question[submit]"
+                        class="btn-default btn" th:text="#{answer.create}">Create
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="pull-right">
+              <div class="form-check">
+                <label class="form-check-label"  for="appbundle_question_doPublish" th:text="#{question.visible}"></label>
+                  <input  class="form-check-input" type="checkbox" id="appbundle_question_doPublish"
+                            name="appbundle_question[doPublish]" th:checked="false" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <input type="hidden" id="appbundle_question__token" name="appbundle_question[_token]"
+               value="X6TTA3dGddUipE41dHJ0uG9rR3GLaqHaW-XNZzDexVY"/>
+
+      </form>
+      <hr/>
+      <div>
+        <div class="form-group col-sm-2 control-label">
+        </div>
+        <div class="form-group col-sm-2 control-label">
+          <div style="margin-top: 5px;">
+            <a href="/quiz/en/question/" th:text="#{back.to.list}"></a>
+          </div>
+        </div>
+      </div>
+
+    </div> <!-- panel body-->
+  </div> <!-- panel info-->
+
+
+</main>
+
+<div th:replace="fragments/footer.html :: footer"/>
+
+</body>
+</html>

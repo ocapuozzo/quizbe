@@ -114,7 +114,8 @@
         </tbody>
       </table>
     </div>
-    <a href="/quiz/en/question/new" class="btn btn-primary btn-sm" role="button">
+
+    <a th:if="${selectedTopic != null}" href="question/new" th:href="@{/question/new/{idtopic}/{idscope}(idtopic=${selectedTopic!=null?selectedTopic.id:''}, idscope=${selectedScope!=null?selectedScope.id:''})}"  th:text="#{question.new}" class="btn btn-primary btn-sm" role="button">
       Add a new question
     </a>
 
