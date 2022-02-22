@@ -16,7 +16,7 @@
      </div>
 
     <div class="card-body" >
-      <form action="#" th:action="@{/topic/addupdate}" th:object="${topicDto}" method="post" >
+      <form action="#" onsubmit="topicCompactArraySubmit()" th:action="@{/topic/addupdate}" th:object="${topicDto}" method="post" >
         <input type="hidden" th:field="${topicDto.id}">
         <input type="hidden" th:field="${topicDto.visible}">
         <input type="hidden" th:field="${topicDto.creatorUsername}">
@@ -60,6 +60,8 @@
     // output prototype hidden element of form (else it is submitted !)
     fragment = document.createDocumentFragment();
     let elt = document.getElementById("id-prototype-scope-form");
+
+    // delete id input
     let firstInput = elt.getElementsByTagName('input')[0];
     firstInput.remove();
     // move elt
@@ -88,16 +90,16 @@
       // empêche le lien de créer un « # » dans l'URL
       e.preventDefault();
       // supprime l'élément li (scope)
-      scopeFormLi.remove();
+      listScopes.removeChild(scopeFormLi);
+      console.log("LI number : " + listScopes.getElementsByClassName("tableau").length);
+      // scopeFormLi.remove();
     };
   }
 
   function addScopeForm() {
     let prototype = fragment.getElementById("id-prototype-scope-form").innerHTML;
     // Remplace l'indice 'O' dans le HTML du prototype par un nombre basé sur nbItems
-    let newForm = prototype.replace(/0/g, 1 + nbItems++);
-    // default value
-    newForm = newForm.replace(/Scope1/g, "Scope" + nbItems);
+    let newForm = prototype.replace(/0/g, ++nbItems);
 
     // creation d'un li contenant le formulaire
     let liElt = document.createElement('li');
@@ -105,6 +107,25 @@
     listScopes.appendChild(liElt);
     addEventDeleteOnDeleteLink(liElt);
   }
+
+  // compact array index scopesDtos[0], scopesDtos[2], scopesDtos[3] => scopesDtos[0], scopesDtos[1], scopesDtos[2]
+  function topicCompactArraySubmit() {
+    let tableauInputs = listScopes.getElementsByClassName("tableau");
+    for (let i = 0; i < tableauInputs.length; i++) {
+      tableauInputs[i].setAttribute("name", "scopesDtos[" + i + "].name");
+      tableauInputs[i].setAttribute("id", "scope_" + i);
+    }
+
+    let lis = listScopes.getElementsByTagName("li");
+    for (let i = 0; i < lis.length; i++) {
+      let eltsInput = lis[i].getElementsByTagName("input");
+      // change name value of input hidden field id
+      if  (eltsInput.length >0 && eltsInput[0].getAttribute("type") == 'hidden' ) {
+        eltsInput[0].setAttribute('name', "scopesDtos[" + i + "].id");
+      }
+    }
+  }
+
 </script>
 
 </body>

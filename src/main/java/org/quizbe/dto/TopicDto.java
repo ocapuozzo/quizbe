@@ -2,6 +2,7 @@
 package org.quizbe.dto;
 
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -11,15 +12,15 @@ import java.util.List;
 
 public class TopicDto {
 
-  @NotBlank(message = "{classroom.name.blank}")
-  @Size(min = 3, max = 30, message = "{classroom.name.min.max}")
+  @NotBlank(message = "{topic.name.blank}")
+  @Size(min = 3, max = 30, message = "{topic.name.min.max}")
   private String name;
 
   private Long id;
 
   @NotNull
   @Size(min = 1)
-  private List<ScopeDto> scopesDtos;
+  @Valid private List<ScopeDto> scopesDtos;
 
   private boolean visible=true;
 

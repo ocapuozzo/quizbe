@@ -75,8 +75,8 @@ public class TopicController {
   public String addOrUpdateClassroom(@Valid TopicDto topicDto, BindingResult result, Model model, HttpServletRequest request) {
 
     // clean scopesDto by remove scopeDto with name is null
-    topicDto.setScopesDtos(topicDto.getScopesDtos().stream().filter(scopeDto -> scopeDto.getName()!= null).collect(Collectors.toList()));
-
+   // topicDto.setScopesDtos(topicDto.getScopesDtos().stream().filter(scopeDto -> scopeDto.getName()!= null).collect(Collectors.toList()));
+  logger.info("scopes : " + topicDto.getScopesDtos());
     if (result.hasErrors()) {
       return "topic/add-update";
     }

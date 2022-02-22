@@ -4,7 +4,7 @@
         <label th:for="'scope_'+${indice}" for="scope_indice" th:text="#{scope}"
                class="form-label">Scope</label> &nbsp; <a class="scope-delete" href="#" th:text="#{delete}">delete</a>
         <input type="text" th:field="*{scopesDtos[__${indice}__].name}"
-               placeholder="scope" class="form-control" th:id="'scope_'+${indice}"/>
+               placeholder="scope" class="form-control tableau" th:id="'scope_'+${indice}"/>
         <p th:if="${#fields.hasErrors('scopesDtos[__${indice}__].name')}" th:errors="*{scopesDtos[__${indice}__].name}"
            class="validation-message"></p>
     </div>

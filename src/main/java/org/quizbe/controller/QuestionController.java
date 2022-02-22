@@ -100,16 +100,18 @@ public class QuestionController {
     Topic topic = topicService.findTopicById(idTopic)
             .orElseThrow(() -> new TopicNotFoundException("Topic error id : " + idTopic));
 
-    Scope scope = null; // scope may be null
+    Scope scope = null; // scope may be nullQuestionDtO
     if (idScope.isPresent()) {
       scope = scopeService.findById(idScope.get()).orElse(null);
     }
-    User currentUser = userService.findByUsername(request.getUserPrincipal().getName());
+   // User currentUser = userService.findByUsername(request.getUserPrincipal().getName());
 
     logger.info("topic = " + topic+" scope = " + scope);
+// placer topic et selectedScope dans une instance de QuestionDtO (en post ?)
 
     model.addAttribute("topic", topic);
     model.addAttribute("selectedScope", scope);
+
 
     return "/question/add-form";
   }

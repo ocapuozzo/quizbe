@@ -1,12 +1,10 @@
 package org.quizbe.model;
 
-
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.Objects;
-
 
 @Entity
 @DynamicInsert

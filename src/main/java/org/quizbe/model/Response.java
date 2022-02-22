@@ -21,6 +21,10 @@ public class Response {
     @Column(name = "FEEDBACK", nullable = false)
     private String feedback;
 
+    @Basic
+    @Column(name = "VALUE", nullable = false)
+    private Integer value;
+
     @ManyToOne
     private Question question;
 
