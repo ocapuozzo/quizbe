@@ -95,7 +95,7 @@ public class TopicService {
     return true;
   }
 
-  public TopicDto findTopicDtoById(long id) {
+  public TopicDto findTopicDtoById(long id)  {
     Optional<Topic> topic = topicRepository.findById(id);
     if (topic.isPresent()) {
       return fromTopicToTopicDto(topic.get());

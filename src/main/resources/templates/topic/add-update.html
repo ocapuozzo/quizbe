@@ -16,7 +16,7 @@
      </div>
 
     <div class="card-body" >
-      <form action="#" onsubmit="topicCompactArraySubmit()" th:action="@{/topic/addupdate}" th:object="${topicDto}" method="post" >
+      <form action="#" onsubmit="topicCompactArray()" th:action="@{/topic/addupdate}" th:object="${topicDto}" method="post" >
         <input type="hidden" th:field="${topicDto.id}">
         <input type="hidden" th:field="${topicDto.visible}">
         <input type="hidden" th:field="${topicDto.creatorUsername}">
@@ -92,6 +92,7 @@
       // supprime l'élément li (scope)
       listScopes.removeChild(scopeFormLi);
       console.log("LI number : " + listScopes.getElementsByClassName("tableau").length);
+      topicCompactArray();
       // scopeFormLi.remove();
     };
   }
@@ -109,7 +110,7 @@
   }
 
   // compact array index scopesDtos[0], scopesDtos[2], scopesDtos[3] => scopesDtos[0], scopesDtos[1], scopesDtos[2]
-  function topicCompactArraySubmit() {
+  function topicCompactArray() {
     let tableauInputs = listScopes.getElementsByClassName("tableau");
     for (let i = 0; i < tableauInputs.length; i++) {
       tableauInputs[i].setAttribute("name", "scopesDtos[" + i + "].name");
@@ -122,7 +123,12 @@
       // change name value of input hidden field id
       if  (eltsInput.length >0 && eltsInput[0].getAttribute("type") == 'hidden' ) {
         eltsInput[0].setAttribute('name', "scopesDtos[" + i + "].id");
+        eltsInput[0].setAttribute('id', "scopesDtos" + i + ".id");
       }
+    }
+    let labels = listScopes.getElementsByTagName("label");
+    for (let i = 0; i < labels.length; i++) {
+       labels[i].setAttribute('for', "scope_" + i);
     }
   }
 

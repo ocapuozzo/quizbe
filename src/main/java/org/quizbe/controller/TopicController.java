@@ -65,8 +65,10 @@ public class TopicController {
       TopicDto topicDto = topicService.findTopicDtoById(id);
       model.addAttribute("topicDto", topicDto);
     } catch (TopicNotFoundException ex) {
-      throw new ResponseStatusException(
-              HttpStatus.NOT_FOUND, "Topic Not Found", ex);
+      // TODO test with HttpStatus.NOT_FOUND.toString() ?
+      throw new TopicNotFoundException(HttpStatus.NOT_FOUND.toString(), ex);
+//              ResponseStatusException(
+//              HttpStatus.NOT_FOUND, "Topic Not Found", ex);
     }
     return "topic/add-update";
   }
@@ -74,9 +76,8 @@ public class TopicController {
   @PostMapping(value= {"/addupdate"})
   public String addOrUpdateClassroom(@Valid TopicDto topicDto, BindingResult result, Model model, HttpServletRequest request) {
 
-    // clean scopesDto by remove scopeDto with name is null
-   // topicDto.setScopesDtos(topicDto.getScopesDtos().stream().filter(scopeDto -> scopeDto.getName()!= null).collect(Collectors.toList()));
-  logger.info("scopes : " + topicDto.getScopesDtos());
+    // logger.info("scopes : " + topicDto.getScopesDtos());
+
     if (result.hasErrors()) {
       return "topic/add-update";
     }
@@ -101,7 +102,7 @@ public class TopicController {
     Long id = Long.parseLong(request.getParameter("id"));
 
     Topic topic = topicService.findTopicById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Invalid topic Id:" + id));
+            .orElseThrow(() -> new TopicNotFoundException("Invalid topic Id:" + id));
 
     String visible = request.getParameter("visible");
 

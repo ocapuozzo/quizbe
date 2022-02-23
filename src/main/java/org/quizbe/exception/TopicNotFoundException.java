@@ -20,4 +20,5 @@ public class TopicNotFoundException extends RuntimeException {
   public TopicNotFoundException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
     super(message, cause, enableSuppression, writableStackTrace);
   }
+
 }
