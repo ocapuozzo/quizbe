@@ -2,6 +2,8 @@
 package org.quizbe.dto;
 
 
+import org.quizbe.model.Topic;
+
 import javax.persistence.Basic;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -14,8 +16,9 @@ import java.util.List;
 public class QuestionDto {
 
   private Long id;
-  private Long idTopic;
+  private Topic topic;
   private Long idScope;
+  private boolean visible;
   // auto set = current user (username)
   private String creatorUsername;
 
@@ -32,7 +35,7 @@ public class QuestionDto {
   private String designer;
 
   @Basic
-  private String codesigner;
+  private String codesigners;
 
   @NotNull
   @Size(min = 1)
@@ -41,12 +44,11 @@ public class QuestionDto {
   public QuestionDto() {
   }
 
-  public Long getIdTopic() {
-    return idTopic;
-  }
-
-  public void setIdTopic(Long idTopic) {
-    this.idTopic = idTopic;
+  public QuestionDto(Long id, Topic topic, Long idScope, String creatorUsername) {
+    this.id = id;
+    this.topic = topic;
+    this.idScope = idScope;
+    this.creatorUsername = creatorUsername;
   }
 
   public Long getIdScope() {
@@ -89,12 +91,43 @@ public class QuestionDto {
     this.creatorUsername = creatorUsername;
   }
 
-  public QuestionDto(Long id, Long idTopic, Long idScope, String creatorUsername, String title, List<ResponseDto> responseDtos) {
-    this.id = id;
-    this.idTopic = idTopic;
-    this.idScope = idScope;
-    this.creatorUsername = creatorUsername;
-    this.title = title;
-    this.responseDtos = responseDtos;
+  public String getSentence() {
+    return sentence;
+  }
+
+  public void setSentence(String sentence) {
+    this.sentence = sentence;
+  }
+
+  public String getDesigner() {
+    return designer;
+  }
+
+  public void setDesigner(String designer) {
+    this.designer = designer;
+  }
+
+  public String getCodesigners() {
+    return codesigners;
+  }
+
+  public void setCodesigners(String codesigners) {
+    this.codesigners = codesigners;
+  }
+
+  public Topic getTopic() {
+    return topic;
+  }
+
+  public void setTopic(Topic topic) {
+    this.topic = topic;
+  }
+
+  public boolean isVisible() {
+    return visible;
+  }
+
+  public void setVisible(boolean visible) {
+    this.visible = visible;
   }
 }

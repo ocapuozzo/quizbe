@@ -30,7 +30,7 @@ div.sentence  {
 
  }
 
-  div.sentence pre {
+ div.sentence pre {
    background-color: inherit;
    border: none
  }
@@ -43,51 +43,9 @@ div.sentence  {
    display: none;
  }
 
-/* ============ FOSCommentBundle  */
-
-/* tree view effect */
-  .fos_comment_comment_show  {
-    margin-left: 20px;
-  }
-
-  /* Réduire un peu les H3  FOSCommentBundle */
-
-  /* <h3>Ajouter un commentaire</h3> */
-  div.fos_comment_comment_form_holder h3 {
-    font-size: medium;
-  }
-
-  /* <h3> n commentaires </h3>
-     ayant même parent que le précédent h3
-  https://developer.mozilla.org/fr/docs/Web/CSS/S%C3%A9lecteurs_de_voisins_g%C3%A9n%C3%A9raux
-  */
-  div.fos_comment_comment_form_holder ~ h3
-  {
-    font-size: medium;
-  }
-
-  /* make a button like a link
-  http://stackoverflow.com/questions/1367409/how-to-make-button-look-like-a-link
-  */
-  div.fos_comment_submit input,
-  button.fos_comment_thread_commentable_action,
-  button.fos_comment_comment_remove,
-  button.fos_comment_comment_edit_show_form,
-  button.fos_comment_comment_reply_show_form {
-     background:none!important;
-     border:none;
-     padding:0!important;
-     font: inherit;
-     /*border is optional*/
-     border-bottom:1px solid #444;
-     cursor: pointer;
-}
-
-
 ul.items_prototype li {
    list-style-type: none;
 }
-
 
 /* redefine from bootstrap (Question) */
 code {
@@ -105,7 +63,7 @@ code {
 
 .validation-message {
     border-style: none;
-    background-color: lightcoral;
+    color: red;
 }
 
 /* applique la couleur utilisée par .nav-link.  Voir header logout */

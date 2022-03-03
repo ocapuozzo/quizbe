@@ -1,5 +1,7 @@
 package org.quizbe.controller;
 
+import org.quizbe.dto.QuestionDto;
+import org.quizbe.dto.TopicDto;
 import org.quizbe.exception.ScopeNotFoundException;
 import org.quizbe.exception.TopicNotFoundException;
 import org.quizbe.model.Question;
@@ -14,11 +16,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -100,20 +105,45 @@ public class QuestionController {
     Topic topic = topicService.findTopicById(idTopic)
             .orElseThrow(() -> new TopicNotFoundException("Topic error id : " + idTopic));
 
-    Scope scope = null; // scope may be nullQuestionDtO
+    Scope scope = null; // scope may be null
     if (idScope.isPresent()) {
       scope = scopeService.findById(idScope.get()).orElse(null);
     }
-   // User currentUser = userService.findByUsername(request.getUserPrincipal().getName());
+   User currentUser = userService.findByUsername(request.getUserPrincipal().getName());
 
     logger.info("topic = " + topic+" scope = " + scope);
-// placer topic et selectedScope dans une instance de QuestionDtO (en post ?)
 
-    model.addAttribute("topic", topic);
+    // placer topic et selectedScope dans une instance de QuestionDtO
+    QuestionDto questionDto =
+            new QuestionDto(null, topic, scope==null ? null : scope.getId() , currentUser.getUsername());
+
     model.addAttribute("selectedScope", scope);
+    model.addAttribute("questionDto", questionDto);
 
-
-    return "/question/add-form";
+    return "/question/add-question";
   }
+
+
+  @PostMapping(value= {"/addupdate"})
+  public String addOrUpdateClassroom(QuestionDto questionDto, BindingResult result, Model model, HttpServletRequest request) {
+
+    if (result.hasErrors()) {
+      return "question/add-update";
+    }
+//
+//    if (topicDto.getId() == null) {
+//      String nameCurrentUser = request.getUserPrincipal().getName();
+//      topicDto.setCreatorUsername(nameCurrentUser);
+//    }
+//
+//    topicService.saveTopicFromTopicDto(topicDto, result);
+//
+//    if (result.hasErrors()) {
+//      return "topic/add-update";
+//    }
+
+    return "redirect:/question/index";
+  }
+
 
 }

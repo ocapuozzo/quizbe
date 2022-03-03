@@ -19,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.Validator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -76,7 +77,8 @@ public class TopicController {
   @PostMapping(value= {"/addupdate"})
   public String addOrUpdateClassroom(@Valid TopicDto topicDto, BindingResult result, Model model, HttpServletRequest request) {
 
-    // logger.info("scopes : " + topicDto.getScopesDtos());
+    logger.info("scopes : " + topicDto.getScopesDtos());
+    logger.info("result : " + result);
 
     if (result.hasErrors()) {
       return "topic/add-update";

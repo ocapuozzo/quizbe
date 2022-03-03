@@ -29,7 +29,7 @@
 
       <div class="col-md-6">
         <div class="float-end">
-          <label for="changeScope" th:text="#{scopes}">Scopes</label>
+          <label for="changeScope" th:text="#{scope}">Scope</label>
           <select id="changeScope" onchange="window.location = this.options[this.selectedIndex].value;">
             <option th:selected="${selectedScope == null}"
                     value=""
