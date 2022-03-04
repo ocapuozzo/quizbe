@@ -17,6 +17,7 @@
             th:object="${questionDto}">
         <input type="hidden" th:field="${questionDto.id}">
         <input type="hidden" th:field="${questionDto.topic}">
+        <input type="hidden" th:field="${questionDto.designer}">
         <div class="row g-3">
           <div class="col-auto">
             <label class="form-label" th:text="#{scope.title}"
@@ -63,6 +64,8 @@
           <div class="col-12">
             <label class="form-label required" for="question_sentence" th:text="#{question}">Question:</label>
             <textarea id="question_sentence" class="form-control" th:field="${questionDto.sentence}"></textarea>
+            <span th:if="${#fields.hasErrors('sentence')}" th:errors="*{sentence}"
+                  class="validation-message"></span>
           </div>
         </div>
 
@@ -87,15 +90,17 @@
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
-              <div class="col-sm-2"></div>
+              <div class="col-sm-2"></div>result
               <div class="col-sm-10">
                 <a href="" th:text="#{answer.create}" id="add-a-response" class="btn btn-link btn-sm" role="button">
                   Add a new response
                 </a>
+                <button type="submit" class="m-3 btn btn-primary btn-block" th:text="#{submit}">Ajouter</button>
               </div>
             </div>
           </div>
         </div>
+
       </form>
       <hr/>
       <div>
@@ -108,8 +113,8 @@
         </div>
       </div>
 
-    </div> <!-- panel body-->
-  </div> <!-- panel info-->
+    </div>
+  </div>
 
 
 </main>

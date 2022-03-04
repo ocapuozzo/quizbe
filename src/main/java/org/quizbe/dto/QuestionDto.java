@@ -19,8 +19,8 @@ public class QuestionDto {
   private Topic topic;
   private Long idScope;
   private boolean visible;
-  // auto set = current user (username)
-  private String creatorUsername;
+//  // auto set = current user (username)
+//  private String creatorUsername;
 
   @NotBlank(message = "{question.title.blank}")
   @Size(min = 3, max = 30, message = "{question.title.min.max}")
@@ -48,7 +48,7 @@ public class QuestionDto {
     this.id = id;
     this.topic = topic;
     this.idScope = idScope;
-    this.creatorUsername = creatorUsername;
+    this.designer = creatorUsername;
   }
 
   public Long getIdScope() {
@@ -81,14 +81,6 @@ public class QuestionDto {
 
   public Long getId() {
     return this.id;
-  }
-
-  public String getCreatorUsername() {
-    return creatorUsername;
-  }
-
-  public void setCreatorUsername(String creatorUsername) {
-    this.creatorUsername = creatorUsername;
   }
 
   public String getSentence() {

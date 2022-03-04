@@ -125,10 +125,12 @@ public class QuestionController {
 
 
   @PostMapping(value= {"/addupdate"})
-  public String addOrUpdateClassroom(QuestionDto questionDto, BindingResult result, Model model, HttpServletRequest request) {
+  public String addOrUpdateClassroom(@Valid QuestionDto questionDto, BindingResult result, Model model, HttpServletRequest request) {
 
     if (result.hasErrors()) {
-      return "question/add-update";
+      logger.info("result : " + result);
+      model.addAttribute("selectedScope", questionDto.getIdScope());
+      return "question/add-question";
     }
 //
 //    if (topicDto.getId() == null) {

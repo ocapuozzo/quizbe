@@ -3,7 +3,9 @@ package org.quizbe.model;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
-import java.sql.Date;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -28,7 +30,7 @@ public class Question {
 
     @Basic
     @Column(name = "DATECREA", nullable = false, length = 50)
-    private Date datecrea;
+    private LocalDateTime datecrea;
 
     /// trace de la personne conceptrice et co-conceptrice
     @Basic
@@ -70,11 +72,11 @@ public class Question {
         this.sentence = sentence;
     }
 
-    public Date getDatecrea() {
+    public LocalDateTime getDatecrea() {
         return datecrea;
     }
 
-    public void setDatecrea(Date datecrea) {
+    public void setDatecrea(LocalDateTime datecrea) {
         this.datecrea = datecrea;
     }
 

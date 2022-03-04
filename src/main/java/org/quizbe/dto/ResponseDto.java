@@ -18,9 +18,9 @@ public class ResponseDto {
   @Size(min = 10, max = 255, message = "{response.feedback.min.max}")
   private String feedback;
 
-  @NotBlank(message = "{response.value.blank}")
+
   @Min(value = -2, message = "{response.value.min}")
-  @Max(value =  2, message = "{response.value.max}")
+  @Max(value =  1, message = "{response.value.max}")
   private Integer value;
 
   public ResponseDto() {
