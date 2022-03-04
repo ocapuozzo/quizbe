@@ -1,6 +1,8 @@
 package org.quizbe.model;
 
 
+import org.quizbe.dto.ResponseDto;
+
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.Objects;
@@ -27,6 +29,7 @@ public class Response {
 
     @ManyToOne
     private Question question;
+
 
     public long getId() {
         return id;
@@ -60,4 +63,34 @@ public class Response {
         this.question = question;
     }
 
+    public Integer getValue() {
+        return value;
+    }
+
+    public void setValue(Integer value) {
+        this.value = value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Response response = (Response) o;
+        return getId() == response.getId() && getProposition().equals(response.getProposition());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getProposition());
+    }
+
+    @Override
+    public String toString() {
+        return "Response{" +
+                "id=" + id +
+                ", proposition='" + proposition + '\'' +
+                ", feedback='" + feedback + '\'' +
+                ", value=" + value +
+                '}';
+    }
 }

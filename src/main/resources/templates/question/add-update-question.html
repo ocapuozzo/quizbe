@@ -8,9 +8,10 @@
 <main class="container">
   <div class="panel panel-info">
     <div class="panel-heading">
-      <h3 class="panel-title" style="text-align: center" th:text="#{question.add}">
-        Create a question
-      </h3>
+
+      <h3 th:if="${questionDto.id}==null" class="panel-title" style="text-align: center" th:text="#{question.add}"></h3>
+      <h3 th:if="${questionDto.id}!=null" class="panel-title" style="text-align: center" th:text="#{question.update}"></h3>
+
     </div>
     <div class="panel-body">
       <form name="questionDto" method="post" th:action="@{/question/addupdate}" action="#" class=""
@@ -20,11 +21,11 @@
         <input type="hidden" th:field="${questionDto.designer}">
         <div class="row g-3">
           <div class="col-auto">
-            <label class="form-label" th:text="#{scope.title}"
-                   for="question_name">Title:</label>
-            <input type="text" id="question_name" th:field="${questionDto.title}" required="required"
+            <label class="form-label" th:text="#{name}"
+                   for="question_name">Name:</label>
+            <input type="text" id="question_name" th:field="${questionDto.name}" required="required"
                    maxlength="50" class="form-control" placeholder="short name"/>
-            <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="validation-message"></span>
+            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="validation-message"></span>
           </div>
           <div class="col-auto">
             <label class="form-label" for="question_codesigners" th:text="#{scope.codesigners}">Co-Designer(s):</label>
@@ -36,10 +37,12 @@
           <div class="col-auto">
             <label class="form-label required"
                    for="question_scope" th:text="#{scope}">Scope</label>
-            <select id="question_scope" name="question[scope]" class="form-control">
+            <span th:if="${#fields.hasErrors('idScope')}" th:errors="*{idScope}"
+                  class="validation-message"></span>
+            <select id="question_scope" th:field="${questionDto.idScope}" class="form-control">
               <option th:each="scope : ${questionDto.topic.scopes}" th:text="${scope.name}"
                       value="42" th:value="${scope.id}"
-                      th:selected="${selectedScope != null  ? scope.id == selectedScope.id : false}">
+                      th:selected="${questionDto.idScope != null  ? scope.id == questionDto.idScope : false}">
               </option>
             </select>
           </div>
@@ -90,7 +93,7 @@
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
-              <div class="col-sm-2"></div>result
+              <div class="col-sm-2"></div>
               <div class="col-sm-10">
                 <a href="" th:text="#{answer.create}" id="add-a-response" class="btn btn-link btn-sm" role="button">
                   Add a new response

@@ -65,7 +65,7 @@
         <tr>
           <th>Name</th>
           <th>Designer(s)</th>
-          <th>Creation date</th>
+          <th>Update date</th>
           <th>Operations</th>
           <th>Rating</th>
           <th>Users rating</th>
@@ -73,12 +73,12 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-          <td title="" class="public">analyse-1</td>
-          <td>okpu</td>
-          <td>25/03/2020 14:06</td>
-          <td>
-            <a href="/quiz/en/question/37">play</a>
+        <tr th:each="question : ${questions}">
+          <td title="" class="public" th:text="${question.name}">analyse-1</td>
+          <td th:text="${question.designer}">okpu</td>
+          <td th:text="${question.dateUpdate}">25/03/2020 14:06</td>
+          <td >
+            <a href="/quiz/en/question/37">play</a> / <a th:href="'/question/edit/' + ${question.id}">edit</a>
 
           </td>
           <td><input id="_37" class="rating" value="2.75"
@@ -89,26 +89,7 @@
 
           </td>
           <td> (2)</td>
-          <td> Analyse</td>
-
-        </tr>
-        <tr>
-          <td title="" class="public">analyse-2</td>
-          <td>okpu</td>
-          <td>25/03/2020 14:44</td>
-          <td>
-            <a href="/quiz/en/question/38">play</a>
-
-          </td>
-          <td><input id="_38" class="rating" value="2"
-                     data-size="xxs"
-                     data-show-clear="false"
-                     data-show-caption="false"
-                     readonly="true"/>
-
-          </td>
-          <td> (1)</td>
-          <td> Analyse</td>
+          <td th:text="${question.scope.name}"> Analyse</td>
 
         </tr>
         </tbody>

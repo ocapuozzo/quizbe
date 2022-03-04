@@ -1,15 +1,15 @@
 package org.quizbe.model;
 
-import org.hibernate.annotations.DynamicInsert;
-
 import javax.persistence.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
-@DynamicInsert
+    //  @DynamicInsert
    // see https://thorben-janssen.com/dynamic-inserts-and-updates-with-spring-data-jpa/
    // https://stackoverflow.com/questions/21721818/why-does-not-hibernate-set-dynamicinsert-by-default
    // Question may be updated frequently (Response also, to test before :)
@@ -29,8 +29,8 @@ public class Question {
     private String sentence;
 
     @Basic
-    @Column(name = "DATECREA", nullable = false, length = 50)
-    private LocalDateTime datecrea;
+    @Column(nullable = false)
+    private LocalDateTime dateUpdate;
 
     /// trace de la personne conceptrice et co-conceptrice
     @Basic
@@ -40,6 +40,11 @@ public class Question {
     @Basic
     @Column(name = "CODESIGNER", nullable = false, length = 50)
     private String codesigner;
+
+    @Basic
+    @Column(nullable = false)
+    private boolean visible = true;
+
     ///
 
     @ManyToOne
@@ -47,6 +52,9 @@ public class Question {
 
     @ManyToOne
     private Topic topic;
+
+    @OneToMany(mappedBy = "question",  cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
+    private List<Response> responses = new ArrayList<>();
 
     public long getId() {
         return id;
@@ -72,12 +80,12 @@ public class Question {
         this.sentence = sentence;
     }
 
-    public LocalDateTime getDatecrea() {
-        return datecrea;
+    public LocalDateTime getDateUpdate() {
+        return dateUpdate;
     }
 
-    public void setDatecrea(LocalDateTime datecrea) {
-        this.datecrea = datecrea;
+    public void setDateUpdate(LocalDateTime datecrea) {
+        this.dateUpdate = datecrea;
     }
 
     public String getDesigner() {
@@ -112,6 +120,31 @@ public class Question {
         this.topic = topic;
     }
 
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    public List<Response> getResponses() {
+        return responses;
+    }
+
+    public void setResponses(List<Response> responses) {
+        this.responses = responses;
+    }
+
+    public void removeResponses() {
+        Iterator<Response> it = this.responses.iterator();
+        while (it.hasNext()) {
+            Response r = it.next();
+            r.setQuestion(null);
+            it.remove();
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -131,9 +164,18 @@ public class Question {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", sentence='" + sentence + '\'' +
-                ", datecrea=" + datecrea +
+                ", datecrea=" + dateUpdate +
                 ", designer='" + designer + '\'' +
                 ", codesigner='" + codesigner + '\'' +
+                ", visible='" + visible + '\'' +
                 '}';
+    }
+
+
+    public void addResponse(Response response) {
+        if (!this.responses.contains(response)) {
+            this.responses.add(response);
+            response.setQuestion(this);
+        }
     }
 }

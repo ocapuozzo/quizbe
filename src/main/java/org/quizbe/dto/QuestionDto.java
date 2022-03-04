@@ -9,7 +9,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -22,9 +21,9 @@ public class QuestionDto {
 //  // auto set = current user (username)
 //  private String creatorUsername;
 
-  @NotBlank(message = "{question.title.blank}")
-  @Size(min = 3, max = 30, message = "{question.title.min.max}")
-  private String title;
+  @NotBlank(message = "{question.name.blank}")
+  @Size(min = 3, max = 30, message = "{question.name.min.max}")
+  private String name;
 
   @NotBlank(message = "{question.sentence.blank}")
   @Size(min = 3, max = 255, message = "{question.sentence.min.max}")
@@ -59,12 +58,12 @@ public class QuestionDto {
     this.idScope = idScope;
   }
 
-  public String getTitle() {
-    return title;
+  public String getName() {
+    return name;
   }
 
-  public void setTitle(String title) {
-    this.title = title;
+  public void setName(String name) {
+    this.name = name;
   }
 
   public List<ResponseDto> getResponseDtos() {

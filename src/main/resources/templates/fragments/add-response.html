@@ -13,6 +13,9 @@
     </div>
     <div class="col-2">
       <label class="form-label required" th:for="'responseDtos[__${indice}__].value'">Value:</label>
+      <p th:if="${#fields.hasErrors('responseDtos[__${indice}__].value')}"
+         th:errors="*{responseDtos[__${indice}__].value}"
+         class="validation-message"></p>
       <select th:id="'responseDtos[__${indice}__].value'" th:field="*{responseDtos[__${indice}__].value}" class="form-control input-reorder">
         <option value="-2">-2</option>
         <option value="-1">-1</option>

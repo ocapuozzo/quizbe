@@ -1,13 +1,13 @@
 package org.quizbe.controller;
 
 import org.quizbe.dto.QuestionDto;
-import org.quizbe.dto.TopicDto;
 import org.quizbe.exception.ScopeNotFoundException;
 import org.quizbe.exception.TopicNotFoundException;
 import org.quizbe.model.Question;
 import org.quizbe.model.Scope;
 import org.quizbe.model.Topic;
 import org.quizbe.model.User;
+import org.quizbe.service.QuestionService;
 import org.quizbe.service.ScopeService;
 import org.quizbe.service.TopicService;
 import org.quizbe.service.UserService;
@@ -39,12 +39,14 @@ public class QuestionController {
   private TopicService topicService;
   private UserService userService;
   private ScopeService scopeService;
+  private QuestionService questionService;
 
   @Autowired
-  public QuestionController(TopicService topicService, UserService userService, ScopeService scopeService) {
+  public QuestionController(TopicService topicService, UserService userService, ScopeService scopeService, QuestionService questionService) {
     this.topicService = topicService;
     this.userService = userService;
     this.scopeService = scopeService;
+    this.questionService = questionService;
   }
 
   @GetMapping(value = {"/index", "/", ""})
@@ -111,16 +113,14 @@ public class QuestionController {
     }
    User currentUser = userService.findByUsername(request.getUserPrincipal().getName());
 
-    logger.info("topic = " + topic+" scope = " + scope);
+  //  logger.info("topic = " + topic+" scope = " + scope);
 
-    // placer topic et selectedScope dans une instance de QuestionDtO
     QuestionDto questionDto =
             new QuestionDto(null, topic, scope==null ? null : scope.getId() , currentUser.getUsername());
 
-    model.addAttribute("selectedScope", scope);
     model.addAttribute("questionDto", questionDto);
 
-    return "/question/add-question";
+    return "/question/add-update-question";
   }
 
 
@@ -129,23 +129,19 @@ public class QuestionController {
 
     if (result.hasErrors()) {
       logger.info("result : " + result);
-      model.addAttribute("selectedScope", questionDto.getIdScope());
-      return "question/add-question";
+      return "/question/add-update-question";
     }
-//
-//    if (topicDto.getId() == null) {
-//      String nameCurrentUser = request.getUserPrincipal().getName();
-//      topicDto.setCreatorUsername(nameCurrentUser);
-//    }
-//
-//    topicService.saveTopicFromTopicDto(topicDto, result);
-//
-//    if (result.hasErrors()) {
-//      return "topic/add-update";
-//    }
-
+    questionService.saveQuestionFromQuestionDto(questionDto);
     return "redirect:/question/index";
   }
 
+  @GetMapping("/edit/{id}")
+  public String showUpdateForm(@PathVariable("id") long id, Model model) {
+      QuestionDto questionDto = questionService.findQuestionDtoById(id);
+      Scope scope = scopeService.findById(questionDto.getIdScope())
+            .orElseThrow(() -> new ScopeNotFoundException("Invalid id"));
+      model.addAttribute("questionDto", questionDto);
+    return "/question/add-update-question";
+  }
 
 }

@@ -20,7 +20,7 @@ public class ResponseDto {
 
 
   @Min(value = -2, message = "{response.value.min}")
-  @Max(value =  1, message = "{response.value.max}")
+  @Max(value =  2, message = "{response.value.max}")
   private Integer value;
 
   public ResponseDto() {
