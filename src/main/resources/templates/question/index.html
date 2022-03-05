@@ -78,7 +78,9 @@
           <td th:text="${question.designer}">okpu</td>
           <td th:text="${question.dateUpdate}">25/03/2020 14:06</td>
           <td >
-            <a href="/quiz/en/question/37">play</a> / <a th:href="'/question/edit/' + ${question.id}">edit</a>
+            <a th:href="@{/question/play/{id}(id=${question.id})}">play</a>
+            /
+            <a th:href="@{'/question/edit/' + ${question.id}}">edit</a>
 
           </td>
           <td><input id="_37" class="rating" value="2.75"

@@ -100,7 +100,7 @@ public class QuestionController {
     return "/question/index";
   }
 
-  @GetMapping(value={"/new/{idtopic}/{idscope}", "/new/{idtopic}"})
+  @GetMapping(value = {"/new/{idtopic}/{idscope}", "/new/{idtopic}"})
   public String newQuestion(@PathVariable("idtopic") long idTopic,
                             @PathVariable("idscope") Optional<Long> idScope,
                             HttpServletRequest request, Model model) {
@@ -111,20 +111,19 @@ public class QuestionController {
     if (idScope.isPresent()) {
       scope = scopeService.findById(idScope.get()).orElse(null);
     }
-   User currentUser = userService.findByUsername(request.getUserPrincipal().getName());
+    User currentUser = userService.findByUsername(request.getUserPrincipal().getName());
 
-  //  logger.info("topic = " + topic+" scope = " + scope);
+    //  logger.info("topic = " + topic+" scope = " + scope);
 
     QuestionDto questionDto =
-            new QuestionDto(null, topic, scope==null ? null : scope.getId() , currentUser.getUsername());
+            new QuestionDto(null, topic, scope == null ? null : scope.getId(), currentUser.getUsername());
 
     model.addAttribute("questionDto", questionDto);
 
     return "/question/add-update-question";
   }
 
-
-  @PostMapping(value= {"/addupdate"})
+  @PostMapping(value = {"/addupdate"})
   public String addOrUpdateClassroom(@Valid QuestionDto questionDto, BindingResult result, Model model, HttpServletRequest request) {
 
     if (result.hasErrors()) {
@@ -137,11 +136,16 @@ public class QuestionController {
 
   @GetMapping("/edit/{id}")
   public String showUpdateForm(@PathVariable("id") long id, Model model) {
-      QuestionDto questionDto = questionService.findQuestionDtoById(id);
-      Scope scope = scopeService.findById(questionDto.getIdScope())
-            .orElseThrow(() -> new ScopeNotFoundException("Invalid id"));
-      model.addAttribute("questionDto", questionDto);
+    QuestionDto questionDto = questionService.findQuestionDtoById(id);
+    model.addAttribute("questionDto", questionDto);
     return "/question/add-update-question";
+  }
+
+  @GetMapping("/play/{id}")
+  public String showPlay(@PathVariable("id") long id, Model model) {
+    Question question = questionService.findById(id);
+    model.addAttribute("question", question);
+    return "/question/play";
   }
 
 }

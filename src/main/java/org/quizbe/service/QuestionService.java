@@ -6,7 +6,6 @@ import org.quizbe.dto.QuestionDto;
 import org.quizbe.dto.ResponseDto;
 import org.quizbe.exception.QuestionNotFoundException;
 import org.quizbe.exception.ScopeNotFoundException;
-import org.quizbe.exception.TopicNotFoundException;
 import org.quizbe.model.Question;
 import org.quizbe.model.Response;
 import org.quizbe.model.Scope;
@@ -69,13 +68,13 @@ public class QuestionService {
     question.setDateUpdate(LocalDateTime.now());
     // add/update all responses
     for (ResponseDto responseDto : questionDto.getResponseDtos()) {
-      Response response = convertToResponse(responseDto);
+      Response response = convertDtoToResponse(responseDto);
       question.addResponse(response);
     }
      return question;
   }
 
-  private Response convertToResponse(ResponseDto responseDto) {
+  private Response convertDtoToResponse(ResponseDto responseDto) {
     Response response = new Response();
     response.setId(responseDto.getId());
     response.setProposition(responseDto.getProposition());
@@ -84,7 +83,7 @@ public class QuestionService {
     return response;
   }
 
-  private ResponseDto convertToResponseDto(Response response) {
+  private ResponseDto convertResponseToDto(Response response) {
     ResponseDto responseDto = new ResponseDto();
     responseDto.setId(response.getId());
     responseDto.setProposition(response.getProposition());
@@ -113,11 +112,14 @@ public class QuestionService {
     questionDto.setIdScope(question.getScope().getId());
     List<ResponseDto> responseDtos = new ArrayList<>();
     for (Response response : question.getResponses() ) {
-      responseDtos.add(convertToResponseDto(response));
+      responseDtos.add(convertResponseToDto(response));
     }
     questionDto.setResponseDtos(responseDtos);
     return questionDto;
   }
 
+  public Question findById(long id) {
+    return questionRepository.findById(id).orElseThrow(QuestionNotFoundException::new);
+  }
 }
 
