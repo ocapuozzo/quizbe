@@ -1,6 +1,8 @@
 package org.quizbe.controller;
 
+import org.quizbe.dto.PasswordDto;
 import org.quizbe.dto.UserDto;
+import org.quizbe.exception.UserNotFoundException;
 import org.quizbe.model.User;
 import org.quizbe.service.TopicService;
 import org.quizbe.service.UserService;
@@ -8,13 +10,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.repository.query.Param;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.ResourceBundle;
 
 @Controller
@@ -33,30 +39,45 @@ public class IndexController {
 
   @GetMapping(value = {"/",})
   public String index() {
+
     return "/main/index";
   }
-
-//
-//  @GetMapping(value = {"/changelocale",})
-//  public String changeLocale(HttpServletRequest request) {
-//    String url = request.getParameter("url");
-//    //return "/main/index";
-//    return "redirect:"+url;
-//  }
-
 
   @GetMapping(value = {"/login",})
   public String login() {
     return "/main/login";
   }
 
-
   /**
-    @See WebSecurityConfiguration
+   * @See WebSecurityConfiguration
    */
   @GetMapping(value = {"/access-denied",})
   public String acceDenied() {
     return "/error/access-denied";
- }
+  }
+
+
+  @PreAuthorize("hasRole('USER')")
+  @GetMapping("/user/updatepw")
+  public String showUpdatePassword(@ModelAttribute PasswordDto passwordDto, Model model) {
+    return "main/update-user-pw";
+  }
+
+  @PreAuthorize("hasRole('USER')")
+  @PostMapping("/user/updatepw")
+  public String userUpdatePassword(@Valid @ModelAttribute PasswordDto passwordDto,
+                                   BindingResult result, Principal principal) {
+    User user = userService.findByUsername(principal.getName());
+    if (user == null) {
+      throw new UserNotFoundException("Invalid User");
+    }
+    if (result.hasErrors()) {
+      return "main/update-user-pw";
+    }
+    if (userService.userUpdatePassword(user, passwordDto.getPassword())) {
+      return "redirect:/question";
+    }
+    return "main/update-user-pw";
+  }
 
 }

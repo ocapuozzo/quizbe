@@ -144,5 +144,11 @@ public class AdminController {
     return "redirect:/";
   }
 
+  @GetMapping(value = {"/resetpw",})
+  public String resetpw(long id) {
+    User user =  userService.findById(id).orElseThrow(UserNotFoundException::new);
+    userService.invalidePassword(user);
+    return "redirect:/admin/users";
+  }
 
 }

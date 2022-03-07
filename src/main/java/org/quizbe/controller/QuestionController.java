@@ -51,6 +51,11 @@ public class QuestionController {
 
   @GetMapping(value = {"/index", "/", ""})
   public String questions(Model model, HttpServletRequest request) {
+    User currentUser = userService.findByUsername(request.getUserPrincipal().getName());
+    if (userService.mustChangePassword(currentUser)) {
+      return "redirect:/user/updatepw";
+    }
+
     String idSelectedTopic = request.getParameter("id-selected-topic");
     String idSelectedScope = request.getParameter("id-selected-scope");
 
@@ -65,8 +70,6 @@ public class QuestionController {
       selectedTopic = topicService.findById(idTopic)
               .orElseThrow(() -> new TopicNotFoundException("Invalid topic id : " + idTopic));
     }
-
-    User currentUser = userService.findByUsername(request.getUserPrincipal().getName());
 
     List<Topic> topics =
             request.isUserInRole("TEACHER")

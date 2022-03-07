@@ -38,7 +38,7 @@ public class CustomUserServiceDetails implements UserDetailsService {
         throw new UsernameNotFoundException("Could not find user");
       }
     }
-    logger.info("User login : " + user);
+    // logger.info("User login : " + user);
 
     // meilleur autre solution ? (Implement UserDetails)
     //  https://www.codejava.net/frameworks/spring-boot/spring-boot-security-authentication-with-jpa-hibernate-and-mysql

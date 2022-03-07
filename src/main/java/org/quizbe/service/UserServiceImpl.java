@@ -1,5 +1,6 @@
 package org.quizbe.service;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -51,9 +52,9 @@ public class UserServiceImpl implements UserService {
               userDto.getEmail(),
               passwordEncoder.encode(userDto.getPassword()),
               new HashSet<Role>(Arrays.asList(role)));
-      return userRepository.save(newUser);
+      save(newUser);
+      return newUser;
     }
-
   }
 
   @Override
@@ -93,6 +94,10 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public void save(User user) {
+    if (user.getDefaultPlainTextPassword()==null) {
+       user.setDefaultPlainTextPassword(User.generateRandomPassword(8));
+       user.setDateUpdatePassword(LocalDateTime.now());
+    }
     userRepository.save(user);
   }
 
@@ -119,6 +124,45 @@ public class UserServiceImpl implements UserService {
     userDto.setPassword(user.getPassword());
     userDto.setRole(user.getRoles().stream().map(r -> r.getName()).collect(Collectors.toSet()));
     return userDto;
+  }
+
+  /**
+   * Set password only if password <> default clear password of user
+   * @param user
+   * @param password new password
+   * @return true if set or false else
+   */
+  @Override
+  public boolean userUpdatePassword(User user, String password) {
+    if (user.getDefaultPlainTextPassword().trim().equalsIgnoreCase(password.trim())) {
+      return false;
+    }
+    user.setPassword(passwordEncoder.encode(password));
+    user.setDateUpdatePassword(LocalDateTime.now());
+    userRepository.save(user);
+    return true;
+  }
+
+  /**
+   * Set password => default password
+   * @param user
+   */
+  public void invalidePassword(User user) {
+    user.setPassword(passwordEncoder.encode(user.getDefaultPlainTextPassword()));
+    user.setDateUpdatePassword(null);
+    userRepository.save(user);
+  }
+
+  /**
+   * Verify if password user is this default plain text password
+   * @param user
+   * @Return true if password is default password, else false
+   */
+  public boolean mustChangePassword(User user) {
+    // too long time
+    // String defaultPw = passwordEncoder.encode(user.getDefaultPlainTextPassword());
+   // return  user.getPassword().equals(defaultPw);
+    return user.getDateUpdatePassword()==null;
   }
 
 }

@@ -20,4 +20,10 @@ public interface UserService  {
     void save(User user);
 
     void flipflopUserRole(User user, Role role);
+
+    boolean userUpdatePassword(User user, String password);
+
+    void invalidePassword(User user);
+
+    boolean mustChangePassword(User user);
 }

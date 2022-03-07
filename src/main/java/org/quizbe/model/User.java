@@ -1,7 +1,9 @@
 package org.quizbe.model;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -34,6 +36,11 @@ public class User {
   @Basic
   private Boolean accountNonLocked;
 
+  @Basic
+  private LocalDateTime dateUpdatePassword;
+
+  @Basic
+  private String defaultPlainTextPassword;
 
   @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   @JoinTable(
@@ -61,6 +68,7 @@ public class User {
     this.accountNonExpired = true;
     this.accountNonLocked = true;
     this.credentialsNonExpired = true;
+    // this.defaultPlainTextPassword = User.generateRandomPassword(8);
   }
 
   public User(String userName, String email, String password, Set < Role > roles) {
@@ -131,11 +139,9 @@ public class User {
   public Boolean isAccountNonExpired() {
     return accountNonExpired;
   }
-
   public void setAccountNonExpired(Boolean accountNonExpired) {
     this.accountNonExpired = accountNonExpired;
   }
-
   public Boolean isCredentialsNonExpired() {
     return credentialsNonExpired;
   }
@@ -180,6 +186,22 @@ public class User {
     this.topics = topics;
   }
 
+  public LocalDateTime getDateUpdatePassword() {
+    return dateUpdatePassword;
+  }
+
+  public void setDateUpdatePassword(LocalDateTime dateUpdatePassword) {
+    this.dateUpdatePassword = dateUpdatePassword;
+  }
+
+  public String getDefaultPlainTextPassword() {
+    return defaultPlainTextPassword;
+  }
+
+  public void setDefaultPlainTextPassword(String defaultPlainTextPassword) {
+    this.defaultPlainTextPassword = defaultPlainTextPassword;
+  }
+
   @Override
   public String toString() {
     return "User{" +
@@ -190,4 +212,15 @@ public class User {
             ", enabled=" + enabled +
             '}';
   }
+
+  public static String generateRandomPassword(int len) {
+    String chars = "0123456789ABCDEFGHIJKLMNOPQRTUVWXYZabcdefghijkmnopqrstuvwxyz";
+    Random rnd = new Random();
+    StringBuilder sb = new StringBuilder(len);
+    for (int i = 0; i < len; i++) {
+      sb.append(chars.charAt(rnd.nextInt(chars.length())));
+    }
+    return sb.toString();
+  }
+
 }
