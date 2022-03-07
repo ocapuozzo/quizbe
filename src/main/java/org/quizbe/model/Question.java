@@ -56,6 +56,10 @@ public class Question {
     @OneToMany(mappedBy = "question",  cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
     private List<Response> responses = new ArrayList<>();
 
+    /**
+     * Get number of expected good responses
+     * @return number of responses which are value > 0
+     */
     public int getExpectedGoodChoices() {
         return (int) this.responses.stream().filter(response -> response.getValue() >= 0).count();
     }

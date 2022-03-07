@@ -19,6 +19,7 @@
           <th>Edit</th>
           <th>Delete</th>
           <th>Roles</th>
+          <th>Password</th>
         </tr>
         </thead>
         <tbody>
@@ -36,6 +37,15 @@
                 <input th:case="${true}" th:value="${role.name}" type="submit" class="btn btn-primary"/>
                 <input th:case="*" th:value="${role.name}" type="submit" class="btn btn-secondary"/>
               </div>
+            </form>
+          </td>
+          <td>
+            <form th:action="@{/admin/resetpw}" method="post" style="display:inline-block"
+                  class="p-1">
+              <input type="hidden" name="id" th:value="${user.id}">
+              <input type="submit" class="btn btn-primary" th:value="#{admin.active.default.password}"/>
+              <input type="text" readonly th:value="${user.password}"/>
+<!--              ${user.defaultPassword} -->
             </form>
           </td>
         </tr>

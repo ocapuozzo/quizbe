@@ -3,19 +3,19 @@
 <head>
   <th:block th:replace="fragments/header :: header-css"/>
   <!-- Custom styles for this template -->
-  <link rel="stylesheet" th:href="@{css/signin-register.css}" type="text/css"/>
+  <link rel="stylesheet" th:href="@{/css/signin-register.css}"/>
 </head>
 <body>
-<div th:replace="fragments/header :: menu(activeTab='home')"/>
+<div th:replace="fragments/header :: menu(activeTab='admin')"/>
 
 <main class="text-center form-signin">
-  <form autocomplete="off" th:action="@{/register}"
+  <form autocomplete="off" th:action="@{/admin/register}"
         th:object="${userDto}" method="post"
         class="form-signin">
 
     <div class="mb-4 ml-4">
       <span>&nbsp;&nbsp;&nbsp;</span>
-      <img th:src="@{svg/quizbe.svg}" alt="logo" width="72" height="57"/>
+      <img th:src="@{/svg/quizbe.svg}" alt="logo" width="72" height="57"/>
     </div>
     <h1 class="h3 mb-3 fw-normal" th:text="#{user.add}">Add user</h1>
     <div class="form-floating">

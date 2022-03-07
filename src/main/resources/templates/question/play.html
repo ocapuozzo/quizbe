@@ -26,7 +26,12 @@
       <div class="form-group">
         <table class="table table-striped">
           <thead>
-          <th>Your choice (?? TODO how.expected ??)
+          <th th:with="expectedGoodResponses=${question.getExpectedGoodChoices}">Your choice
+            <span th:if="${expectedGoodResponses} > 0 and ${expectedGoodResponses} < ${#lists.size(question.responses)}"
+            th:text="' (' + ${expectedGoodResponses} + ' expected)'"
+            >
+
+            </span>
             <!--            if (expectedChoices > 0 and expectedChoices < question.responses.length-->
           </th>
           <th>Proposition</th>
@@ -60,17 +65,17 @@
       <div class="panel-title d-flex justify-content-between bd-highlight mb-3">
         <div class="p-2 bd-highlight">
           <a id='idGoodChoice' style="display: none"
-             class="btn btn-success glyphicon glyphicon-thumbs-up" onclick="showFeedBack();">
-            good.user.submit.choice</a>
+             class="m-1 btn btn-success fa-thumbs-up fas" onclick="showFeedBack();" th:text="'   ' + #{play.good.user.submit.choice}">
+            play.good.user.submit.choice</a>
           <a id='idBadChoice' style="display:none"
-             class="btn btn-danger glyphicon glyphicon-thumbs-down" onclick="showFeedBack();">
-            bad.user.submit.choice </a>
+             class="m-1 btn btn-danger fa-thumbs-down fas " onclick="showFeedBack();" th:text="'   ' + #{play.bad.user.submit.choice}">
+            play.bad.user.submit.choice </a>
           <a id='idFeedBack' style="display:none"
-             class=" btn glyphicon glyphicon-question-sign" onclick="showFeedBack();"> show.feedback </a>
+             class="m-1 btn btn-primary" onclick="showFeedBack();" th:text="#{play.show.feedback}"></a>
         </div>
         <div class="p-2 bd-highlight"></div>
         <div class="p-2 bd-highlight">
-          <a class="btn btn-success" onclick="checkUserChoice();"> === user.check === </a>
+          <a class="btn btn-success" onclick="checkUserChoice();" th:text="#{play.user.check}"> === user.check === </a>
           &nbsp;<a href="#" class="btn btn-link">edit if designer (or codesigner)</a>
         </div>
       </div>

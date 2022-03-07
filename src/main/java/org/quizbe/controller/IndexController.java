@@ -51,30 +51,6 @@ public class IndexController {
   }
 
 
-  @GetMapping(value = {"/register",})
-  public String register(@ModelAttribute UserDto userDto) {
-    //model.addAttribute("user", new UserRegistrationDto());
-    return "/main/registration";
-  }
-
-  @PostMapping(value = {"/register",})
-  public String registerPost(@Valid @ModelAttribute UserDto userDto, BindingResult bindingResult) {
-    User userExists = userService.findByUsername(userDto.getUsername());
-    if (userExists != null) {
-      // pour aller chercher le bon message avec la locale
-      ResourceBundle bundle = ResourceBundle.getBundle("i18n/validationMessages", LocaleContextHolder.getLocale());
-      String errorMessageDefault = bundle.getString("user.username.already.exist");
-      String keyNotExists = "user.username.already.exist.constraint";
-      bindingResult
-              .rejectValue("userName", keyNotExists, errorMessageDefault);
-    }
-    if (bindingResult.hasErrors()) {
-      return "/main/registration";
-    }
-    userService.saveUserFromUserDto(userDto);
-    return "redirect:/";
-  }
-
   /**
     @See WebSecurityConfiguration
    */

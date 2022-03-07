@@ -9,6 +9,7 @@ import org.quizbe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.ResourceBundle;
 
 @RequestMapping("/admin")
 @Controller
@@ -117,5 +119,30 @@ public class AdminController {
 
     return "redirect:/admin/users";
   }
+
+
+  @GetMapping(value = {"/register",})
+  public String register(@ModelAttribute UserDto userDto) {
+    return "/admin/registration";
+  }
+
+  @PostMapping(value = {"/register",})
+  public String registerPost(@Valid @ModelAttribute UserDto userDto, BindingResult bindingResult) {
+    User userExists = userService.findByUsername(userDto.getUsername());
+    if (userExists != null) {
+      // pour aller chercher le bon message avec la locale
+      ResourceBundle bundle = ResourceBundle.getBundle("i18n/validationMessages", LocaleContextHolder.getLocale());
+      String errorMessageDefault = bundle.getString("user.username.already.exist");
+      String keyNotExists = "user.username.already.exist.constraint";
+      bindingResult
+              .rejectValue("userName", keyNotExists, errorMessageDefault);
+    }
+    if (bindingResult.hasErrors()) {
+      return "/admin/registration";
+    }
+    userService.saveUserFromUserDto(userDto);
+    return "redirect:/";
+  }
+
 
 }
