@@ -17,7 +17,7 @@ public class UserDto {
   private String email;
 
   @NotBlank(message = "{user.password.blank}")
-  @Size(min = 6, message = "{user.password.min}")
+  @Size(min = 8, message = "{user.password.min}")
   private String password;
 
   private Long id;

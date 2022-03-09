@@ -41,6 +41,7 @@ public class QuestionController {
   private ScopeService scopeService;
   private QuestionService questionService;
 
+
   @Autowired
   public QuestionController(TopicService topicService, UserService userService, ScopeService scopeService, QuestionService questionService) {
     this.topicService = topicService;

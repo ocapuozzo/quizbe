@@ -26,7 +26,7 @@
         <tr th:each="user : ${users}">
           <td th:text="${user.username}"></td>
           <td th:text="${user.email}"></td>
-          <td><a th:href="@{edit/{id}(id=${user.id})}">Edit</a></td>
+          <td><a th:href="@{/user/edit/{id}(id=${user.id})}">Edit</a></td>
           <td><a th:href="@{delete/{id}(id=${user.id})}">Delete</a></td>
           <td>
             <form th:action="@{/admin/role}" th:each="role : ${allRoles}" method="post" style="display:inline-block"
@@ -45,7 +45,7 @@
               <input type="hidden" name="id" th:value="${user.id}">
               <input type="submit" class="btn btn-primary" th:value="#{admin.active.default.password}"/>
               <input th:if="${user.dateUpdatePassword == null}" type="text" readonly th:value="${user.defaultPlainTextPassword}"/>
-              <input th:if="${user.dateUpdatePassword != null}" type="text" readonly value=""/>
+              <input th:if="${user.dateUpdatePassword != null}" type="text" readonly disabled value=""/>
             </form>
           </td>
         </tr>

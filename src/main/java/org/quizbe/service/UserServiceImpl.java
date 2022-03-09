@@ -43,6 +43,7 @@ public class UserServiceImpl implements UserService {
         User updateUser = user.get();
         updateUser.setEmail(userDto.getEmail());
         updateUser.setUsername(userDto.getUsername());
+        updateUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
         return userRepository.save(updateUser);
       } else {
         throw new UserNotFoundException("Invalid user Id:" + userDto.getId());

@@ -52,27 +52,6 @@ public class AdminController {
     return "redirect:/admin/index";
   }
 
-  @GetMapping("/edit/{id}")
-  public String showUpdateForm(@PathVariable("id") long id, Model model) {
-    try {
-      UserDto userDto = userService.findUserDtoById(id);
-      model.addAttribute("userDto", userDto);
-    } catch (UserNotFoundException ex) {
-      throw new UserNotFoundException(ex);
-    }
-    return "admin/update-user";
-  }
-
-  @PostMapping("/update/{id}")
-  public String updateUser(@Valid @ModelAttribute UserDto userDto, BindingResult bindingResult) {
-    // logger.info("bindingResult :" + bindingResult);
-    if (bindingResult.hasErrors()) {
-      return "admin/update-user";
-    }
-    userService.saveUserFromUserDto(userDto);
-    return "redirect:/admin/users";
-  }
-
   @GetMapping("/delete/{id}")
   public String deleteUser(@PathVariable("id") long id, Model model) {
     User user = userService.findById(id)
