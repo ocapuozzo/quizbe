@@ -223,4 +223,7 @@ public class User {
     return sb.toString();
   }
 
+  public void removeSubscribedTopics(Topic topic) {
+    this.getSubscribedTopics().remove(topic);
+  }
 }

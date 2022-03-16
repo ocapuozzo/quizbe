@@ -6,6 +6,7 @@ import org.quizbe.exception.UserNotFoundException;
 import org.quizbe.model.User;
 import org.quizbe.service.TopicService;
 import org.quizbe.service.UserService;
+import org.quizbe.validator.PasswordDtoValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ public class IndexController {
 
   private TopicService topicService;
   private UserService userService;
+
+  @Autowired
+  private PasswordDtoValidator passwordDtoValidator;
 
   @Autowired
   public IndexController(TopicService topicService, UserService userService) {
@@ -74,6 +78,12 @@ public class IndexController {
     if (result.hasErrors()) {
       return "main/update-user-pw";
     }
+
+    passwordDtoValidator.validate(passwordDto, result);
+    if (result.hasErrors()) {
+      return "main/update-user-pw";
+    }
+
     if (userService.userUpdatePassword(user, passwordDto.getPassword())) {
       return "redirect:/question";
     }

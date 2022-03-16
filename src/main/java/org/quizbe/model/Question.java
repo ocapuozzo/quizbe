@@ -53,7 +53,7 @@ public class Question {
     @ManyToOne
     private Topic topic;
 
-    @OneToMany(mappedBy = "question",  cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
+    @OneToMany(mappedBy = "question",  cascade = { CascadeType.ALL })
     private List<Response> responses = new ArrayList<>();
 
     /**

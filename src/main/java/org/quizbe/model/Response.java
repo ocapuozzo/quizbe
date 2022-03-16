@@ -1,10 +1,7 @@
 package org.quizbe.model;
 
 
-import org.quizbe.dto.ResponseDto;
-
 import javax.persistence.*;
-import java.sql.Date;
 import java.util.Objects;
 
 @Entity
@@ -13,7 +10,7 @@ public class Response {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
-    private long id;
+    private Long id;
 
     @Basic
     @Column(name = "PROPOSITION", nullable = false)
@@ -31,11 +28,11 @@ public class Response {
     private Question question;
 
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

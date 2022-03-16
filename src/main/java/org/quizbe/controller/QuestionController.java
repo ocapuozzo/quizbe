@@ -14,6 +14,7 @@ import org.quizbe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -138,12 +139,28 @@ public class QuestionController {
     return "redirect:/question/index";
   }
 
+  @GetMapping("/delete/{id}")
+  public String delete(@PathVariable("id") long id, Model model, HttpServletRequest request) {
+    User currentUser = userService.findByUsername(request.getUserPrincipal().getName());
+
+    Question question = questionService.findById(id);
+    if ( ! question.getDesigner().equals(currentUser.getUsername())) {
+      throw new AccessDeniedException("");
+    }
+
+    questionService.delete(question);
+
+    return "redirect:/question/index";
+  }
+
+
   @GetMapping("/edit/{id}")
   public String showUpdateForm(@PathVariable("id") long id, Model model) {
     QuestionDto questionDto = questionService.findQuestionDtoById(id);
     model.addAttribute("questionDto", questionDto);
     return "/question/add-update-question";
   }
+
 
   @GetMapping("/play/{id}")
   public String showPlay(@PathVariable("id") long id, Model model) {

@@ -11,17 +11,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.validation.Validator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @RequestMapping("/topic")
@@ -72,6 +70,21 @@ public class TopicController {
 //              HttpStatus.NOT_FOUND, "Topic Not Found", ex);
     }
     return "topic/add-update";
+  }
+
+
+  @GetMapping("/delete/{id}")
+  public String deleteTopic(@PathVariable("id") long id, Model model, HttpServletRequest request) {
+    String nameCurrentUser = request.getUserPrincipal().getName();
+    User currentUser = userService.findByUsername(nameCurrentUser);
+    Topic topic = topicService.findTopicById(id).orElseThrow(TopicNotFoundException::new);
+
+    if( topic.getCreator().getId() != currentUser.getId() ) {
+      // TODO accept ADMIN ?
+      throw new AccessDeniedException("");
+    }
+    topicService.deleteTopic(topic);
+    return "redirect:/topic/index";
   }
 
   @PostMapping(value= {"/addupdate"})

@@ -76,7 +76,9 @@ public class QuestionService {
 
   private Response convertDtoToResponse(ResponseDto responseDto) {
     Response response = new Response();
-    response.setId(responseDto.getId());
+    if (responseDto.getId() != null) {
+      response.setId(responseDto.getId());
+    }
     response.setProposition(responseDto.getProposition());
     response.setFeedback(responseDto.getFeedback());
     response.setValue(responseDto.getValue());
@@ -120,6 +122,10 @@ public class QuestionService {
 
   public Question findById(long id) {
     return questionRepository.findById(id).orElseThrow(QuestionNotFoundException::new);
+  }
+
+  public void delete(Question question) {
+    questionRepository.delete(question);
   }
 }
 

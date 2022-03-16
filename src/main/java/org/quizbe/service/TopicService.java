@@ -125,5 +125,10 @@ public class TopicService {
   public Optional<Topic> findById(long idClassroom) {
     return topicRepository.findById(idClassroom);
   }
+
+  public void deleteTopic(Topic topic) {
+    topic.getCreator().removeSubscribedTopics(topic);
+    topicRepository.delete(topic);
+  }
 }
 

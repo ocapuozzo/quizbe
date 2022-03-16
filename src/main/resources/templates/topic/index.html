@@ -26,7 +26,7 @@
             <td th:text="${topic.name}"></td>
             <td><a th:href="@{/topic/edit/{id}(id=${topic.id})}">Edit</a>
               &nbsp;/&nbsp;
-              <a th:href="@{/delete/{id}(id=${topic.id})}">Delete</a>
+              <a th:href="@{/topic/delete/{id}(id=${topic.id})}">Delete</a>
             </td>
             <td>
               <form th:action="@{/topic/visible}" method="post" style="display:inline-block" class="p-1">

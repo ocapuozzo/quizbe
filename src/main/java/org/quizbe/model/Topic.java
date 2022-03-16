@@ -23,10 +23,10 @@ public class Topic {
     @Column(nullable = false)
     private boolean visible = true;
 
-    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL)
     private List<Scope> scopes;
 
-    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL)
     private List<Question> questions;
 
     @ManyToOne

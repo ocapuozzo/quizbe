@@ -81,7 +81,8 @@
             <a th:href="@{/question/play/{id}(id=${question.id})}">play</a>
             /
             <a th:href="@{'/question/edit/' + ${question.id}}">edit</a>
-
+            /
+            <a th:href="@{'/question/delete/' + ${question.id}}">delete</a>
           </td>
           <td><input id="_37" class="rating" value="2.75"
                      data-size="xxs"
