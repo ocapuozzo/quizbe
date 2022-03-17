@@ -93,7 +93,6 @@ public class QuestionController {
         }
         questions = selectedTopic.getQuestions(selectedScope);
       }
-
     }
 
     model.addAttribute("currentUser", currentUser);
@@ -112,13 +111,11 @@ public class QuestionController {
     Topic topic = topicService.findTopicById(idTopic)
             .orElseThrow(() -> new TopicNotFoundException("Topic error id : " + idTopic));
 
-    Scope scope = null; // scope may be null
+    Scope scope = topic.getScopes().get(0);
     if (idScope.isPresent()) {
-      scope = scopeService.findById(idScope.get()).orElse(null);
+      scope = scopeService.findById(idScope.get()).orElse(topic.getScopes().get(0));
     }
     User currentUser = userService.findByUsername(request.getUserPrincipal().getName());
-
-    //  logger.info("topic = " + topic+" scope = " + scope);
 
     QuestionDto questionDto =
             new QuestionDto(null, topic, scope == null ? null : scope.getId(), currentUser.getUsername());
@@ -130,13 +127,13 @@ public class QuestionController {
 
   @PostMapping(value = {"/addupdate"})
   public String addOrUpdateClassroom(@Valid QuestionDto questionDto, BindingResult result, Model model, HttpServletRequest request) {
-
     if (result.hasErrors()) {
       logger.info("result : " + result);
       return "/question/add-update-question";
     }
     questionService.saveQuestionFromQuestionDto(questionDto);
-    return "redirect:/question/index";
+    return "redirect:/question/index?id-selected-topic="+questionDto.getTopic().getId()
+    + "&id-selected-scope="+ questionDto.getIdScope();
   }
 
   @GetMapping("/delete/{id}")

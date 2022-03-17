@@ -75,6 +75,8 @@
         <div class="row g-3 mt-2">
           <div class="col-2">
             <label class="control-label col-sm-2 required" th:text="#{answers}">Answers:</label>
+            <p th:if="${#fields.hasErrors('responseDtos')}" th:errors="*{responseDtos}"
+                  class="validation-message"></p>
           </div>
           <div class="col-10">
               <ul style="list-style-type: none;" id="question-responses">
@@ -111,7 +113,7 @@
         </div>
         <div class="form-group col-sm-2 control-label">
           <div style="margin-top: 5px;">
-            <a th:href="@{/question}" th:text="#{back.to.list}"></a>
+            <a th:href="@{'/question?id-selected-topic='+${questionDto.topic.id}+'&id-selected-scope='+${questionDto.idScope}}" th:text="#{back.to.list}"></a>
           </div>
         </div>
       </div>

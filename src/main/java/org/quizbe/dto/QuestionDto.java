@@ -37,7 +37,7 @@ public class QuestionDto {
   private String codesigners;
 
   @NotNull
-  @Size(min = 1)
+  @Size(min = 2, max = 10)
   @Valid private List<ResponseDto> responseDtos;
 
   public QuestionDto() {

@@ -52,7 +52,7 @@ public class Topic {
         this.name = name;
     }
 
-    public Collection<Scope> getScopes() {
+    public List<Scope> getScopes() {
         return scopes;
     }
 
