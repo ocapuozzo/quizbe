@@ -40,7 +40,12 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarCollapse">
-      <ul class="navbar-nav me-auto mb-2 mb-md-0 p-2">
+      <ul sec:authorize="hasAuthority('CHANGE_PW')" class="navbar-nav me-auto mb-2 mb-md-0 p-2">
+        <li class="nav-item">
+          <a class="nav-link" href="/douser/updatepw">Update Password</a>
+        </li>
+      </ul>
+      <ul sec:authorize="hasAuthority('CHANGE_PW') == false" class="navbar-nav me-auto mb-2 mb-md-0 p-2">
         <li class="nav-item" th:class="${activeTab == 'question' ? 'active' : null}">
           <a class="nav-link" href="/question">Quiz</a>
         </li>
@@ -68,9 +73,8 @@
   <path fill-rule="evenodd"
         d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
             </svg>
-          <a style="color: rgba(255,255,255,.55);" th:href="@{/logout}">&nbsp;Logout</a> ( <a th:href="@{/user/edit/}">
-             <span th:text="${#authentication.getPrincipal().getUsername()}"></span></a>)
-
+          <a style="color: rgba(255,255,255,.55);" th:href="@{/logout}">&nbsp;Logout </a> (<a th:href="@{/user/edit/}"><span th:text="${#authentication.getPrincipal().getUsername()}"></span></a>)
+<!--          <a style="color: rgba(255,255,255,.55);" th:href="@{/logout}">&nbsp;Logout </a> (<span th:text="${#authentication.getPrincipal().getUsername()}"></span>)-->
         </li>
       </ul>
     </div>

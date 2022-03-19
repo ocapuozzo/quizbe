@@ -16,8 +16,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -73,11 +75,22 @@ public class UserController {
       return "admin/update-user";
     }
 
-    userService.saveUserFromUserDto(userDto);
+    try {
+      userService.saveUserFromUserDto(userDto);
+    } catch (SQLIntegrityConstraintViolationException e) {
+      logger.warn("Exception in updateUser : " + e.getMessage());
+      // TODO message flash
+      return "admin/update-user";
+    }
 
     if (request.isUserInRole("ADMIN")) {
       return "redirect:/admin/users";
     } else {
+      try {
+        request.logout();
+      } catch (ServletException e) {
+        // ??
+      }
       return "redirect:/";
     }
   }

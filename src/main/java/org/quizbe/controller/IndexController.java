@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.ResourceBundle;
@@ -61,16 +63,16 @@ public class IndexController {
   }
 
 
-  @PreAuthorize("hasRole('USER')")
-  @GetMapping("/user/updatepw")
+  @PreAuthorize("hasRole('CHANGE_PW')")
+  @GetMapping("/douser/updatepw")
   public String showUpdatePassword(@ModelAttribute PasswordDto passwordDto, Model model) {
     return "main/update-user-pw";
   }
 
-  @PreAuthorize("hasRole('USER')")
-  @PostMapping("/user/updatepw")
+  @PreAuthorize("hasRole('CHANGE_PW')")
+  @PostMapping("/douser/updatepw")
   public String userUpdatePassword(@Valid @ModelAttribute PasswordDto passwordDto,
-                                   BindingResult result, Principal principal) {
+                                   BindingResult result, Principal principal, HttpServletRequest request) throws ServletException {
     User user = userService.findByUsername(principal.getName());
     if (user == null) {
       throw new UserNotFoundException("Invalid User");
@@ -85,8 +87,11 @@ public class IndexController {
     }
 
     if (userService.userUpdatePassword(user, passwordDto.getPassword())) {
-      return "redirect:/question";
+      // password has changed
+      request.logout();
+      return "redirect:/login";
     }
+
     return "main/update-user-pw";
   }
 

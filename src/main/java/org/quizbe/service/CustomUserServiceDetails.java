@@ -14,10 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class CustomUserServiceDetails implements UserDetailsService {
@@ -31,6 +28,9 @@ public class CustomUserServiceDetails implements UserDetailsService {
   @Transactional
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
+    // voir aussi  (Implement UserDetails)
+    //  https://www.codejava.net/frameworks/spring-boot/spring-boot-security-authentication-with-jpa-hibernate-and-mysql
+
     User user = userService.findByEmail(username);
     if (user == null) {
       user = userService.findByUsername(username);
@@ -38,11 +38,14 @@ public class CustomUserServiceDetails implements UserDetailsService {
         throw new UsernameNotFoundException("Could not find user");
       }
     }
-    // logger.info("User login : " + user);
 
-    // meilleur autre solution ? (Implement UserDetails)
-    //  https://www.codejava.net/frameworks/spring-boot/spring-boot-security-authentication-with-jpa-hibernate-and-mysql
-    List<GrantedAuthority> authorities = getUserAuthority(user.getRoles());
+    // force user to change his password
+    List<GrantedAuthority> authorities;
+    if (userService.mustChangePassword(user)) {
+      authorities = new ArrayList<>(Arrays.asList((new SimpleGrantedAuthority("CHANGE_PW"))));
+    } else {
+      authorities = getUserAuthority(user.getRoles());
+    }
     return this.buildUserForAuthentication(user, authorities);
   }
 
@@ -58,6 +61,7 @@ public class CustomUserServiceDetails implements UserDetailsService {
   private UserDetails buildUserForAuthentication(User user, List<GrantedAuthority> authorities) {
     return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
             user.isEnabled(), true, true, true, authorities);
+    // TODO  do not use methods user.isAccountNonExpired() because type ? Boolean change to boolean ?
   }
 
 }

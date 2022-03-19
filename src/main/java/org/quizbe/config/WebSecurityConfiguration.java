@@ -13,10 +13,8 @@ import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.servlet.support.csrf.CsrfRequestDataValueProcessor;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.web.servlet.support.RequestDataValueProcessor;
 
 
 @Configuration
@@ -49,6 +47,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
             //.antMatchers("/admin/**").permitAll()
             .antMatchers("/question/**").hasAuthority("USER")
             .antMatchers("/user/**").hasAuthority("USER")
+            .antMatchers("/douser/**").hasAuthority("CHANGE_PW")
             .antMatchers("/topic/**").hasAuthority("USER")
             .antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
             .authenticated()
@@ -64,8 +63,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
               .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
               .logoutSuccessUrl("/login")
             .and()
-            .exceptionHandling()
-              .accessDeniedPage("/access-denied");
+            .exceptionHandling().accessDeniedHandler(accessDeniedHandler());
+            // .exceptionHandling().accessDeniedPage("/access-denied");
   }
 
   @Override
@@ -90,4 +89,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   GrantedAuthorityDefaults grantedAuthorityDefaults() {
     return new GrantedAuthorityDefaults(""); // Remove the ROLE_ prefix
   }
+
+  @Bean
+  public AccessDeniedHandler accessDeniedHandler(){
+    return new QuizbeAccessDeniedHandler();
+  }
+
 }

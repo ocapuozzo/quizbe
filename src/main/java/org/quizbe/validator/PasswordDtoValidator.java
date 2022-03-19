@@ -17,7 +17,7 @@ public class PasswordDtoValidator implements Validator {
   public void validate(Object o, Errors errors) {
     PasswordDto passwordDto = (PasswordDto) o;
      if (! passwordDto.getPassword().equals(passwordDto.getConfirmPassword())) {
-       errors.rejectValue("password", "passwords.not.equals", "contraint same passwords");
+       errors.rejectValue("password", "passwords.not.equals", "passwords.not.equals");
      }
   }
 }

@@ -19,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ResourceBundle;
 
 @RequestMapping("/admin")
@@ -48,7 +49,12 @@ public class AdminController {
     if (result.hasErrors()) {
       return "admin/add-user";
     }
-    userService.saveUserFromUserDto(userDto);
+    try {
+      userService.saveUserFromUserDto(userDto);
+    } catch (SQLIntegrityConstraintViolationException e) {
+      logger.warn("Exception in addUser : " + e.getMessage());
+      return "admin/add-user";
+    }
     return "redirect:/admin/index";
   }
 
@@ -112,14 +118,27 @@ public class AdminController {
       // pour aller chercher le bon message avec la locale
       ResourceBundle bundle = ResourceBundle.getBundle("i18n/validationMessages", LocaleContextHolder.getLocale());
       String errorMessageDefault = bundle.getString("user.username.already.exist");
-      String keyNotExists = "user.username.already.exist.constraint";
+      String key = "user.username.already.exist";
       bindingResult
-              .rejectValue("userName", keyNotExists, errorMessageDefault);
+              .rejectValue("username", key, errorMessageDefault);
+    }
+    userExists = userService.findByEmail(userDto.getEmail());
+    if (userExists != null) {
+      // pour aller chercher le bon message avec la locale
+      ResourceBundle bundle = ResourceBundle.getBundle("i18n/validationMessages", LocaleContextHolder.getLocale());
+      String errorMessageDefault = bundle.getString("user.email.already.exist");
+      String key = "user.email.already.exist";
+      bindingResult
+              .rejectValue("email", key, errorMessageDefault);
     }
     if (bindingResult.hasErrors()) {
       return "/admin/registration";
     }
-    userService.saveUserFromUserDto(userDto);
+    try {
+      userService.saveUserFromUserDto(userDto);
+    } catch (SQLIntegrityConstraintViolationException e) {
+      return "/admin/registration";
+    }
     return "redirect:/";
   }
 

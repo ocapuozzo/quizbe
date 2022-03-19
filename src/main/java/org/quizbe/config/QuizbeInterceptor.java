@@ -33,6 +33,7 @@ public class QuizbeInterceptor implements HandlerInterceptor {
 
   @Override
   public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+    // logger.info("In interceptor afterCompletion...");
     HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
   }
 }

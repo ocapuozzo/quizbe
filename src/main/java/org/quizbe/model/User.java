@@ -15,26 +15,17 @@ public class User {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(name = "USERNAME")
+  @Column(name = "USERNAME", unique = true, nullable = false)
   private String username;
 
-  @Column(name = "EMAIL")
+  @Column(name = "EMAIL", unique = true, nullable = false)
   private String email;
 
-  @Column(name = "PASSWORD")
+  @Column(name = "PASSWORD", nullable = false)
   private String password;
 
   @Column(name = "ACTIVE")
   private Boolean enabled;
-
-  @Basic
-  private Boolean accountNonExpired;
-
-  @Basic
-  private Boolean credentialsNonExpired;
-
-  @Basic
-  private Boolean accountNonLocked;
 
   @Basic
   private LocalDateTime dateUpdatePassword;
@@ -65,9 +56,6 @@ public class User {
 
   public User() {
     this.enabled = true;
-    this.accountNonExpired = true;
-    this.accountNonLocked = true;
-    this.credentialsNonExpired = true;
     // this.defaultPlainTextPassword = User.generateRandomPassword(8);
   }
 
@@ -135,43 +123,8 @@ public class User {
     return this.subscribedTopics.contains(topic);
   }
 
-
-  public Boolean isAccountNonExpired() {
-    return accountNonExpired;
-  }
-  public void setAccountNonExpired(Boolean accountNonExpired) {
-    this.accountNonExpired = accountNonExpired;
-  }
-  public Boolean isCredentialsNonExpired() {
-    return credentialsNonExpired;
-  }
-
-  public void setCredentialsNonExpired(Boolean credentialsNonExpired) {
-    this.credentialsNonExpired = credentialsNonExpired;
-  }
-
-  public Boolean isAccountNonLocked() {
-    return accountNonLocked;
-  }
-
-  public void setAccountNonLocked(Boolean accountNonLocked) {
-    this.accountNonLocked = accountNonLocked;
-  }
-
   public Boolean getEnabled() {
     return enabled;
-  }
-
-  public Boolean getAccountNonExpired() {
-    return accountNonExpired;
-  }
-
-  public Boolean getCredentialsNonExpired() {
-    return credentialsNonExpired;
-  }
-
-  public Boolean getAccountNonLocked() {
-    return accountNonLocked;
   }
 
   public List<Topic> getTopics() {
@@ -226,4 +179,5 @@ public class User {
   public void removeSubscribedTopics(Topic topic) {
     this.getSubscribedTopics().remove(topic);
   }
+
 }

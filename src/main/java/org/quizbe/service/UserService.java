@@ -4,11 +4,12 @@ import org.quizbe.dto.UserDto;
 import org.quizbe.model.Role;
 import org.quizbe.model.User;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
 
 public interface UserService  {
-    User saveUserFromUserDto(UserDto userDto);
+    User saveUserFromUserDto(UserDto userDto) throws SQLIntegrityConstraintViolationException;
     User findByEmail(String email);
     User findByUsername(String username);
     List<User> findAll();
