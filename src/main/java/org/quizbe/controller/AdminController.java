@@ -113,34 +113,19 @@ public class AdminController {
 
   @PostMapping(value = {"/register",})
   public String registerPost(@Valid @ModelAttribute UserDto userDto, BindingResult bindingResult) {
-    User userExists = userService.findByUsername(userDto.getUsername());
-    if (userExists != null) {
-      // pour aller chercher le bon message avec la locale
-      ResourceBundle bundle = ResourceBundle.getBundle("i18n/validationMessages", LocaleContextHolder.getLocale());
-      String errorMessageDefault = bundle.getString("user.username.already.exist");
-      String key = "user.username.already.exist";
-      bindingResult
-              .rejectValue("username", key, errorMessageDefault);
-    }
-    userExists = userService.findByEmail(userDto.getEmail());
-    if (userExists != null) {
-      // pour aller chercher le bon message avec la locale
-      ResourceBundle bundle = ResourceBundle.getBundle("i18n/validationMessages", LocaleContextHolder.getLocale());
-      String errorMessageDefault = bundle.getString("user.email.already.exist");
-      String key = "user.email.already.exist";
-      bindingResult
-              .rejectValue("email", key, errorMessageDefault);
-    }
+    userService.checkAddUpdateUser(userDto, bindingResult);
     if (bindingResult.hasErrors()) {
       return "/admin/registration";
     }
     try {
       userService.saveUserFromUserDto(userDto);
-    } catch (SQLIntegrityConstraintViolationException e) {
+    } catch (Exception e) {
+      // TODO message flash
       return "/admin/registration";
     }
     return "redirect:/";
   }
+
 
   @GetMapping(value = {"/resetpw",})
   public String resetpw(long id) {

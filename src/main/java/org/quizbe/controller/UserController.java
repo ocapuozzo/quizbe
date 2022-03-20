@@ -14,11 +14,14 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -44,7 +47,7 @@ public class UserController {
       try {
         User currentUser = userService.findByUsername(request.getUserPrincipal().getName());
         if (!request.isUserInRole("ADMIN") && currentUser.getId() != id.get()) {
-          throw new AccessDeniedException("");
+          throw new AccessDeniedException("edit user");
         }
         UserDto userDto = userService.findUserDtoById(id.get());
         model.addAttribute("userDto", userDto);
@@ -52,6 +55,7 @@ public class UserController {
         throw new UserNotFoundException(ex);
       }
     } else {
+      // user self update
       try {
         User currentUser = userService.findByUsername(request.getUserPrincipal().getName());
         UserDto userDto = userService.findUserDtoById(currentUser.getId());
@@ -65,25 +69,35 @@ public class UserController {
 
   @PostMapping("/update/{id}")
   public String updateUser(@Valid @ModelAttribute UserDto userDto,
-                           BindingResult bindingResult, HttpServletRequest request) {
+                           BindingResult bindingResult,
+                           HttpServletRequest request,
+                           RedirectAttributes redirAttrs,
+                           Model model) {
     // logger.info("bindingResult :" + bindingResult);
     User currentUser = userService.findByUsername(request.getUserPrincipal().getName());
     if (!request.isUserInRole("ADMIN") && currentUser.getId() != userDto.getId()) {
-      throw new AccessDeniedException("");
+      throw new AccessDeniedException("update user");
     }
+    if (bindingResult.hasErrors()) {
+      return "admin/update-user";
+    }
+    userService.checkAddUpdateUser(userDto, bindingResult);
+
     if (bindingResult.hasErrors()) {
       return "admin/update-user";
     }
 
     try {
       userService.saveUserFromUserDto(userDto);
-    } catch (SQLIntegrityConstraintViolationException e) {
-      logger.warn("Exception in updateUser : " + e.getMessage());
-      // TODO message flash
+    } catch (Exception e) {
+      logger.warn("SQL Integrity Exception in updateUser : " + e.getMessage());
+      model.addAttribute("errorMessage", "error.message");
       return "admin/update-user";
     }
 
     if (request.isUserInRole("ADMIN")) {
+      // flash message
+      redirAttrs.addFlashAttribute("message", "success.message");
       return "redirect:/admin/users";
     } else {
       try {

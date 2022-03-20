@@ -3,6 +3,7 @@ package org.quizbe.service;
 import org.quizbe.dto.UserDto;
 import org.quizbe.model.Role;
 import org.quizbe.model.User;
+import org.springframework.validation.BindingResult;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
@@ -27,4 +28,6 @@ public interface UserService  {
     void invalidePassword(User user);
 
     boolean mustChangePassword(User user);
+
+    void checkAddUpdateUser(UserDto userDto, BindingResult bindingResult);
 }

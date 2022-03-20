@@ -1,27 +1,33 @@
 package org.quizbe.service;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import org.quizbe.controller.AdminController;
 import org.quizbe.dao.RoleRepository;
 import org.quizbe.dao.UserRepository;
 import org.quizbe.dto.UserDto;
 import org.quizbe.exception.UserNotFoundException;
 import org.quizbe.model.Role;
 import org.quizbe.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
 @Service
 public class UserServiceImpl implements UserService {
 
   private UserRepository userRepository;
   private RoleRepository roleRepository;
+
+
+  Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
   @Autowired
   private BCryptPasswordEncoder passwordEncoder;
@@ -44,7 +50,12 @@ public class UserServiceImpl implements UserService {
         updateUser.setEmail(userDto.getEmail());
         updateUser.setUsername(userDto.getUsername());
         updateUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        return userRepository.save(updateUser);
+        try {
+          return userRepository.save(updateUser);
+        } catch (Exception e) {
+          logger.warn("Exception userRepository.save : " + e.getMessage() + " " + e.getClass().getName() );
+          throw e;
+        }
       } else {
         throw new UserNotFoundException("Invalid user Id:" + userDto.getId());
       }
@@ -166,4 +177,28 @@ public class UserServiceImpl implements UserService {
     return user.getDateUpdatePassword()==null;
   }
 
+  /**
+   * Check if userDto can be save in DB
+   * @param userDto
+   * @param bindingResult out, result of check
+   */
+  public void checkAddUpdateUser(UserDto userDto, BindingResult bindingResult) {
+    ResourceBundle bundle =
+            ResourceBundle.getBundle("i18n/validationMessages", LocaleContextHolder.getLocale());
+    User userExists = this.findByUsername(userDto.getUsername());
+
+    if (userExists != null && (userDto.getId() == null || userDto.getId() != userExists.getId())) {
+      String errorMessageDefault = bundle.getString("user.username.already.exist");
+      String key = "user.username.already.exist";
+      bindingResult
+              .rejectValue("username", key, errorMessageDefault);
+    }
+    userExists = this.findByEmail(userDto.getEmail());
+    if (userExists != null && (userDto.getId() == null || userDto.getId() != userExists.getId())) {
+      String errorMessageDefault = bundle.getString("user.email.already.exist");
+      String key = "user.email.already.exist";
+      bindingResult
+              .rejectValue("email", key, errorMessageDefault);
+    }
+  }
 }

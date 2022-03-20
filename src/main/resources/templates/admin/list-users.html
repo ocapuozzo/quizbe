@@ -5,7 +5,6 @@
 </head>
 <body>
 <div th:replace="fragments/header :: menu(activeTab='admin')"/>
-
 <main class="text-center">
   <div th:switch="${users}">
     <h2 th:case="null">No users yet!</h2>
