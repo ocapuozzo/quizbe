@@ -1,11 +1,9 @@
 package org.quizbe.service;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import org.quizbe.controller.AdminController;
 import org.quizbe.dao.RoleRepository;
 import org.quizbe.dao.UserRepository;
 import org.quizbe.dto.UserDto;
@@ -23,6 +21,7 @@ import org.springframework.validation.BindingResult;
 @Service
 public class UserServiceImpl implements UserService {
 
+  public static final int VALID_HOURS_DEFAULT_PW = 48;
   private UserRepository userRepository;
   private RoleRepository roleRepository;
 
@@ -96,6 +95,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public void delete(User user) {
+    user.setRoles(null);
     userRepository.delete(user);
   }
 
@@ -159,8 +159,9 @@ public class UserServiceImpl implements UserService {
    * Set password => default password
    * @param user
    */
-  public void invalidePassword(User user) {
+  public void invalidePasswordBySetWithDefaultPlainTextPassord(User user) {
     user.setPassword(passwordEncoder.encode(user.getDefaultPlainTextPassword()));
+    user.setDateDefaultPassword(LocalDateTime.now());
     user.setDateUpdatePassword(null);
     userRepository.save(user);
   }
@@ -171,10 +172,26 @@ public class UserServiceImpl implements UserService {
    * @Return true if password is default password, else false
    */
   public boolean mustChangePassword(User user) {
-    // too long time
-    // String defaultPw = passwordEncoder.encode(user.getDefaultPlainTextPassword());
-   // return  user.getPassword().equals(defaultPw);
     return user.getDateUpdatePassword()==null;
+  }
+
+  @Override
+  public boolean hasDefaultPlainTextPasswordInvalidate(User user) {
+    if (mustChangePassword(user)
+         // < 48h
+         && (user.getDateDefaultPassword() == null
+            ||
+            user.getDateDefaultPassword().plusHours(VALID_HOURS_DEFAULT_PW).isBefore(LocalDateTime.now()))
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  @Override
+  public void updateDefaultPlainTextPassword(User user) {
+     user.setDefaultPlainTextPassword(User.generateRandomPassword(8));
+     this.invalidePasswordBySetWithDefaultPlainTextPassord(user);
   }
 
   /**

@@ -104,6 +104,7 @@ public class UserController {
         request.logout();
       } catch (ServletException e) {
         // ??
+        logger.info("Error logout : " + e.getMessage());
       }
       return "redirect:/";
     }

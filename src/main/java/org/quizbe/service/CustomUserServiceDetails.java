@@ -42,8 +42,14 @@ public class CustomUserServiceDetails implements UserDetailsService {
     // force user to change his password
     List<GrantedAuthority> authorities;
     if (userService.mustChangePassword(user)) {
+      logger.info("user do change password");
+      if (userService.hasDefaultPlainTextPasswordInvalidate(user)) {
+        logger.info("user has password expired, so we set a new defaultpassword to him");
+        userService.updateDefaultPlainTextPassword(user);
+      }
       authorities = new ArrayList<>(Arrays.asList((new SimpleGrantedAuthority("CHANGE_PW"))));
     } else {
+      // logger.info("user do no change password");
       authorities = getUserAuthority(user.getRoles());
     }
     return this.buildUserForAuthentication(user, authorities);
@@ -61,7 +67,6 @@ public class CustomUserServiceDetails implements UserDetailsService {
   private UserDetails buildUserForAuthentication(User user, List<GrantedAuthority> authorities) {
     return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
             user.isEnabled(), true, true, true, authorities);
-    // TODO  do not use methods user.isAccountNonExpired() because type ? Boolean change to boolean ?
   }
 
 }

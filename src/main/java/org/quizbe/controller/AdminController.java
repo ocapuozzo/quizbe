@@ -9,18 +9,14 @@ import org.quizbe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.ResourceBundle;
 
 @RequestMapping("/admin")
 @Controller
@@ -112,7 +108,7 @@ public class AdminController {
   }
 
   @PostMapping(value = {"/register",})
-  public String registerPost(@Valid @ModelAttribute UserDto userDto, BindingResult bindingResult) {
+  public String registerPost(@Valid @ModelAttribute UserDto userDto, BindingResult bindingResult, Model model) {
     userService.checkAddUpdateUser(userDto, bindingResult);
     if (bindingResult.hasErrors()) {
       return "/admin/registration";
@@ -120,7 +116,7 @@ public class AdminController {
     try {
       userService.saveUserFromUserDto(userDto);
     } catch (Exception e) {
-      // TODO message flash
+      model.addAttribute("errorMessage", "error.message");
       return "/admin/registration";
     }
     return "redirect:/";
@@ -130,7 +126,7 @@ public class AdminController {
   @GetMapping(value = {"/resetpw",})
   public String resetpw(long id) {
     User user =  userService.findById(id).orElseThrow(UserNotFoundException::new);
-    userService.invalidePassword(user);
+    userService.invalidePasswordBySetWithDefaultPlainTextPassord(user);
     return "redirect:/admin/users";
   }
 

@@ -31,6 +31,9 @@ public class User {
   private LocalDateTime dateUpdatePassword;
 
   @Basic
+  private LocalDateTime dateDefaultPassword;
+
+  @Basic
   private String defaultPlainTextPassword;
 
   @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -180,4 +183,11 @@ public class User {
     this.getSubscribedTopics().remove(topic);
   }
 
+  public LocalDateTime getDateDefaultPassword() {
+    return this.dateDefaultPassword;
+  }
+
+  public void setDateDefaultPassword(LocalDateTime dateDefaultPassword) {
+    this.dateDefaultPassword = dateDefaultPassword;
+  }
 }

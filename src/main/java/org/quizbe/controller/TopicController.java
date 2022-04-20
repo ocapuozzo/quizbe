@@ -64,20 +64,18 @@ public class TopicController {
       TopicDto topicDto = topicService.findTopicDtoById(id);
       model.addAttribute("topicDto", topicDto);
     } catch (TopicNotFoundException ex) {
-      // TODO test with HttpStatus.NOT_FOUND.toString() ?
       throw new TopicNotFoundException(HttpStatus.NOT_FOUND.toString(), ex);
-//              ResponseStatusException(
-//              HttpStatus.NOT_FOUND, "Topic Not Found", ex);
     }
     return "topic/add-update";
   }
 
 
   @GetMapping("/delete/{id}")
-  public String deleteTopic(@PathVariable("id") long id, Model model, HttpServletRequest request) {
+  public String deleteTopic(@PathVariable("id") long id, HttpServletRequest request) {
+    Topic topic = topicService.findTopicById(id).orElseThrow(TopicNotFoundException::new);
     String nameCurrentUser = request.getUserPrincipal().getName();
     User currentUser = userService.findByUsername(nameCurrentUser);
-    Topic topic = topicService.findTopicById(id).orElseThrow(TopicNotFoundException::new);
+
 
     if( topic.getCreator().getId() != currentUser.getId() ) {
       // TODO accept ADMIN ?

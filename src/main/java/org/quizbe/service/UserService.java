@@ -25,9 +25,13 @@ public interface UserService  {
 
     boolean userUpdatePassword(User user, String password);
 
-    void invalidePassword(User user);
+    void invalidePasswordBySetWithDefaultPlainTextPassord(User user);
 
     boolean mustChangePassword(User user);
 
     void checkAddUpdateUser(UserDto userDto, BindingResult bindingResult);
+
+    boolean hasDefaultPlainTextPasswordInvalidate(User user);
+
+    void updateDefaultPlainTextPassword(User user);
 }

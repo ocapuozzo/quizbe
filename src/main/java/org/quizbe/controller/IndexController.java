@@ -63,9 +63,18 @@ public class IndexController {
   }
 
 
+  /*
+   * come from QuizbeAccessDeniedHandler and CustomUserServiceDetails
+   */
   @PreAuthorize("hasRole('CHANGE_PW')")
   @GetMapping("/douser/updatepw")
-  public String showUpdatePassword(@ModelAttribute PasswordDto passwordDto, Model model) {
+  public String showUpdatePassword(@ModelAttribute PasswordDto passwordDto, HttpServletRequest request, Model model) throws ServletException {
+    User user = userService.findByUsername(request.getUserPrincipal().getName());
+    // defensive code
+    if (user == null) {
+      throw new UserNotFoundException("Invalid User");
+    }
+
     return "main/update-user-pw";
   }
 
